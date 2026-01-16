@@ -27,6 +27,22 @@ header p {
     opacity: 0.85;
 }
 
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: #0d3b66;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 30px;
+}
+
+
 nav a {
     color: #e5f0ff;
     margin-left: 22px;
