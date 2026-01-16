@@ -21,23 +21,23 @@
 
 <section class="section light">
     <h2>Public Provident Fund (PPF) Calculator</h2>
-    <p>Calculate PPF maturity value (India only).</p>
+    <p>Yearly PPF investment growth with government interest.</p>
 
     <div class="grid" style="max-width:600px">
 
         <div class="card">
-            <label>Yearly Investment (₹)</label><br>
-            <input type="number" id="amount" placeholder="Example: 150000">
+            <label>Yearly Contribution</label><br>
+            <input type="number" id="yearly" placeholder="Example: 150000">
         </div>
 
         <div class="card">
             <label>Interest Rate (% per year)</label><br>
-            <input type="number" id="rate" value="7.1">
+            <input type="number" id="rate" placeholder="Example: 7.1">
         </div>
 
         <div class="card">
-            <label>Investment Period (Years)</label><br>
-            <input type="number" id="years" value="15" readonly>
+            <label>Time Period (Years)</label><br>
+            <input type="number" id="years" value="15">
         </div>
 
         <div class="card">
@@ -68,24 +68,19 @@
         </div>
 
     </div>
-
-    <p style="margin-top:20px; font-size:14px;">
-        <strong>Note:</strong> PPF has a lock-in period of 15 years.
-        Interest rate is set by Government of India and may change.
-    </p>
 </section>
 
 <section class="section">
-    <h2>Year-wise PPF Projection</h2>
+    <h2>Yearly PPF Growth Illustration</h2>
 
     <div style="overflow-x:auto;">
         <table id="ppfTable" border="1" cellpadding="8" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Year</th>
+                    <th>Contribution</th>
                     <th>Opening Balance</th>
-                    <th>Yearly Investment</th>
-                    <th>Interest Earned</th>
+                    <th>Interest</th>
                     <th>Closing Balance</th>
                 </tr>
             </thead>
@@ -96,8 +91,7 @@
     <br>
     <button onclick="downloadPPFExcel()">Download Excel (CSV)</button>
 </section>
-    
-    
+
 <footer>
     <p>© 2026 Auto Finance Assist | PPF Calculator</p>
 </footer>
@@ -106,12 +100,12 @@
 let ppfData = [];
 
 function calculatePPF() {
-    const yearly = Number(document.getElementById("amount").value);
+    const yearly = Number(document.getElementById("yearly").value);
     const rate = Number(document.getElementById("rate").value) / 100;
-    const years = 15;
+    const years = Number(document.getElementById("years").value);
 
-    if (!yearly || yearly <= 0) {
-        alert("Please enter yearly investment amount");
+    if (!yearly || !rate || !years) {
+        alert("Please enter all values correctly");
         return;
     }
 
@@ -121,40 +115,37 @@ function calculatePPF() {
     const tableBody = document.querySelector("#ppfTable tbody");
     tableBody.innerHTML = "";
 
-    for (let year = 1; year <= years; year++) {
-        let opening = balance;
-        let interest = (opening + yearly) * rate;
-        let closing = opening + yearly + interest;
+    for (let y = 1; y <= years; y++) {
+        const opening = balance;
+        const interest = (opening + yearly) * rate;
+        balance = opening + yearly + interest;
 
         ppfData.push({
-            year,
+            year: y,
+            contribution: yearly,
             opening,
-            yearly,
             interest,
-            closing
+            closing: balance
         });
 
         const row = `
             <tr>
-                <td>${year}</td>
-                <td>${opening.toFixed(2)}</td>
+                <td>${y}</td>
                 <td>${yearly.toFixed(2)}</td>
+                <td>${opening.toFixed(2)}</td>
                 <td>${interest.toFixed(2)}</td>
-                <td>${closing.toFixed(2)}</td>
+                <td>${balance.toFixed(2)}</td>
             </tr>
         `;
         tableBody.insertAdjacentHTML("beforeend", row);
-
-        balance = closing;
     }
 
     const investment = yearly * years;
-    const maturity = balance;
-    const interestEarned = maturity - investment;
+    const interestEarned = balance - investment;
 
     document.getElementById("investment").textContent = investment.toFixed(2);
     document.getElementById("interest").textContent = interestEarned.toFixed(2);
-    document.getElementById("maturity").textContent = maturity.toFixed(2);
+    document.getElementById("maturity").textContent = balance.toFixed(2);
 }
 
 function downloadPPFExcel() {
@@ -163,24 +154,23 @@ function downloadPPFExcel() {
         return;
     }
 
-    let csv = "Year,Opening Balance,Yearly Investment,Interest Earned,Closing Balance\n";
+    let csv = "Year,Contribution,Opening Balance,Interest,Closing Balance\n";
 
-    ppfData.forEach(row => {
-        csv += `${row.year},${row.opening.toFixed(2)},${row.yearly.toFixed(2)},${row.interest.toFixed(2)},${row.closing.toFixed(2)}\n`;
+    ppfData.forEach(r => {
+        csv += `${r.year},${r.contribution.toFixed(2)},${r.opening.toFixed(2)},${r.interest.toFixed(2)},${r.closing.toFixed(2)}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
-    const url = window.URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = "PPF_Projection_15_Years.csv";
+    a.download = "PPF_Yearly_Projection.csv";
     a.click();
 
-    window.URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url);
 }
 </script>
-
 
 </body>
 </html>
