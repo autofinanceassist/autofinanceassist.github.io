@@ -25,15 +25,6 @@
 
     <div class="grid" style="max-width:600px">
 
-       <div class="card">
-    <label>Currency</label><br>
-    <select id="currency">
-        <option value="INR">INR (₹)</option>
-        <option value="QAR">QAR (﷼)</option>
-    </select>
-</div>
- 
-        
         <div class="card">
             <label>Monthly Contribution</label><br>
             <input type="number" id="monthly" placeholder="Example: 5000">
@@ -59,18 +50,6 @@
 <section class="section">
     <h2>Result</h2>
 
-<button onclick="toggleTamil()" style="margin-bottom:15px;">
-    தமிழில் விளக்கம்
-</button>
-
-<p id="tamilText" style="display:none; font-size:14px; line-height:1.6;">
-    இந்த NPS கணக்கீடு ஒரு மதிப்பீடு மட்டுமே.  
-    உங்கள் மாதாந்திர முதலீடு, எதிர்பார்க்கப்படும் வருமானம் மற்றும் முதலீட்டு காலத்தை
-    அடிப்படையாக கொண்டு ஓய்வூதிய தொகை கணக்கிடப்படுகிறது.  
-    மொத்த தொகையில் 40% ஓய்வூதிய திட்டத்தில் முதலீடு செய்யப்படும் என கருதப்படுகிறது.
-</p>
-
-    
     <div class="grid" style="max-width:900px">
 
         <div class="card">
@@ -134,14 +113,11 @@ function calculateNPS() {
     const P = Number(document.getElementById("monthly").value);
     const annualRate = Number(document.getElementById("rate").value) / 100;
     const years = Number(document.getElementById("years").value);
-    const currency = document.getElementById("currency").value;
 
     if (!P || !annualRate || !years) {
         alert("Please enter all values correctly");
         return;
     }
-
-    const symbol = currency === "INR" ? "₹" : "﷼";
 
     const months = years * 12;
     const monthlyRate = annualRate / 12;
@@ -156,40 +132,64 @@ function calculateNPS() {
         const gain = opening * monthlyRate;
         balance = opening + gain;
 
-        npsData.push({ m, P, opening, gain, balance });
+        npsData.push({
+            month: m,
+            contribution: P,
+            opening,
+            gain,
+            closing: balance
+        });
 
         const row = `
             <tr>
                 <td>${m}</td>
-                <td>${symbol}${P.toFixed(2)}</td>
-                <td>${symbol}${opening.toFixed(2)}</td>
-                <td>${symbol}${gain.toFixed(2)}</td>
-                <td>${symbol}${balance.toFixed(2)}</td>
+                <td>${P.toFixed(2)}</td>
+                <td>${opening.toFixed(2)}</td>
+                <td>${gain.toFixed(2)}</td>
+                <td>${balance.toFixed(2)}</td>
             </tr>
         `;
         tableBody.insertAdjacentHTML("beforeend", row);
     }
 
     const investment = P * months;
-    const totalGain = balance - investment;
+    const maturity = balance;
+    const totalGain = maturity - investment;
 
-    const annuityCorpus = balance * 0.40;
+    // Pension calculation
+    const annuityCorpus = maturity * 0.40;
     const annualPension = annuityCorpus * 0.06;
     const monthlyPension = annualPension / 12;
 
-    document.getElementById("investment").textContent = symbol + investment.toFixed(2);
-    document.getElementById("gain").textContent = symbol + totalGain.toFixed(2);
-    document.getElementById("maturity").textContent = symbol + balance.toFixed(2);
-    document.getElementById("pension").textContent = symbol + monthlyPension.toFixed(2);
+    document.getElementById("investment").textContent = investment.toFixed(2);
+    document.getElementById("gain").textContent = totalGain.toFixed(2);
+    document.getElementById("maturity").textContent = maturity.toFixed(2);
+    document.getElementById("pension").textContent = monthlyPension.toFixed(2);
 }
 
-/* Tamil toggle */
-function toggleTamil() {
-    const t = document.getElementById("tamilText");
-    t.style.display = t.style.display === "none" ? "block" : "none";
+function downloadNPSExcel() {
+    if (npsData.length === 0) {
+        alert("Please calculate NPS first");
+        return;
+    }
+
+    let csv = "Month,Contribution,Opening Balance,Return,Closing Balance\n";
+
+    npsData.forEach(r => {
+        csv += `${r.month},${r.contribution.toFixed(2)},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "NPS_Monthly_Projection.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
 }
 </script>
-
 
 </body>
 </html>
