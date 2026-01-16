@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NPS Calculator | Auto Finance Assist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <h1>Auto Finance Assist</h1>
+        <p>For Common Man</p>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<section class="section light">
+    <h2>NPS (National Pension System) Calculator</h2>
+    <p>Estimate retirement corpus, lump sum and pension.</p>
+
+    <div class="grid" style="max-width:600px">
+
+        <div class="card">
+            <label>Annual Contribution</label><br>
+            <input type="number" id="contribution" placeholder="Example: 50000">
+        </div>
+
+        <div class="card">
+            <label>Expected Return (% per year)</label><br>
+            <input type="number" id="rate" placeholder="Example: 9">
+        </div>
+
+        <div class="card">
+            <label>Investment Period (Years)</label><br>
+            <input type="number" id="years" placeholder="Example: 25">
+        </div>
+
+        <div class="card">
+            <label>Annuity Return (% per year)</label><br>
+            <input type="number" id="annuityRate" placeholder="Example: 6">
+        </div>
+
+        <div class="card">
+            <button onclick="calculateNPS()">Calculate NPS</button>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Result</h2>
+
+    <div class="grid" style="max-width:800px">
+        <div class="card">
+            <p><strong>Total Corpus at Retirement</strong></p>
+            <h3 id="corpus">—</h3>
+        </div>
+        <div class="card">
+            <p><strong>Lump Sum (60%)</strong></p>
+            <h3 id="lumpsum">—</h3>
+        </div>
+        <div class="card">
+            <p><strong>Annuity Corpus (40%)</strong></p>
+            <h3 id="annuityCorpus">—</h3>
+        </div>
+        <div class="card">
+            <p><strong>Estimated Monthly Pension</strong></p>
+            <h3 id="pension">—</h3>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2>Yearly NPS Growth Illustration</h2>
+
+    <div style="overflow-x:auto;">
+        <table id="npsTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Contribution</th>
+                    <th>Total Invested</th>
+                    <th>Interest Earned</th>
+                    <th>Closing Balance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <br>
+    <button onclick="downloadNPSExcel()">Download Excel (CSV)</button>
+</section>
+
+<footer>
+    <p>© 2026 Auto Finance Assist | NPS Calculator</p>
+</footer>
+
+<script>
+let npsData = [];
+
+function calculateNPS() {
+    const annual = Number(document.getElementById("contribution").value);
+    const rate = Number(document.getElementById("rate").value) / 100;
+    const years = Number(document.getElementById("years").value);
+    const annuityRate = Number(document.getElementById("annuityRate").value) / 100;
+
+    if (!annual || !rate || !years || !annuityRate) {
+        alert("Please enter all values correctly");
+        return;
+    }
+
+    let balance = 0;
+    let invested = 0;
+    npsData = [];
+
+    const tableBody = document.querySelector("#npsTable tbody");
+    tableBody.innerHTML = "";
+
+    for (let y = 1; y <= years; y++) {
+        const opening = balance;
+        invested += annual;
+        balance += annual;
+
+        const interest = balance * rate;
+        balance += interest;
+
+        npsData.push({
+            year: y,
+            contribution: annual,
+            invested,
+            interest,
+            closing: balance
+        });
+
+        tableBody.insertAdjacentHTML("beforeend", `
+            <tr>
+                <td>${y}</td>
+                <td>${annual.toFixed(2)}</td>
+                <td>${invested.toFixed(2)}</td>
+                <td>${interest.toFixed(2)}</td>
+                <td>${balance.toFixed(2)}</td>
+            </tr>
+        `);
+    }
+
+    const corpus = balance;
+    const lumpSum = corpus * 0.6;
+    const annuityCorpus = corpus * 0.4;
+    const yearlyPension = annuityCorpus * annuityRate;
+    const monthlyPension = yearlyPension / 12;
+
+    document.getElementById("corpus").textContent = corpus.toFixed(2);
+    document.getElementById("lumpsum").textContent = lumpSum.toFixed(2);
+    document.getElementById("annuityCorpus").textContent = annuityCorpus.toFixed(2);
+    document.getElementById("pension").textContent = monthlyPension.toFixed(2);
+}
+
+function downloadNPSExcel() {
+    if (npsData.length === 0) {
+        alert("Please calculate NPS first");
+        return;
+    }
+
+    let csv = "Year,Annual Contribution,Total Invested,Interest Earned,Closing Balance\n";
+
+    npsData.forEach(r => {
+        csv += `${r.year},${r.contribution},${r.invested},${r.interest.toFixed(2)},${r.closing.toFixed(2)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "NPS_Projection.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
