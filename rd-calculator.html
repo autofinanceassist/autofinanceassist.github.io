@@ -89,32 +89,28 @@
 
 <script>
 function calculateRD() {
-    let P = parseFloat(document.getElementById("monthly").value);
-    let rate = parseFloat(document.getElementById("rate").value) / 100;
-    let years = parseFloat(document.getElementById("years").value);
+    const P = Number(document.getElementById("monthly").value);
+    const annualRate = Number(document.getElementById("rate").value);
+    const years = Number(document.getElementById("years").value);
 
-    if (isNaN(P) || isNaN(rate) || isNaN(years)) {
+    if (!P || !annualRate || !years) {
         alert("Please enter all values correctly");
         return;
     }
 
-    let months = years * 12;
-    let monthlyRate = rate / 12;
+    const n = Math.round(years * 12);        // total months
+    const r = (annualRate / 100) / 12;       // monthly rate
 
-    let maturity = 0;
+    const maturity = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
+    const investment = P * n;
+    const interest = maturity - investment;
 
-    for (let i = 1; i <= months; i++) {
-        maturity += P * Math.pow(1 + monthlyRate, months - i + 1);
-    }
-
-    let investment = P * months;
-    let interest = maturity - investment;
-
-    document.getElementById("investment").innerText = investment.toFixed(2);
-    document.getElementById("interest").innerText = interest.toFixed(2);
-    document.getElementById("maturity").innerText = maturity.toFixed(2);
+    document.getElementById("investment").textContent = investment.toFixed(2);
+    document.getElementById("interest").textContent = interest.toFixed(2);
+    document.getElementById("maturity").textContent = maturity.toFixed(2);
 }
 </script>
+
 
 
 </body>
