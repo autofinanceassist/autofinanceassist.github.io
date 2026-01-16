@@ -69,3 +69,53 @@
             <p><strong>Total Interest Earned</strong></p>
             <h3 id="interest">—</h3>
         </div>
+
+        <div class="card">
+            <p><strong>Maturity Amount</strong></p>
+            <h3 id="maturity">—</h3>
+        </div>
+
+    </div>
+
+    <p style="margin-top:20px; font-size:14px;">
+        <strong>Note:</strong> RD calculation uses quarterly compounding.
+        Actual returns may vary slightly based on bank rules.
+    </p>
+</section>
+
+<footer>
+    <p>© 2026 Auto Finance Assist | RD Calculator</p>
+</footer>
+
+<script>
+function calculateRD() {
+    let P = parseFloat(document.getElementById("monthly").value);
+    let rate = parseFloat(document.getElementById("rate").value) / 100;
+    let years = parseFloat(document.getElementById("years").value);
+
+    if (isNaN(P) || isNaN(rate) || isNaN(years)) {
+        alert("Please enter all values correctly");
+        return;
+    }
+
+    let months = years * 12;
+    let quarterlyRate = rate / 4;
+
+    let maturity = 0;
+
+    for (let i = 0; i < months; i++) {
+        let remainingQuarters = (months - i) / 3;
+        maturity += P * Math.pow(1 + quarterlyRate, remainingQuarters);
+    }
+
+    let investment = P * months;
+    let interest = maturity - investment;
+
+    document.getElementById("investment").innerText = investment.toFixed(2);
+    document.getElementById("interest").innerText = interest.toFixed(2);
+    document.getElementById("maturity").innerText = maturity.toFixed(2);
+}
+</script>
+
+</body>
+</html>
