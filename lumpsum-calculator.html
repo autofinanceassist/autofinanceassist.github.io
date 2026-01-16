@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lumpsum Calculator | Auto Finance Assist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <h1>Auto Finance Assist</h1>
+        <p>For Common Man</p>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<section class="section light">
+    <h2>Mutual Fund – Lumpsum Calculator</h2>
+    <p>Calculate future value of a one-time mutual fund investment.</p>
+
+    <div class="grid" style="max-width:600px">
+
+        <div class="card">
+            <label>Investment Amount (₹)</label><br>
+            <input type="number" id="amount" placeholder="Example: 100000">
+        </div>
+
+        <div class="card">
+            <label>Expected Annual Return (%)</label><br>
+            <input type="number" id="rate" placeholder="Example: 12">
+        </div>
+
+        <div class="card">
+            <label>Investment Period (Years)</label><br>
+            <input type="number" id="years" placeholder="Example: 15">
+        </div>
+
+        <div class="card">
+            <button onclick="calculateLumpsum()">Calculate</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <h2>Result</h2>
+
+    <div class="grid" style="max-width:900px">
+
+        <div class="card">
+            <p><strong>Invested Amount</strong></p>
+            <h3 id="invested">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Total Gain</strong></p>
+            <h3 id="gain">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Maturity Amount</strong></p>
+            <h3 id="maturity">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Wealth Multiplier</strong></p>
+            <h3 id="multiplier">—</h3>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <h2>Year-wise Growth Illustration</h2>
+
+    <div style="overflow-x:auto;">
+        <table id="lumpTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Opening Balance</th>
+                    <th>Return</th>
+                    <th>Closing Balance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <br>
+    <button onclick="downloadLumpsumExcel()">Download Excel (CSV)</button>
+</section>
+
+<footer>
+    <p>© 2026 Auto Finance Assist | Lumpsum Calculator</p>
+</footer>
+
+<script>
+let lumpData = [];
+
+function calculateLumpsum() {
+    const P = Number(document.getElementById("amount").value);
+    const annualRate = Number(document.getElementById("rate").value) / 100;
+    const years = Number(document.getElementById("years").value);
+
+    if (!P || !annualRate || !years) {
+        alert("Please enter all values correctly");
+        return;
+    }
+
+    let balance = P;
+    lumpData = [];
+
+    const tableBody = document.querySelector("#lumpTable tbody");
+    tableBody.innerHTML = "";
+
+    for (let y = 1; y <= years; y++) {
+        const opening = balance;
+        const gain = opening * annualRate;
+        balance = opening + gain;
+
+        lumpData.push({
+            year: y,
+            opening,
+            gain,
+            closing: balance
+        });
+
+        const row = `
+            <tr>
+                <td>${y}</td>
+                <td>${opening.toFixed(2)}</td>
+                <td>${gain.toFixed(2)}</td>
+                <td>${balance.toFixed(2)}</td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    }
+
+    const maturity = balance;
+    const totalGain = maturity - P;
+    const multiplier = (maturity / P).toFixed(2);
+
+    document.getElementById("invested").textContent = "₹ " + P.toFixed(2);
+    document.getElementById("gain").textContent = "₹ " + totalGain.toFixed(2);
+    document.getElementById("maturity").textContent = "₹ " + maturity.toFixed(2);
+    document.getElementById("multiplier").textContent = multiplier + " X";
+}
+
+function downloadLumpsumExcel() {
+    if (lumpData.length === 0) {
+        alert("Please calculate first");
+        return;
+    }
+
+    let csv = "Year,Opening Balance,Return,Closing Balance\n";
+
+    lumpData.forEach(r => {
+        csv += `${r.year},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Lumpsum_Yearly_Projection.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
