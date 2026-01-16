@@ -83,11 +83,36 @@
     </p>
 </section>
 
+<section class="section">
+    <h2>Monthly RD Growth Illustration</h2>
+
+    <div style="overflow-x:auto;">
+        <table id="rdTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Monthly Deposit</th>
+                    <th>Total Invested</th>
+                    <th>Interest Added</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <br>
+    <button onclick="downloadRDExcel()">Download Excel (CSV)</button>
+</section>
+
+    
 <footer>
     <p>© 2026 Auto Finance Assist | RD Calculator</p>
 </footer>
 
 <script>
+let rdData = [];
+
 function calculateRD() {
     const P = Number(document.getElementById("monthly").value);
     const annualRate = Number(document.getElementById("rate").value);
@@ -98,18 +123,77 @@ function calculateRD() {
         return;
     }
 
-    const n = Math.round(years * 12);        // total months
-    const r = (annualRate / 100) / 12;       // monthly rate
+    const months = years * 12;
+    const quarterlyRate = (annualRate / 100) / 4;
 
-    const maturity = P * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-    const investment = P * n;
-    const interest = maturity - investment;
+    let balance = 0;
+    let totalInvestment = 0;
 
-    document.getElementById("investment").textContent = investment.toFixed(2);
-    document.getElementById("interest").textContent = interest.toFixed(2);
-    document.getElementById("maturity").textContent = maturity.toFixed(2);
+    rdData = [];
+    const tableBody = document.querySelector("#rdTable tbody");
+    tableBody.innerHTML = "";
+
+    for (let month = 1; month <= months; month++) {
+        balance += P;
+        totalInvestment += P;
+
+        let interest = 0;
+
+        // Apply interest every quarter
+        if (month % 3 === 0) {
+            interest = balance * quarterlyRate;
+            balance += interest;
+        }
+
+        rdData.push({
+            month,
+            deposit: P,
+            invested: totalInvestment,
+            interest,
+            balance
+        });
+
+        const row = `
+            <tr>
+                <td>${month}</td>
+                <td>${P.toFixed(2)}</td>
+                <td>${totalInvestment.toFixed(2)}</td>
+                <td>${interest.toFixed(2)}</td>
+                <td>${balance.toFixed(2)}</td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    }
+
+    document.getElementById("investment").textContent = totalInvestment.toFixed(2);
+    document.getElementById("interest").textContent = (balance - totalInvestment).toFixed(2);
+    document.getElementById("maturity").textContent = balance.toFixed(2);
+}
+
+function downloadRDExcel() {
+    if (rdData.length === 0) {
+        alert("Please calculate RD first");
+        return;
+    }
+
+    let csv = "Month,Monthly Deposit,Total Invested,Interest Added,Balance\n";
+
+    rdData.forEach(row => {
+        csv += `${row.month},${row.deposit.toFixed(2)},${row.invested.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "RD_Monthly_Projection.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
 }
 </script>
+
 
 
 
