@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Auto Finance Assist – For Common Man</title>
+    <title>Auto Finance Assist | For Common Man</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- ================= HEADER ================= -->
 <header>
-    <div class="logo">
+    <div>
         <h1>Auto Finance Assist</h1>
         <p>For Common Man</p>
     </div>
-
     <nav>
         <a href="#calculators">Calculators</a>
         <a href="#expense">Expense Manager</a>
@@ -23,73 +23,103 @@
     </nav>
 </header>
 
+<!-- ================= HERO ================= -->
 <section class="hero">
     <h2>Simple Finance Tools for Common Man</h2>
     <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
 
-    <div class="country-box">
+    <div style="margin-top:15px;">
         <label>Select Country:</label>
-        <select id="country">
-            <option value="india">India</option>
-            <option value="qatar">Qatar</option>
+        <select>
+            <option>India</option>
+            <option>Qatar</option>
         </select>
     </div>
 </section>
 
+<!-- ================= CALCULATORS ================= -->
 <section id="calculators" class="section">
     <h2>Financial Calculators</h2>
 
     <div class="grid">
         <div class="card" onclick="location.href='fd-calculator.html'">
-    FD Calculator
-</div>
+            <strong>FD Calculator</strong>
+            <p>Fixed Deposit maturity & interest</p>
+        </div>
+
         <div class="card" onclick="location.href='rd-calculator.html'">
-    RD Calculator
-</div>
+            <strong>RD Calculator</strong>
+            <p>Monthly savings growth</p>
+        </div>
 
-<div class="card" onclick="location.href='ppf-calculator.html'">
-    PPF Calculator
-</div>
-       <div class="card" onclick="location.href='nps-calculator.html'">
-    NPS Calculator
-</div>
+        <div class="card" onclick="location.href='ppf-calculator.html'">
+            <strong>PPF Calculator</strong>
+            <p>Long-term tax-free investment</p>
+        </div>
 
-       <div class="card" onclick="location.href='loan-calculator.html'">
-    Loan Calculator
-</div>
-        <div class="card">Compound Interest</div>
-        <div class="card">Mutual Fund Calculator</div>
+        <div class="card" onclick="location.href='nps-calculator.html'">
+            <strong>NPS Calculator</strong>
+            <p>Retirement & pension planning</p>
+        </div>
+
+        <div class="card" onclick="location.href='loan-calculator.html'">
+            <strong>Loan Calculator</strong>
+            <p>EMI & interest breakup</p>
+        </div>
+
+        <div class="card">
+            <strong>Mutual Fund Calculator</strong>
+            <p>SIP & lump sum returns</p>
+        </div>
     </div>
 </section>
 
+<!-- ================= EXPENSE ================= -->
 <section id="expense" class="section light">
     <h2>Expense Manager</h2>
-    <p>Track monthly expenses and control your money wisely.</p>
+    <p style="text-align:center;">Track monthly expenses and control your money wisely</p>
 
     <div class="grid">
-        <div class="card">Expense Calculator</div>
-        <div class="card">Expense Tracker</div>
+        <div class="card">
+            <strong>Expense Calculator</strong>
+            <p>Monthly budget planning</p>
+        </div>
+
+        <div class="card">
+            <strong>Expense Tracker</strong>
+            <p>Track daily spending</p>
+        </div>
     </div>
 </section>
 
+<!-- ================= INVESTMENT TRACKER ================= -->
 <section id="tracker" class="section">
     <h2>Investment Tracker</h2>
 
     <div class="grid">
-        <div class="card">Mutual Fund Tracker</div>
-        <div class="card">Stock Tracker</div>
+        <div class="card">
+            <strong>Mutual Fund Tracker</strong>
+            <p>Track NAV & performance</p>
+        </div>
+
+        <div class="card">
+            <strong>Stock Tracker</strong>
+            <p>Monitor equity investments</p>
+        </div>
     </div>
 </section>
 
+<!-- ================= ABOUT ================= -->
 <section id="about" class="section light">
     <h2>About</h2>
-    <p>
-        Created by <strong>Raguram Gunasekaran (Common Man)</strong><br>
-        Auto Finance Assist is designed to help common people in India and Qatar
-        make better financial decisions with simple tools.
+    <p style="max-width:800px; margin:auto; text-align:center;">
+        Created by <strong>Raguram Gunasekaran (Common Man)</strong><br><br>
+        Auto Finance Assist is built to help common people in India & Qatar
+        make smarter financial decisions using simple and transparent tools.
     </p>
 </section>
 
+<!-- ================= FOOTER ================= -->
 <footer>
     <p>© 2026 Auto Finance Assist | Built for Common Man</p>
 </footer>
