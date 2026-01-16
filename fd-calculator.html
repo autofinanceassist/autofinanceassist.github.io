@@ -108,9 +108,9 @@
 let fdData = [];
 
 function calculateFD() {
-    const principal = Number(document.getElementById("amount").value);
-    const annualRate = Number(document.getElementById("rate").value);
-    const years = Number(document.getElementById("years").value);
+   const principal = Number(document.getElementById("principal").value);
+const annualRate = Number(document.getElementById("rate").value);
+const years = Number(document.getElementById("time").value);
 
     if (!principal || !annualRate || !years) {
         alert("Please enter all values correctly");
