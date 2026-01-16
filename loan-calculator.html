@@ -21,17 +21,9 @@
 
 <section class="section light">
     <h2>Loan EMI Calculator</h2>
-    <p>Calculate EMI for Personal, Car & Home loans easily.</p>
+    <p>Calculate EMI and view full loan repayment schedule.</p>
 
     <div class="grid" style="max-width:600px">
-
-        <div class="card">
-            <label>Country</label><br>
-            <select id="country">
-                <option>India</option>
-                <option>Qatar</option>
-            </select>
-        </div>
 
         <div class="card">
             <label>Loan Type</label><br>
@@ -44,30 +36,31 @@
 
         <div class="card">
             <label>Loan Amount</label><br>
-            <input type="number" id="loanAmount" placeholder="Enter loan amount">
+            <input type="number" id="amount" placeholder="Example: 500000">
         </div>
 
         <div class="card">
             <label>Interest Rate (% per year)</label><br>
-            <input type="number" id="interestRate" placeholder="Example: 9">
+            <input type="number" id="rate" placeholder="Example: 9">
         </div>
 
         <div class="card">
             <label>Loan Tenure (Years)</label><br>
-            <input type="number" id="tenure" placeholder="Example: 5">
+            <input type="number" id="years" placeholder="Example: 5">
         </div>
 
         <div class="card">
-            <button onclick="calculateEMI()">Calculate EMI</button>
+            <button onclick="calculateLoan()">Calculate EMI</button>
         </div>
 
     </div>
 </section>
 
 <section class="section">
-    <h2>Result</h2>
+    <h2>Loan Summary</h2>
 
-    <div class="grid" style="max-width:700px">
+    <div class="grid" style="max-width:800px">
+
         <div class="card">
             <p><strong>Monthly EMI</strong></p>
             <h3 id="emi">—</h3>
@@ -79,15 +72,33 @@
         </div>
 
         <div class="card">
-            <p><strong>Total Amount Payable</strong></p>
+            <p><strong>Total Payment</strong></p>
             <h3 id="totalPayment">—</h3>
         </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <h2>Monthly Loan Repayment Schedule</h2>
+
+    <div style="overflow-x:auto;">
+        <table id="loanTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>EMI</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
 
-    <p style="margin-top:20px; font-size:14px;">
-        <strong>Note:</strong> EMI is calculated using standard reducing balance method.
-        Actual bank EMI may vary slightly.
-    </p>
+    <br>
+    <button onclick="downloadLoanExcel()">Download Excel (CSV)</button>
 </section>
 
 <footer>
@@ -95,26 +106,83 @@
 </footer>
 
 <script>
-function calculateEMI() {
-    let P = parseFloat(document.getElementById("loanAmount").value);
-    let annualRate = parseFloat(document.getElementById("interestRate").value);
-    let years = parseFloat(document.getElementById("tenure").value);
+let loanData = [];
 
-    if (isNaN(P) || isNaN(annualRate) || isNaN(years)) {
+function calculateLoan() {
+    const P = Number(document.getElementById("amount").value);
+    const annualRate = Number(document.getElementById("rate").value);
+    const years = Number(document.getElementById("years").value);
+
+    if (!P || !annualRate || !years) {
         alert("Please enter all values correctly");
         return;
     }
 
-    let r = annualRate / 12 / 100;
-    let n = years * 12;
+    const r = (annualRate / 100) / 12;
+    const n = years * 12;
 
-    let emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    let totalPayment = emi * n;
-    let totalInterest = totalPayment - P;
+    const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
 
-    document.getElementById("emi").innerText = emi.toFixed(2);
-    document.getElementById("totalPayment").innerText = totalPayment.toFixed(2);
-    document.getElementById("totalInterest").innerText = totalInterest.toFixed(2);
+    let balance = P;
+    loanData = [];
+
+    const tableBody = document.querySelector("#loanTable tbody");
+    tableBody.innerHTML = "";
+
+    let totalInterest = 0;
+
+    for (let month = 1; month <= n; month++) {
+        const interest = balance * r;
+        const principal = emi - interest;
+        balance -= principal;
+        totalInterest += interest;
+
+        loanData.push({
+            month,
+            emi,
+            principal,
+            interest,
+            balance: balance < 0 ? 0 : balance
+        });
+
+        const row = `
+            <tr>
+                <td>${month}</td>
+                <td>${emi.toFixed(2)}</td>
+                <td>${principal.toFixed(2)}</td>
+                <td>${interest.toFixed(2)}</td>
+                <td>${balance < 0 ? "0.00" : balance.toFixed(2)}</td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    }
+
+    document.getElementById("emi").textContent = emi.toFixed(2);
+    document.getElementById("totalInterest").textContent = totalInterest.toFixed(2);
+    document.getElementById("totalPayment").textContent = (P + totalInterest).toFixed(2);
+}
+
+function downloadLoanExcel() {
+    if (loanData.length === 0) {
+        alert("Please calculate EMI first");
+        return;
+    }
+
+    let csv = "Month,EMI,Principal,Interest,Balance\n";
+
+    loanData.forEach(row => {
+        csv += `${row.month},${row.emi.toFixed(2)},${row.principal.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Loan_EMI_Schedule.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
 }
 </script>
 
