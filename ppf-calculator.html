@@ -1,25 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>PPF Calculator | Auto Finance Assist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
-    <h1>Auto Finance Assist</h1>
-    <a href="index.html">← Back to Home</a>
+    <div class="logo">
+        <h1>Auto Finance Assist</h1>
+        <p>For Common Man</p>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
 </header>
 
 <section class="section light">
-    <h2>PPF Calculator</h2>
-    <p>This calculator will be available soon.</p>
-    <p>PPF rules are applicable mainly for India.</p>
+    <h2>Public Provident Fund (PPF) Calculator</h2>
+    <p>Calculate PPF maturity value (India only).</p>
+
+    <div class="grid" style="max-width:600px">
+
+        <div class="card">
+            <label>Yearly Investment (₹)</label><br>
+            <input type="number" id="amount" placeholder="Example: 150000">
+        </div>
+
+        <div class="card">
+            <label>Interest Rate (% per year)</label><br>
+            <input type="number" id="rate" value="7.1">
+        </div>
+
+        <div class="card">
+            <label>Investment Period (Years)</label><br>
+            <input type="number" id="years" value="15" readonly>
+        </div>
+
+        <div class="card">
+            <button onclick="calculatePPF()">Calculate PPF</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <h2>Result</h2>
+
+    <div class="grid" style="max-width:800px">
+
+        <div class="card">
+            <p><strong>Total Investment</strong></p>
+            <h3 id="investment">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Total Interest Earned</strong></p>
+            <h3 id="interest">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Maturity Amount</strong></p>
+            <h3 id="maturity">—</h3>
+        </div>
+
+    </div>
+
+    <p style="margin-top:20px; font-size:14px;">
+        <strong>Note:</strong> PPF has a lock-in period of 15 years.
+        Interest rate is set by Government of India and may change.
+    </p>
 </section>
 
 <footer>
-    <p>© Auto Finance Assist</p>
+    <p>© 2026 Auto Finance Assist | PPF Calculator</p>
 </footer>
+
+<script>
+function calculatePPF() {
+    const yearly = Number(document.getElementById("amount").value);
+    const rate = Number(document.getElementById("rate").value) / 100;
+    const years = 15;
+
+    if (!yearly || yearly <= 0) {
+        alert("Please enter yearly investment amount");
+        return;
+    }
+
+    let balance = 0;
+
+    for (let i = 1; i <= years; i++) {
+        balance = (balance + yearly) * (1 + rate);
+    }
+
+    const investment = yearly * years;
+    const interest = balance - investment;
+
+    document.getElementById("investment").textContent = investment.toFixed(2);
+    document.getElementById("interest").textContent = interest.toFixed(2);
+    document.getElementById("maturity").textContent = balance.toFixed(2);
+}
+</script>
 
 </body>
 </html>
