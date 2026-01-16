@@ -99,13 +99,12 @@ function calculateRD() {
     }
 
     let months = years * 12;
-    let quarterlyRate = rate / 4;
+    let monthlyRate = rate / 12;
 
     let maturity = 0;
 
-    for (let i = 0; i < months; i++) {
-        let remainingQuarters = (months - i) / 3;
-        maturity += P * Math.pow(1 + quarterlyRate, remainingQuarters);
+    for (let i = 1; i <= months; i++) {
+        maturity += P * Math.pow(1 + monthlyRate, months - i + 1);
     }
 
     let investment = P * months;
@@ -116,6 +115,7 @@ function calculateRD() {
     document.getElementById("maturity").innerText = maturity.toFixed(2);
 }
 </script>
+
 
 </body>
 </html>
