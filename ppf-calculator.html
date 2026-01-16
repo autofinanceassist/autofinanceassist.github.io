@@ -75,11 +75,36 @@
     </p>
 </section>
 
+<section class="section">
+    <h2>Year-wise PPF Projection</h2>
+
+    <div style="overflow-x:auto;">
+        <table id="ppfTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Opening Balance</th>
+                    <th>Yearly Investment</th>
+                    <th>Interest Earned</th>
+                    <th>Closing Balance</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <br>
+    <button onclick="downloadPPFExcel()">Download Excel (CSV)</button>
+</section>
+    
+    
 <footer>
     <p>© 2026 Auto Finance Assist | PPF Calculator</p>
 </footer>
 
 <script>
+let ppfData = [];
+
 function calculatePPF() {
     const yearly = Number(document.getElementById("amount").value);
     const rate = Number(document.getElementById("rate").value) / 100;
@@ -91,19 +116,71 @@ function calculatePPF() {
     }
 
     let balance = 0;
+    ppfData = [];
 
-    for (let i = 1; i <= years; i++) {
-        balance = (balance + yearly) * (1 + rate);
+    const tableBody = document.querySelector("#ppfTable tbody");
+    tableBody.innerHTML = "";
+
+    for (let year = 1; year <= years; year++) {
+        let opening = balance;
+        let interest = (opening + yearly) * rate;
+        let closing = opening + yearly + interest;
+
+        ppfData.push({
+            year,
+            opening,
+            yearly,
+            interest,
+            closing
+        });
+
+        const row = `
+            <tr>
+                <td>${year}</td>
+                <td>${opening.toFixed(2)}</td>
+                <td>${yearly.toFixed(2)}</td>
+                <td>${interest.toFixed(2)}</td>
+                <td>${closing.toFixed(2)}</td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
+
+        balance = closing;
     }
 
     const investment = yearly * years;
-    const interest = balance - investment;
+    const maturity = balance;
+    const interestEarned = maturity - investment;
 
     document.getElementById("investment").textContent = investment.toFixed(2);
-    document.getElementById("interest").textContent = interest.toFixed(2);
-    document.getElementById("maturity").textContent = balance.toFixed(2);
+    document.getElementById("interest").textContent = interestEarned.toFixed(2);
+    document.getElementById("maturity").textContent = maturity.toFixed(2);
+}
+
+function downloadPPFExcel() {
+    if (ppfData.length === 0) {
+        alert("Please calculate PPF first");
+        return;
+    }
+
+    let csv = "Year,Opening Balance,Yearly Investment,Interest Earned,Closing Balance\n";
+
+    ppfData.forEach(row => {
+        csv += `${row.year},${row.opening.toFixed(2)},${row.yearly.toFixed(2)},${row.interest.toFixed(2)},${row.closing.toFixed(2)}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "PPF_Projection_15_Years.csv";
+    a.click();
+
+    window.URL.revokeObjectURL(url);
 }
 </script>
+
 
 </body>
 </html>
