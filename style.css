@@ -134,3 +134,23 @@ footer {
         margin-top: 10px;
     }
 }
+/* ===== RESULT GRID FOR NPS (4 CARDS IN ONE ROW) ===== */
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .result-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+}
