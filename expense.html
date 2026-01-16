@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Calculator & Tracker | Auto Finance Assist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <h1>Auto Finance Assist</h1>
+        <p>For Common Man</p>
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<section class="section light">
+    <h2>Monthly Expense Calculator</h2>
+    <p>Track your monthly expenses and understand where your money goes.</p>
+
+    <div class="grid" style="max-width:700px">
+
+        <div class="card">
+            <label>Expense Category</label><br>
+            <input type="text" id="category" placeholder="Example: Rent">
+        </div>
+
+        <div class="card">
+            <label>Amount (₹)</label><br>
+            <input type="number" id="amount" placeholder="Example: 15000">
+        </div>
+
+        <div class="card">
+            <button onclick="addExpense()">Add Expense</button>
+        </div>
+
+    </div>
+</section>
+
+<section class="section">
+    <h2>Expense Tracker</h2>
+
+    <div style="overflow-x:auto;">
+        <table id="expenseTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Amount (₹)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <div class="grid" style="max-width:400px; margin-top:20px;">
+        <div class="card">
+            <p><strong>Total Monthly Expense</strong></p>
+            <h3 id="total">₹ 0</h3>
+        </div>
+    </div>
+
+    <br>
+    <button onclick="downloadExpenseExcel()">Download Excel (CSV)</button>
+</section>
+
+<footer>
+    <p>© 2026 Auto Finance Assist | Expense Tracker</p>
+</footer>
+
+<script>
+let expenses = [];
+
+function addExpense() {
+    const category = document.getElementById("category").value.trim();
+    const amount = Number(document.getElementById("amount").value);
+
+    if (!category || !amount) {
+        alert("Please enter category and amount");
+        return;
+    }
+
+    expenses.push({ category, amount });
+    document.getElementById("category").value = "";
+    document.getElementById("amount").value = "";
+
+    renderTable();
+}
+
+function renderTable() {
+    const tableBody = document.querySelector("#expenseTable tbody");
+    tableBody.innerHTML = "";
+
+    let total = 0;
+
+    expenses.forEach((e, index) => {
+        total += e.amount;
+
+        const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${e.category}</td>
+                <td>${e.amount.toFixed(2)}</td>
+                <td>
+                    <button onclick="deleteExpense(${index})">Delete</button>
+                </td>
+            </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    });
+
+    document.getElementById("total").textContent = "₹ " + total.toFixed(2);
+}
+
+function deleteExpense(index) {
+    expenses.splice(index, 1);
+    renderTable();
+}
+
+function downloadExpenseExcel() {
+    if (expenses.length === 0) {
+        alert("No expenses to download");
+        return;
+    }
+
+    let csv = "Category,Amount\n";
+    expenses.forEach(e => {
+        csv += `${e.category},${e.amount}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Monthly_Expense_Report.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>
