@@ -21,7 +21,7 @@
 
 <section class="section light">
     <h2>Recurring Deposit (RD) Calculator</h2>
-    <p>Calculate RD maturity value easily for India & Qatar.</p>
+    <p>Monthly RD calculation with quarterly compounding.</p>
 
     <div class="grid" style="max-width:600px">
 
@@ -68,11 +68,6 @@
         </div>
 
     </div>
-
-    <p style="margin-top:20px; font-size:14px;">
-        <strong>Note:</strong> RD calculation uses quarterly compounding.
-        Actual returns may vary slightly based on bank rules.
-    </p>
 </section>
 
 <section class="section">
@@ -83,10 +78,10 @@
             <thead>
                 <tr>
                     <th>Month</th>
-                    <th>Monthly Deposit</th>
-                    <th>Total Invested</th>
-                    <th>Interest Added</th>
-                    <th>Balance</th>
+                    <th>Deposit</th>
+                    <th>Opening Balance</th>
+                    <th>Interest</th>
+                    <th>Closing Balance</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -97,7 +92,6 @@
     <button onclick="downloadRDExcel()">Download Excel (CSV)</button>
 </section>
 
-    
 <footer>
     <p>© 2026 Auto Finance Assist | RD Calculator</p>
 </footer>
@@ -107,49 +101,46 @@ let rdData = [];
 
 function calculateRD() {
     const P = Number(document.getElementById("monthly").value);
-    const annualRate = Number(document.getElementById("rate").value);
+    const rate = Number(document.getElementById("rate").value) / 100;
     const years = Number(document.getElementById("years").value);
 
-    if (!P || !annualRate || !years) {
+    if (!P || !rate || !years) {
         alert("Please enter all values correctly");
         return;
     }
 
     const months = years * 12;
-    const quarterlyRate = (annualRate / 100) / 4;
-
+    const quarterlyRate = rate / 4;
     let balance = 0;
-    let totalInvestment = 0;
 
     rdData = [];
     const tableBody = document.querySelector("#rdTable tbody");
     tableBody.innerHTML = "";
 
-    for (let month = 1; month <= months; month++) {
-        balance += P;
-        totalInvestment += P;
-
+    for (let m = 1; m <= months; m++) {
+        const opening = balance + P;
         let interest = 0;
 
-        // Apply interest every quarter
-        if (month % 3 === 0) {
-            interest = balance * quarterlyRate;
-            balance += interest;
+        // Apply interest every 3 months (quarterly)
+        if (m % 3 === 0) {
+            interest = opening * quarterlyRate;
         }
 
+        balance = opening + interest;
+
         rdData.push({
-            month,
+            month: m,
             deposit: P,
-            invested: totalInvestment,
+            opening,
             interest,
-            balance
+            closing: balance
         });
 
         const row = `
             <tr>
-                <td>${month}</td>
+                <td>${m}</td>
                 <td>${P.toFixed(2)}</td>
-                <td>${totalInvestment.toFixed(2)}</td>
+                <td>${opening.toFixed(2)}</td>
                 <td>${interest.toFixed(2)}</td>
                 <td>${balance.toFixed(2)}</td>
             </tr>
@@ -157,8 +148,11 @@ function calculateRD() {
         tableBody.insertAdjacentHTML("beforeend", row);
     }
 
-    document.getElementById("investment").textContent = totalInvestment.toFixed(2);
-    document.getElementById("interest").textContent = (balance - totalInvestment).toFixed(2);
+    const investment = P * months;
+    const interestEarned = balance - investment;
+
+    document.getElementById("investment").textContent = investment.toFixed(2);
+    document.getElementById("interest").textContent = interestEarned.toFixed(2);
     document.getElementById("maturity").textContent = balance.toFixed(2);
 }
 
@@ -168,10 +162,10 @@ function downloadRDExcel() {
         return;
     }
 
-    let csv = "Month,Monthly Deposit,Total Invested,Interest Added,Balance\n";
+    let csv = "Month,Deposit,Opening Balance,Interest,Closing Balance\n";
 
-    rdData.forEach(row => {
-        csv += `${row.month},${row.deposit.toFixed(2)},${row.invested.toFixed(2)},${row.interest.toFixed(2)},${row.balance.toFixed(2)}\n`;
+    rdData.forEach(r => {
+        csv += `${r.month},${r.deposit.toFixed(2)},${r.opening.toFixed(2)},${r.interest.toFixed(2)},${r.closing.toFixed(2)}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
@@ -185,9 +179,6 @@ function downloadRDExcel() {
     URL.revokeObjectURL(url);
 }
 </script>
-
-
-
 
 </body>
 </html>
