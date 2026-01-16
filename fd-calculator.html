@@ -21,13 +21,13 @@
 
 <section class="section light">
     <h2>Fixed Deposit (FD) Calculator</h2>
-    <p>Calculate maturity value and interest earned easily.</p>
+    <p>Calculate FD maturity with quarterly compounding.</p>
 
     <div class="grid" style="max-width:600px">
 
         <div class="card">
             <label>Deposit Amount</label><br>
-            <input type="number" id="principal" placeholder="Enter amount">
+            <input type="number" id="principal" placeholder="Example: 100000">
         </div>
 
         <div class="card">
@@ -37,16 +37,7 @@
 
         <div class="card">
             <label>Time Period (Years)</label><br>
-            <input type="number" id="time" placeholder="Example: 3">
-        </div>
-
-        <div class="card">
-            <label>Compounding</label><br>
-            <select id="compound">
-                <option value="1">Yearly</option>
-                <option value="4">Quarterly</option>
-                <option value="12">Monthly</option>
-            </select>
+            <input type="number" id="years" placeholder="Example: 3">
         </div>
 
         <div class="card">
@@ -59,22 +50,24 @@
 <section class="section">
     <h2>Result</h2>
 
-    <div class="grid" style="max-width:600px">
+    <div class="grid" style="max-width:800px">
+
         <div class="card">
-            <p><strong>Maturity Amount:</strong></p>
+            <p><strong>Total Investment</strong></p>
+            <h3 id="investment">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Total Interest Earned</strong></p>
+            <h3 id="interest">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Maturity Amount</strong></p>
             <h3 id="maturity">—</h3>
         </div>
 
-        <div class="card">
-            <p><strong>Total Interest Earned:</strong></p>
-            <h3 id="interest">—</h3>
-        </div>
     </div>
-
-    <p style="margin-top:20px; font-size:14px;">
-        <strong>Note:</strong> This calculation does not include tax.
-        Actual returns may vary based on bank rules.
-    </p>
 </section>
 
 <section class="section">
@@ -87,7 +80,7 @@
                     <th>Year</th>
                     <th>Quarter</th>
                     <th>Opening Balance</th>
-                    <th>Interest Earned</th>
+                    <th>Interest</th>
                     <th>Closing Balance</th>
                 </tr>
             </thead>
@@ -99,7 +92,6 @@
     <button onclick="downloadFDExcel()">Download Excel (CSV)</button>
 </section>
 
-    
 <footer>
     <p>© 2026 Auto Finance Assist | FD Calculator</p>
 </footer>
@@ -108,21 +100,20 @@
 let fdData = [];
 
 function calculateFD() {
-   const principal = Number(document.getElementById("principal").value);
-const annualRate = Number(document.getElementById("rate").value);
-const years = Number(document.getElementById("time").value);
+    const principal = Number(document.getElementById("principal").value);
+    const annualRate = Number(document.getElementById("rate").value) / 100;
+    const years = Number(document.getElementById("years").value);
 
     if (!principal || !annualRate || !years) {
         alert("Please enter all values correctly");
         return;
     }
 
-    const quarterlyRate = (annualRate / 100) / 4;
+    const quarterlyRate = annualRate / 4;
     const totalQuarters = years * 4;
-
     let balance = principal;
-    fdData = [];
 
+    fdData = [];
     const tableBody = document.querySelector("#fdTable tbody");
     tableBody.innerHTML = "";
 
@@ -157,8 +148,9 @@ const years = Number(document.getElementById("time").value);
     const maturity = balance;
     const interestEarned = maturity - principal;
 
-    document.getElementById("maturity").textContent = maturity.toFixed(2);
+    document.getElementById("investment").textContent = principal.toFixed(2);
     document.getElementById("interest").textContent = interestEarned.toFixed(2);
+    document.getElementById("maturity").textContent = maturity.toFixed(2);
 }
 
 function downloadFDExcel() {
@@ -167,10 +159,10 @@ function downloadFDExcel() {
         return;
     }
 
-    let csv = "Year,Quarter,Opening Balance,Interest Earned,Closing Balance\n";
+    let csv = "Year,Quarter,Opening Balance,Interest,Closing Balance\n";
 
-    fdData.forEach(row => {
-        csv += `${row.year},Q${row.quarter},${row.opening.toFixed(2)},${row.interest.toFixed(2)},${row.closing.toFixed(2)}\n`;
+    fdData.forEach(r => {
+        csv += `${r.year},Q${r.quarter},${r.opening.toFixed(2)},${r.interest.toFixed(2)},${r.closing.toFixed(2)}\n`;
     });
 
     const blob = new Blob([csv], { type: "text/csv" });
@@ -184,7 +176,6 @@ function downloadFDExcel() {
     URL.revokeObjectURL(url);
 }
 </script>
-
 
 </body>
 </html>
