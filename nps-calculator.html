@@ -21,7 +21,7 @@
 
 <section class="section light">
     <h2>National Pension System (NPS) Calculator</h2>
-    <p>Estimate your retirement corpus with monthly contribution.</p>
+    <p>Estimate your retirement corpus and expected monthly pension.</p>
 
     <div class="grid" style="max-width:600px">
 
@@ -50,7 +50,7 @@
 <section class="section">
     <h2>Result</h2>
 
-    <div class="grid" style="max-width:800px">
+    <div class="grid" style="max-width:900px">
 
         <div class="card">
             <p><strong>Total Investment</strong></p>
@@ -67,7 +67,17 @@
             <h3 id="maturity">—</h3>
         </div>
 
+        <div class="card">
+            <p><strong>Expected Monthly Pension</strong></p>
+            <h3 id="pension">—</h3>
+        </div>
+
     </div>
+
+    <p style="font-size:14px; margin-top:15px;">
+        <strong>Note:</strong> Pension is indicative, assuming 40% of corpus is
+        used to buy annuity at 6% annual return. Actual pension may vary.
+    </p>
 </section>
 
 <section class="section">
@@ -144,11 +154,17 @@ function calculateNPS() {
 
     const investment = P * months;
     const maturity = balance;
-    const gainTotal = maturity - investment;
+    const totalGain = maturity - investment;
+
+    // Pension calculation (40% annuity, 6% return)
+    const annuityCorpus = maturity * 0.40;
+    const annualPension = annuityCorpus * 0.06;
+    const monthlyPension = annualPension / 12;
 
     document.getElementById("investment").textContent = investment.toFixed(2);
-    document.getElementById("gain").textContent = gainTotal.toFixed(2);
+    document.getElementById("gain").textContent = totalGain.toFixed(2);
     document.getElementById("maturity").textContent = maturity.toFixed(2);
+    document.getElementById("pension").textContent = monthlyPension.toFixed(2);
 }
 
 function downloadNPSExcel() {
