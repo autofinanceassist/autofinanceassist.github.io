@@ -23,7 +23,7 @@ body {
 
 /* ===== FIXED SMALLER HEADER ===== */
 header {
-    position: sticky;
+    position: Fixed;
     top: 0;
     z-index: 1000;
 
