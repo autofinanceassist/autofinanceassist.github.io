@@ -26,7 +26,8 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-    background: #0f3a5f;
+  width: 100%;
+  background: #0f3a5f;
   color: white;
   display: flex;
   justify-content: space-between;
