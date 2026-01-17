@@ -29,7 +29,6 @@
 
     /* ===== HEADER (DARK BLUE) ===== */
     header {
-      position: fixed;
       height: 56px;
       background: #0f3a5f;
       color: white;
@@ -37,6 +36,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
+      position: fixed;
     }
 
     /* Logo */
@@ -75,11 +75,11 @@
 
     /* ===== HERO (LIGHT BLUE) ===== */
     .hero {
-      position: fixed;
       background: linear-gradient(180deg, #1f6fa3, #155b88);
       color: white;
       text-align: center;
       padding: 36px 15px 42px;
+      position: fixed;
     }
 
     /* subtle divider */
