@@ -35,7 +35,6 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
-      position: fixed;
     }
 
     /* Logo */
@@ -78,7 +77,6 @@
       color: white;
       text-align: center;
       padding: 36px 15px 42px;
-      position: fixed;
     }
 
     /* subtle divider */
