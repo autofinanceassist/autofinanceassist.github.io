@@ -20,12 +20,11 @@ body {
 }
 
 /* =========================
-   FIXED TOP CONTAINER
+   STICKY TOP CONTAINER
 ========================= */
 .top-container {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
     width: 100%;
     z-index: 1000;
 }
@@ -76,7 +75,7 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* ===== HERO (LIGHT BLUE - FIXED) ===== */
+/* ===== HERO (LIGHT BLUE) ===== */
 .hero {
     background: linear-gradient(180deg, #1f6fa3, #155b88);
     color: white;
@@ -110,14 +109,6 @@ nav a:hover {
     border-radius: 5px;
     border: none;
     font-size: 13px;
-}
-
-/* =========================
-   MAIN CONTENT OFFSET
-   Header (56px) + Hero (~160px)
-========================= */
-main {
-    margin-top: 216px;
 }
 
 /* ===== SECTION ===== */
@@ -194,14 +185,8 @@ footer {
         font-size: 20px;
     }
 
-    /* Hero slightly smaller on mobile */
     .hero {
         padding: 30px 12px 36px;
-    }
-
-    /* Adjust offset */
-    main {
-        margin-top: 200px;
     }
 }
 </style>
@@ -209,7 +194,7 @@ footer {
 
 <body>
 
-<!-- FIXED TOP AREA -->
+<!-- STICKY TOP AREA -->
 <div class="top-container">
 
     <header>
