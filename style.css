@@ -27,12 +27,13 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  height: 56px;
+  padding: 0 24px;
   background: #0f3a5f;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 20px; /* smaller header */
   z-index: 1000;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
