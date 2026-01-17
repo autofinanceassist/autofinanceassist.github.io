@@ -23,18 +23,20 @@ body {
 
 /* ===== FIXED SMALLER HEADER ===== */
 header {
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  height: 56px;
-  padding: 0 24px;
-  wight: 100%;
-  background: #0f3a5f;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    height: 56px;
+    min-height: 56px;
+    padding: 0 24px;
+
+    background: #0f3a5f;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Logo */
