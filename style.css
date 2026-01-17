@@ -26,8 +26,6 @@ header {
   position: fixed;
   top: 0;
   z-index: 1000;
- 
-  padding: 0 24px;
   height: 56px;
   background: #0f3a5f;
   color: white;
