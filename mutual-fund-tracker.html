@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <title>Mutual Fund Tracker | Auto Finance Assist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
-
 <body>
 
 <header>
@@ -15,17 +14,14 @@
     <p>For Common Man</p>
   </div>
   <nav>
-    <a href="index.html">Home</a>
+    <a href="../index.html">Home</a>
     <a href="#">Investment Tracker</a>
   </nav>
 </header>
 
-<!-- ================= INPUT SECTION ================= -->
 <section class="section light">
   <h2>Mutual Fund Investment Tracker</h2>
-  <p style="text-align:center">
-    Track your Mutual Fund investments (SIP or Lumpsum)
-  </p>
+  <p style="text-align:center">Track your Mutual Fund investments (SIP / Lumpsum)</p>
 
   <div class="grid" style="max-width:900px; margin:auto">
 
@@ -64,18 +60,6 @@
   </div>
 </section>
 
-<!-- ================= SUMMARY ================= -->
-<section class="section">
-  <h2>Investment Summary</h2>
-
-  <div class="grid" style="max-width:900px; margin:auto">
-    <div class="card"><strong>Total Invested</strong><br>₹ <span id="totalInvested">0</span></div>
-    <div class="card"><strong>Estimated Value</strong><br>₹ <span id="totalValue">0</span></div>
-    <div class="card"><strong>Profit / Loss</strong><br>₹ <span id="profit">0</span></div>
-  </div>
-</section>
-
-<!-- ================= TABLE ================= -->
 <section class="section">
   <h2>My Investments</h2>
 
@@ -89,6 +73,7 @@
           <th>Start Date</th>
           <th>Return %</th>
           <th>Estimated Value (₹)</th>
+          <th>XIRR %</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -107,11 +92,29 @@
 <script>
 let investments = JSON.parse(localStorage.getItem("mfTracker")) || [];
 
+/* ---------- XIRR CALCULATION ---------- */
+function calculateXIRR(cashflows, dates) {
+  let rate = 0.1;
+  for (let i = 0; i < 100; i++) {
+    let npv = 0, dnpv = 0;
+    for (let j = 0; j < cashflows.length; j++) {
+      const t = (dates[j] - dates[0]) / (1000 * 60 * 60 * 24 * 365);
+      npv += cashflows[j] / Math.pow(1 + rate, t);
+      dnpv += -t * cashflows[j] / Math.pow(1 + rate, t + 1);
+    }
+    const newRate = rate - npv / dnpv;
+    if (Math.abs(newRate - rate) < 0.00001) return rate * 100;
+    rate = newRate;
+  }
+  return rate * 100;
+}
+
+/* ---------- ADD INVESTMENT ---------- */
 function addInvestment() {
   const fund = fundName.value.trim();
   const type = investmentType.value;
-  const amount = Number(amountInput.value);
-  const start = startDate.value;
+  const amount = Number(amount.value);
+  const start = new Date(startDate.value);
   const rate = Number(returnRate.value);
 
   if (!fund || !amount || !start || !rate) {
@@ -119,26 +122,38 @@ function addInvestment() {
     return;
   }
 
-  const years = (Date.now() - new Date(start)) / (1000 * 60 * 60 * 24 * 365.25);
+  const today = new Date();
+  const years = (today - start) / (1000 * 60 * 60 * 24 * 365);
   if (years <= 0) return alert("Start date must be in the past");
 
-  let estimated;
-  let invested;
+  let estimated, cashflows = [], dates = [];
 
   if (type === "SIP") {
     const months = Math.floor(years * 12);
-    const r = rate / 100 / 12;
-    estimated = amount * ((Math.pow(1 + r, months) - 1) / r) * (1 + r);
-    invested = amount * months;
+    const monthlyRate = rate / 100 / 12;
+
+    for (let i = 0; i < months; i++) {
+      cashflows.push(-amount);
+      const d = new Date(start);
+      d.setMonth(d.getMonth() + i);
+      dates.push(d);
+    }
+
+    estimated = amount * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
   } else {
+    cashflows.push(-amount);
+    dates.push(start);
     estimated = amount * Math.pow(1 + rate / 100, years);
-    invested = amount;
   }
 
+  cashflows.push(estimated);
+  dates.push(today);
+
+  const xirr = calculateXIRR(cashflows, dates).toFixed(2);
+
   investments.push({
-    fund, type, amount, start, rate,
-    invested: Math.round(invested),
-    estimated: Math.round(estimated)
+    fund, type, amount, start: startDate.value,
+    rate, estimated: Math.round(estimated), xirr
   });
 
   localStorage.setItem("mfTracker", JSON.stringify(investments));
@@ -146,59 +161,51 @@ function addInvestment() {
   clearInputs();
 }
 
+/* ---------- RENDER TABLE ---------- */
 function renderTable() {
-  const tbody = document.querySelector("#investmentTable tbody");
+  const tbody = investmentTable.querySelector("tbody");
   tbody.innerHTML = "";
 
-  let totalInv = 0, totalVal = 0;
-
-  investments.forEach((i, idx) => {
-    totalInv += i.invested;
-    totalVal += i.estimated;
-
+  investments.forEach((inv, i) => {
     tbody.innerHTML += `
       <tr>
-        <td>${i.fund}</td>
-        <td>${i.type}</td>
-        <td>${i.amount}</td>
-        <td>${i.start}</td>
-        <td>${i.rate}%</td>
-        <td>₹ ${i.estimated}</td>
-        <td><button onclick="removeInvestment(${idx})">Remove</button></td>
+        <td>${inv.fund}</td>
+        <td>${inv.type}</td>
+        <td>${inv.amount}</td>
+        <td>${inv.start}</td>
+        <td>${inv.rate}%</td>
+        <td>₹ ${inv.estimated}</td>
+        <td>${inv.xirr} %</td>
+        <td><button onclick="removeInvestment(${i})">Remove</button></td>
       </tr>`;
   });
-
-  totalInvested.textContent = totalInv;
-  totalValue.textContent = totalVal;
-  profit.textContent = totalVal - totalInv;
 }
 
+/* ---------- REMOVE ---------- */
 function removeInvestment(i) {
-  if (!confirm("Remove this investment?")) return;
   investments.splice(i, 1);
   localStorage.setItem("mfTracker", JSON.stringify(investments));
   renderTable();
 }
 
-function clearInputs() {
-  fundName.value = amountInput.value = startDate.value = returnRate.value = "";
-}
-
+/* ---------- CSV ---------- */
 function exportTrackerCSV() {
   if (!investments.length) return alert("No data to export");
-  let csv = "Fund,Type,Amount,Start Date,Return %,Invested,Estimated\n";
+  let csv = "Fund,Type,Amount,Start Date,Return %,Estimated,XIRR\n";
   investments.forEach(i => {
-    csv += `${i.fund},${i.type},${i.amount},${i.start},${i.rate},${i.invested},${i.estimated}\n`;
+    csv += `${i.fund},${i.type},${i.amount},${i.start},${i.rate},${i.estimated},${i.xirr}\n`;
   });
-
-  const blob = new Blob([csv], { type: "text/csv" });
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   a.download = "Mutual_Fund_Tracker.csv";
   a.click();
 }
 
-const amountInput = document.getElementById("amount");
+/* ---------- CLEAR ---------- */
+function clearInputs() {
+  fundName.value = amount.value = startDate.value = returnRate.value = "";
+}
+
 renderTable();
 </script>
 
