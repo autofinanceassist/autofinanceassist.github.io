@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
 /* ===== GLOBAL ===== */
 * {
     box-sizing: border-box;
@@ -10,34 +18,37 @@ body {
     color: #1f2937;
 }
 
-/* ===== HEADER (STICKY / FIXED HEIGHT) ===== */
+/* ===== HEADER ===== */
 header {
     position: sticky;
     top: 0;
     z-index: 1000;
-
     height: 56px;
-    min-height: 56px;
     padding: 0 24px;
-
     background: #0f3a5f;
     color: white;
-
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 }
 
 /* Logo */
-header h1 {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 600;
-    line-height: 1;
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-header p {
-    margin: 2px 0 0;
+.logo .icon {
+    font-size: 22px;
+}
+
+.logo strong {
+    font-size: 15px;
+    line-height: 1.1;
+}
+
+.logo small {
     font-size: 11px;
     opacity: 0.8;
 }
@@ -55,13 +66,20 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* ===== HERO (STARTS BELOW HEADER) ===== */
+/* ===== HERO ===== */
 .hero {
-    margin-top: 56px;
     background: linear-gradient(180deg, #1f6fa3, #155b88);
     color: white;
     text-align: center;
-    padding: 26px 15px;
+    padding: 38px 15px 46px;
+}
+
+.hero::before {
+    content: "";
+    display: block;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    margin-bottom: 18px;
 }
 
 .hero h2 {
@@ -72,12 +90,8 @@ nav a:hover {
 
 .hero p {
     font-size: 13px;
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     opacity: 0.95;
-}
-
-.hero label {
-    font-size: 13px;
 }
 
 .hero select {
@@ -87,21 +101,17 @@ nav a:hover {
     font-size: 13px;
 }
 
-/* ===== SECTIONS ===== */
+/* ===== SECTION ===== */
 .section {
     padding: 36px 20px;
     max-width: 1200px;
     margin: auto;
 }
 
-.section.light {
-    background: white;
-}
-
 .section h2 {
     text-align: center;
     color: #0f3a5f;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     font-size: 22px;
 }
 
@@ -115,7 +125,7 @@ nav a:hover {
 /* ===== CARD ===== */
 .card {
     background: white;
-    padding: 16px;
+    padding: 18px;
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 14px rgba(0,0,0,0.06);
@@ -149,15 +159,10 @@ footer {
     margin-top: 40px;
 }
 
-/* ===== MOBILE FIX ===== */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
-
     header {
         padding: 0 16px;
-        height: 56px;
-        min-height: 56px;
-        flex-direction: row;
-        align-items: center;
     }
 
     nav a {
@@ -173,3 +178,55 @@ footer {
         padding: 30px 15px;
     }
 }
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <span class="icon">📈</span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#">Calculators</a>
+        <a href="#">Expense Manager</a>
+        <a href="#">Investment Tracker</a>
+        <a href="#">About</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Simple Finance Tools for Common Man</h2>
+    <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
+
+    <label>
+        Select Country:
+        <select>
+            <option>India</option>
+            <option>Qatar</option>
+            <option>UAE</option>
+        </select>
+    </label>
+</section>
+
+<section class="section">
+    <h2>Financial Calculators</h2>
+    <div class="grid">
+        <div class="card"><strong>FD Calculator</strong><p>Fixed Deposit</p></div>
+        <div class="card"><strong>RD Calculator</strong><p>Recurring Deposit</p></div>
+        <div class="card"><strong>PPF Calculator</strong><p>Public Provident Fund</p></div>
+        <div class="card"><strong>NPS Calculator</strong><p>Pension Planning</p></div>
+    </div>
+</section>
+
+<footer>
+    © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+</footer>
+
+</body>
+</html>
