@@ -20,11 +20,12 @@ body {
 }
 
 /* =========================
-   STICKY TOP CONTAINER
+   FIXED TOP CONTAINER
 ========================= */
 .top-container {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1000;
 }
@@ -74,7 +75,7 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* ===== HERO (MATCHES HOME PAGE) ===== */
+/* ===== HERO ===== */
 .hero {
     background: linear-gradient(180deg, #1f6fa3, #155b88);
     color: white;
@@ -99,6 +100,14 @@ nav a:hover {
 .hero p {
     font-size: 13px;
     opacity: 0.95;
+}
+
+/* =========================
+   OFFSET PAGE CONTENT
+   (header + hero height)
+========================= */
+main {
+    padding-top: 220px;
 }
 
 /* ===== SECTION ===== */
@@ -172,6 +181,7 @@ footer {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
+
     header {
         padding: 0 16px;
     }
@@ -188,13 +198,17 @@ footer {
     .hero {
         padding: 30px 12px 36px;
     }
+
+    main {
+        padding-top: 200px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== TOP HEADER AREA ===== -->
+<!-- ===== FIXED HEADER + HERO ===== -->
 <div class="top-container">
 
     <header>
@@ -214,7 +228,6 @@ footer {
         </nav>
     </header>
 
-    <!-- HERO MATCHES HOME PAGE -->
     <section class="hero">
         <h2>Mutual Fund Investment Tracker</h2>
         <p>Track your SIP and Lumpsum investments with ease</p>
