@@ -29,6 +29,7 @@
 
     /* ===== HEADER (DARK BLUE) ===== */
     header {
+      position: fixed;
       height: 56px;
       background: #0f3a5f;
       color: white;
@@ -74,6 +75,7 @@
 
     /* ===== HERO (LIGHT BLUE) ===== */
     .hero {
+      position: fixed;
       background: linear-gradient(180deg, #1f6fa3, #155b88);
       color: white;
       text-align: center;
