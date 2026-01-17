@@ -24,7 +24,6 @@ body { font-family: "Segoe UI", Roboto, Arial, sans-serif; background:#f5f7fa; c
 /* HEADER */
 header {
     height: 70px;
-    position: fixed;
     background:#0f3a5f;
     color:white;
     display:flex;
