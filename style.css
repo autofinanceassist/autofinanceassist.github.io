@@ -247,42 +247,42 @@
     <section class="section">
       <h2>Financial Calculators</h2>
 
-      <div class="grid">
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-coins"></i></div>
-          <strong>FD Calculator</strong>
-          <p>Fixed Deposit</p>
-        </div>
+      <div class="card">
+  <div class="card-icon"><i class="fas fa-coins"></i></div>
+  <strong>FD Calculator</strong>
+  <p>Fixed Deposit</p>
+</div>
 
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
-          <strong>RD Calculator</strong>
-          <p>Recurring Deposit</p>
-        </div>
+<div class="card">
+  <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+  <strong>RD Calculator</strong>
+  <p>Recurring Deposit</p>
+</div>
 
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-university"></i></div>
-          <strong>PPF Calculator</strong>
-          <p>Public Provident Fund</p>
-        </div>
+<div class="card">
+  <div class="card-icon"><i class="fas fa-university"></i></div>
+  <strong>PPF Calculator</strong>
+  <p>Public Provident Fund</p>
+</div>
 
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
-          <strong>NPS Calculator</strong>
-          <p>Pension Planning</p>
-        </div>
+<div class="card">
+  <div class="card-icon"><i class="fas fa-user-clock"></i></div>
+  <strong>NPS Calculator</strong>
+  <p>Pension Planning</p>
+</div>
 
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-credit-card"></i></div>
-          <strong>Loan EMI</strong>
-          <p>Loan Calculator</p>
-        </div>
+<div class="card">
+  <div class="card-icon"><i class="fas fa-credit-card"></i></div>
+  <strong>Loan EMI</strong>
+  <p>Loan Calculator</p>
+</div>
 
-        <div class="card">
-          <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-          <strong>Mutual Fund Tracker</strong>
-          <p>Investment Planning</p>
-        </div>
+<div class="card">
+  <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+  <strong>Mutual Fund Tracker</strong>
+  <p>Investment Planning</p>
+</div>
+
       </div>
     </section>
 
