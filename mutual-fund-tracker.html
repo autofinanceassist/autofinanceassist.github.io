@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Investment Tracker | Auto Finance Assist</title>
+  <title>Mutual Fund Tracker | Auto Finance Assist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../style.css" />
 </head>
@@ -87,18 +87,18 @@
 </section>
 
 <footer>
-  <p>© 2026 Auto Finance Assist | Investment Tracker</p>
+  <p>© 2026 Auto Finance Assist | Mutual Fund Tracker</p>
 </footer>
 
 <script>
 let investments = JSON.parse(localStorage.getItem("mfTracker")) || [];
 
 function addInvestment() {
-  const fund = fundName.value.trim();
-  const type = investmentType.value;
-  const amount = Number(amountInput.value);
-  const start = startDate.value;
-  const rate = Number(returnRate.value);
+  const fund = document.getElementById("fundName").value.trim();
+  const type = document.getElementById("investmentType").value;
+  const amount = Number(document.getElementById("amount").value);
+  const start = document.getElementById("startDate").value;
+  const rate = Number(document.getElementById("returnRate").value);
 
   if (!fund || !amount || !start || !rate) {
     alert("Please fill all fields");
@@ -122,7 +122,11 @@ function addInvestment() {
   }
 
   investments.push({
-    fund, type, amount, start, rate,
+    fund,
+    type,
+    amount,
+    start,
+    rate,
     estimated: Math.round(estimated)
   });
 
@@ -157,10 +161,10 @@ function removeInvestment(i) {
 }
 
 function clearInputs() {
-  fundName.value = "";
-  amountInput.value = "";
-  startDate.value = "";
-  returnRate.value = "";
+  document.getElementById("fundName").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("startDate").value = "";
+  document.getElementById("returnRate").value = "";
 }
 
 function exportTrackerCSV() {
