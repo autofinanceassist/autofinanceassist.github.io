@@ -21,7 +21,7 @@
 
     /* ========================= STICKY TOP CONTAINER ========================= */
     .top-container {
-      position: sticky;   /* ✅ FIX */
+      position: sticky;  /* ensure header sticks */
       top: 0;
       width: 100%;
       z-index: 1000;
@@ -188,6 +188,7 @@
 </head>
 
 <body>
+
   <!-- STICKY TOP AREA -->
   <div class="top-container">
     <header>
@@ -200,10 +201,11 @@
       </div>
 
       <nav>
-        <a href="#">Calculators</a>
-        <a href="#">Expense Manager</a>
-        <a href="#">Investment Tracker</a>
-        <a href="#">About</a>
+        <a href="index.html">Home</a>
+        <a href="fd.html">FD Calculator</a>
+        <a href="rd.html">RD Calculator</a>
+        <a href="mutualfund.html">Mutual Funds</a>
+        <a href="about.html">About</a>
       </nav>
     </header>
 
@@ -221,5 +223,49 @@
       </label>
     </section>
   </div>
+
+  <!-- SCROLLING CONTENT -->
+  <main>
+    <section class="section">
+      <h2>Financial Calculators</h2>
+
+      <div class="grid">
+        <div class="card">
+          <strong>FD Calculator</strong>
+          <p>Fixed Deposit</p>
+        </div>
+
+        <div class="card">
+          <strong>RD Calculator</strong>
+          <p>Recurring Deposit</p>
+        </div>
+
+        <div class="card">
+          <strong>PPF Calculator</strong>
+          <p>Public Provident Fund</p>
+        </div>
+
+        <div class="card">
+          <strong>NPS Calculator</strong>
+          <p>Pension Planning</p>
+        </div>
+
+        <div class="card">
+          <strong>Loan EMI</strong>
+          <p>Loan Calculator</p>
+        </div>
+
+        <div class="card">
+          <strong>Mutual Fund Tracker</strong>
+          <p>Investment Planning</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+    </footer>
+  </main>
+
 </body>
 </html>
