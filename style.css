@@ -19,16 +19,12 @@
       color: #1f2937;
     }
 
-    /* ========================= STICKY TOP CONTAINER ========================= */
-    .top-container {
-      position: sticky;  /* ensure header sticks */
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-
-    /* ===== HEADER (DARK BLUE) ===== */
+    /* ========================= HEADER FIXED ========================= */
     header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 56px;
       background: #0f3a5f;
       color: white;
@@ -36,6 +32,8 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 24px;
+      z-index: 1000;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
 
     /* Logo */
@@ -74,6 +72,7 @@
 
     /* ===== HERO (LIGHT BLUE) ===== */
     .hero {
+      margin-top: 56px; /* Space for fixed header */
       background: linear-gradient(180deg, #1f6fa3, #155b88);
       color: white;
       text-align: center;
@@ -189,40 +188,39 @@
 
 <body>
 
-  <!-- STICKY TOP AREA -->
-  <div class="top-container">
-    <header>
-      <div class="logo">
-        <span class="icon">📈</span>
-        <div>
-          <strong>Auto Finance Assist</strong><br>
-          <small>For Common Man</small>
-        </div>
+  <!-- FIXED HEADER -->
+  <header>
+    <div class="logo">
+      <span class="icon">📈</span>
+      <div>
+        <strong>Auto Finance Assist</strong><br>
+        <small>For Common Man</small>
       </div>
+    </div>
 
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="fd.html">FD Calculator</a>
-        <a href="rd.html">RD Calculator</a>
-        <a href="mutualfund.html">Mutual Funds</a>
-        <a href="about.html">About</a>
-      </nav>
-    </header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="fd.html">FD Calculator</a>
+      <a href="rd.html">RD Calculator</a>
+      <a href="mutualfund.html">Mutual Funds</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
 
-    <section class="hero">
-      <h2>Simple Finance Tools for Common Man</h2>
-      <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <h2>Simple Finance Tools for Common Man</h2>
+    <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
 
-      <label>
-        Select Country:
-        <select>
-          <option>India</option>
-          <option>Qatar</option>
-          <option>UAE</option>
-        </select>
-      </label>
-    </section>
-  </div>
+    <label>
+      Select Country:
+      <select>
+        <option>India</option>
+        <option>Qatar</option>
+        <option>UAE</option>
+      </select>
+    </label>
+  </section>
 
   <!-- SCROLLING CONTENT -->
   <main>
