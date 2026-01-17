@@ -5,6 +5,9 @@
   <title>Auto Finance Assist</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Font Awesome CDN for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-uV4O..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     /* ===== RESET ===== */
     * {
@@ -148,22 +151,21 @@
       font-size: 40px;
       margin-bottom: 12px;
       display: inline-block;
-      background: #e5f0ff;
       color: #0f3a5f;
-      padding: 12px;
-      border-radius: 50%;
-      transition: transform 0.2s ease, background 0.2s ease;
+      transition: transform 0.2s ease, color 0.2s ease;
     }
 
     .card:hover .card-icon {
       transform: scale(1.2);
-      background: #cbe0ff;
+      color: #1f6fa3;
     }
 
     /* Card Text */
     .card strong {
       font-size: 16px;
       color: #0f3a5f;
+      display: block;
+      margin-bottom: 4px;
     }
 
     .card p {
@@ -209,7 +211,7 @@
   <!-- FIXED HEADER -->
   <header>
     <div class="logo">
-      <span class="icon">📈</span>
+      <span class="icon"><i class="fas fa-chart-line"></i></span>
       <div>
         <strong>Auto Finance Assist</strong><br>
         <small>For Common Man</small>
@@ -247,37 +249,37 @@
 
       <div class="grid">
         <div class="card">
-          <div class="card-icon">💰</div>
+          <div class="card-icon"><i class="fas fa-coins"></i></div>
           <strong>FD Calculator</strong>
           <p>Fixed Deposit</p>
         </div>
 
         <div class="card">
-          <div class="card-icon">📆</div>
+          <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
           <strong>RD Calculator</strong>
           <p>Recurring Deposit</p>
         </div>
 
         <div class="card">
-          <div class="card-icon">🏦</div>
+          <div class="card-icon"><i class="fas fa-university"></i></div>
           <strong>PPF Calculator</strong>
           <p>Public Provident Fund</p>
         </div>
 
         <div class="card">
-          <div class="card-icon">👵🧓</div>
+          <div class="card-icon"><i class="fas fa-piggy-bank"></i></div>
           <strong>NPS Calculator</strong>
           <p>Pension Planning</p>
         </div>
 
         <div class="card">
-          <div class="card-icon">💳</div>
+          <div class="card-icon"><i class="fas fa-credit-card"></i></div>
           <strong>Loan EMI</strong>
           <p>Loan Calculator</p>
         </div>
 
         <div class="card">
-          <div class="card-icon">📈</div>
+          <div class="card-icon"><i class="fas fa-chart-line"></i></div>
           <strong>Mutual Fund Tracker</strong>
           <p>Investment Planning</p>
         </div>
