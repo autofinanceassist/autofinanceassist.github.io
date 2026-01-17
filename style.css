@@ -5,19 +5,19 @@
 
 body {
     margin: 0;
-    padding-top: 56px; /* exact header height */
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background: #f5f7fa;
     color: #1f2937;
 }
 
-/* ===== HEADER (ULTRA COMPACT) ===== */
+/* ===== HEADER (STICKY / FIXED HEIGHT) ===== */
 header {
     position: sticky;
     top: 0;
     z-index: 1000;
 
     height: 56px;
+    min-height: 56px;
     padding: 0 24px;
 
     background: #0f3a5f;
@@ -55,8 +55,9 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* ===== HERO (COMPACT BANNER) ===== */
+/* ===== HERO (STARTS BELOW HEADER) ===== */
 .hero {
+    margin-top: 56px;
     background: linear-gradient(180deg, #1f6fa3, #155b88);
     color: white;
     text-align: center;
@@ -148,23 +149,19 @@ footer {
     margin-top: 40px;
 }
 
-/* ===== MOBILE ===== */
+/* ===== MOBILE FIX ===== */
 @media (max-width: 768px) {
 
     header {
         padding: 0 16px;
-        height: auto;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    nav {
-        margin-top: 4px;
+        height: 56px;
+        min-height: 56px;
+        flex-direction: row;
+        align-items: center;
     }
 
     nav a {
-        margin-left: 0;
-        margin-right: 14px;
+        margin-left: 10px;
         font-size: 12px;
     }
 
