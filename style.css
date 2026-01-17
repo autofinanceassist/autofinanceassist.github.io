@@ -1,295 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Auto Finance Assist</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Font Awesome CDN for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-uV4O..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 
-  <style>
-    /* ===== RESET ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: #f5f7fa;
+  color: #1f2937;
+}
 
-    body {
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      background: #f5f7fa;
-      color: #1f2937;
-    }
+/* ===== FIXED HEADER ===== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #0f3a5f;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px; /* dynamic padding instead of fixed height */
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
 
-    /* ========================= HEADER FIXED ========================= */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 56px;
-      background: #0f3a5f;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo .icon {
+  font-size: 24px;
+}
+.logo strong {
+  font-size: 18px;
+  line-height: 1.1;
+}
+.logo small {
+  font-size: 11px;
+  opacity: 0.85;
+}
 
-    /* Logo */
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+/* Navigation */
+nav a {
+  color: #e5f0ff;
+  margin-left: 18px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+nav a:hover {
+  text-decoration: underline;
+}
 
-    .logo .icon {
-      font-size: 22px;
-    }
+/* ===== HERO SECTION ===== */
+.hero {
+  margin-top: 80px; /* adjust based on header real height */
+  background: linear-gradient(180deg, #1f6fa3, #155b88);
+  color: white;
+  text-align: center;
+  padding: 60px 15px 50px;
+}
+.hero::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+  margin-bottom: 18px;
+}
+.hero h2 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.hero p {
+  font-size: 14px;
+  margin-bottom: 16px;
+  opacity: 0.95;
+}
+.hero select {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+  font-size: 13px;
+}
 
-    .logo strong {
-      font-size: 16px;
-      line-height: 1.1;
-    }
+/* ===== SECTION ===== */
+.section {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+.section h2 {
+  text-align: center;
+  color: #0f3a5f;
+  margin-bottom: 22px;
+  font-size: 22px;
+}
 
-    .logo small {
-      font-size: 11px;
-      opacity: 0.85;
-    }
+/* ===== GRID CARDS ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.card {
+  background: white;
+  padding: 24px 18px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.12);
+}
+/* Card Icons */
+.card-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: inline-block;
+  color: #0f3a5f;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.card:hover .card-icon {
+  transform: scale(1.2);
+  color: #1f6fa3;
+}
+/* Card Text */
+.card strong {
+  font-size: 16px;
+  color: #0f3a5f;
+  display: block;
+  margin-bottom: 4px;
+}
+.card p {
+  font-size: 13px;
+  color: #555;
+  opacity: 0.9;
+}
 
-    /* Navigation */
-    nav a {
-      color: #e5f0ff;
-      margin-left: 18px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-    }
+/* ===== FOOTER ===== */
+footer {
+  background: #0f3a5f;
+  color: #dbeafe;
+  text-align: center;
+  padding: 14px;
+  font-size: 12px;
+  margin-top: 40px;
+}
 
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* ===== HERO (LIGHT BLUE) ===== */
-    .hero {
-      margin-top: 56px; /* Space for fixed header */
-      background: linear-gradient(180deg, #1f6fa3, #155b88);
-      color: white;
-      text-align: center;
-      padding: 36px 15px 42px;
-    }
-
-    .hero::before {
-      content: "";
-      display: block;
-      height: 1px;
-      background: rgba(255,255,255,0.18);
-      margin-bottom: 18px;
-    }
-
-    .hero h2 {
-      font-size: 22px;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .hero p {
-      font-size: 13px;
-      margin-bottom: 12px;
-      opacity: 0.95;
-    }
-
-    .hero select {
-      padding: 6px 8px;
-      border-radius: 5px;
-      border: none;
-      font-size: 13px;
-    }
-
-    /* ===== SECTION ===== */
-    .section {
-      padding: 40px 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .section h2 {
-      text-align: center;
-      color: #0f3a5f;
-      margin-bottom: 22px;
-      font-size: 22px;
-    }
-
-    /* ===== GRID ===== */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-    }
-
-    /* ===== CARD ===== */
-    .card {
-      background: white;
-      padding: 24px 18px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.12);
-    }
-
-    /* Card Icons */
-    .card-icon {
-      font-size: 40px;
-      margin-bottom: 12px;
-      display: inline-block;
-      color: #0f3a5f;
-      transition: transform 0.2s ease, color 0.2s ease;
-    }
-
-    .card:hover .card-icon {
-      transform: scale(1.2);
-      color: #1f6fa3;
-    }
-
-    /* Card Text */
-    .card strong {
-      font-size: 16px;
-      color: #0f3a5f;
-      display: block;
-      margin-bottom: 4px;
-    }
-
-    .card p {
-      font-size: 13px;
-      color: #555;
-      opacity: 0.9;
-    }
-
-    /* ===== FOOTER ===== */
-    footer {
-      background: #0f3a5f;
-      color: #dbeafe;
-      text-align: center;
-      padding: 14px;
-      font-size: 12px;
-      margin-top: 40px;
-    }
-
-    /* ===== MOBILE ===== */
-    @media (max-width: 768px) {
-      header {
-        padding: 0 16px;
-      }
-
-      nav a {
-        margin-left: 10px;
-        font-size: 12px;
-      }
-
-      .hero h2 {
-        font-size: 20px;
-      }
-
-      .hero {
-        padding: 30px 12px 36px;
-      }
-    }
-  </style>
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  header {
+    padding: 10px 16px;
+  }
+  nav a {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  .hero h2 {
+    font-size: 20px;
+  }
+  .hero {
+    padding: 40px 12px 36px;
+  }
+}
+</style>
 </head>
-
 <body>
 
-  <!-- FIXED HEADER -->
-  <header>
-    <div class="logo">
-      <span class="icon"><i class="fas fa-chart-line"></i></span>
-      <div>
-        <strong>Auto Finance Assist</strong><br>
-        <small>For Common Man</small>
-      </div>
+<header>
+  <div class="logo">
+    <span class="icon"><i class="fas fa-chart-line"></i></span>
+    <div>
+      <strong>Auto Finance Assist</strong><br>
+      <small>For Common Man</small>
     </div>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="fd.html">FD Calculator</a>
+    <a href="rd.html">RD Calculator</a>
+    <a href="mutualfund.html">Mutual Funds</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="fd.html">FD Calculator</a>
-      <a href="rd.html">RD Calculator</a>
-      <a href="mutualfund.html">Mutual Funds</a>
-      <a href="about.html">About</a>
-    </nav>
-  </header>
+<section class="hero">
+  <h2>Simple Finance Tools for Common Man</h2>
+  <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
+  <label>
+    Select Country:
+    <select>
+      <option>India</option>
+      <option>Qatar</option>
+      <option>UAE</option>
+    </select>
+  </label>
+</section>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <h2>Simple Finance Tools for Common Man</h2>
-    <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
+<main>
+<section class="section">
+  <h2>Financial Calculators</h2>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-coins"></i></div>
+      <strong>FD Calculator</strong>
+      <p>Fixed Deposit</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+      <strong>RD Calculator</strong>
+      <p>Recurring Deposit</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-university"></i></div>
+      <strong>PPF Calculator</strong>
+      <p>Public Provident Fund</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-user-clock"></i></div>
+      <strong>NPS Calculator</strong>
+      <p>Pension Planning</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-credit-card"></i></div>
+      <strong>Loan EMI</strong>
+      <p>Loan Calculator</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+      <strong>Mutual Fund Tracker</strong>
+      <p>Investment Planning</p>
+    </div>
+  </div>
+</section>
 
-    <label>
-      Select Country:
-      <select>
-        <option>India</option>
-        <option>Qatar</option>
-        <option>UAE</option>
-      </select>
-    </label>
-  </section>
-
-  <!-- SCROLLING CONTENT -->
-  <main>
-    <section class="section">
-      <h2>Financial Calculators</h2>
-
-      <div class="card">
-  <div class="card-icon"><i class="fas fa-coins"></i></div>
-  <strong>FD Calculator</strong>
-  <p>Fixed Deposit</p>
-</div>
-
-<div class="card">
-  <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
-  <strong>RD Calculator</strong>
-  <p>Recurring Deposit</p>
-</div>
-
-<div class="card">
-  <div class="card-icon"><i class="fas fa-university"></i></div>
-  <strong>PPF Calculator</strong>
-  <p>Public Provident Fund</p>
-</div>
-
-<div class="card">
-  <div class="card-icon"><i class="fas fa-user-clock"></i></div>
-  <strong>NPS Calculator</strong>
-  <p>Pension Planning</p>
-</div>
-
-<div class="card">
-  <div class="card-icon"><i class="fas fa-credit-card"></i></div>
-  <strong>Loan EMI</strong>
-  <p>Loan Calculator</p>
-</div>
-
-<div class="card">
-  <div class="card-icon"><i class="fas fa-chart-line"></i></div>
-  <strong>Mutual Fund Tracker</strong>
-  <p>Investment Planning</p>
-</div>
-
-      </div>
-    </section>
-
-    <footer>
-      © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
-    </footer>
-  </main>
+<footer>
+  © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+</footer>
+</main>
 
 </body>
 </html>
