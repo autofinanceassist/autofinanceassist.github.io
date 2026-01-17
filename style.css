@@ -28,12 +28,12 @@ header {
   z-index: 1000;
   height: 56px;
   padding: 0 24px;
+  wight: 100%;
   background: #0f3a5f;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
