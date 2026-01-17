@@ -20,12 +20,11 @@ body {
 }
 
 /* =========================
-   FIXED HEADER + HERO
+   STICKY TOP CONTAINER
 ========================= */
 .top-container {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
     width: 100%;
     z-index: 1000;
 }
@@ -41,6 +40,7 @@ header {
     padding: 0 24px;
 }
 
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -61,6 +61,7 @@ header {
     opacity: 0.85;
 }
 
+/* Navigation */
 nav a {
     color: #e5f0ff;
     margin-left: 18px;
@@ -73,7 +74,7 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* ===== HERO ===== */
+/* ===== HERO (MATCHES HOME PAGE) ===== */
 .hero {
     background: linear-gradient(180deg, #1f6fa3, #155b88);
     color: white;
@@ -98,13 +99,6 @@ nav a:hover {
 .hero p {
     font-size: 13px;
     opacity: 0.95;
-}
-
-/* =========================
-   PAGE OFFSET (NO DESIGN CHANGE)
-========================= */
-main {
-    margin-top: 220px; /* header + hero height */
 }
 
 /* ===== SECTION ===== */
@@ -178,6 +172,7 @@ footer {
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
+
     header {
         padding: 0 16px;
     }
@@ -194,18 +189,15 @@ footer {
     .hero {
         padding: 30px 12px 36px;
     }
-
-    main {
-        margin-top: 200px;
-    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- FIXED HEADER + HERO -->
+<!-- ===== TOP HEADER AREA ===== -->
 <div class="top-container">
+
     <header>
         <div class="logo">
             <span class="icon">📈</span>
@@ -223,18 +215,22 @@ footer {
         </nav>
     </header>
 
+    <!-- HERO MATCHES HOME PAGE -->
     <section class="hero">
         <h2>Mutual Fund Investment Tracker</h2>
         <p>Track your SIP and Lumpsum investments with ease</p>
     </section>
+
 </div>
 
-<!-- PAGE CONTENT -->
+<!-- ===== PAGE CONTENT ===== -->
 <main>
+
     <section class="section">
         <h2>Add Investment</h2>
 
         <div class="form-grid">
+
             <div class="form-card">
                 <label>Fund Name</label>
                 <input type="text" placeholder="Nifty 50 Index Fund">
@@ -267,12 +263,14 @@ footer {
                 <label>&nbsp;</label>
                 <button>Add Investment</button>
             </div>
+
         </div>
     </section>
 
     <footer>
         © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
     </footer>
+
 </main>
 
 </body>
