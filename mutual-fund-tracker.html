@@ -4,49 +4,14 @@
 <meta charset="UTF-8">
 <title>SPI Mutual Fund Ultra Tracker | Auto Finance Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="style.css">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
 <style>
-
-/* ONLY kept tracker-specific styles */
-/* No header/footer color edits */
-
-.summary{
-max-width:1100px;
-margin:25px auto;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-}
-
-.summary div{
-background:white;
-padding:18px;
-border-radius:12px;
-text-align:center;
-box-shadow:0 4px 10px rgba(0,0,0,.05);
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-background:white;
-}
-
-th{
-background:#0f3a5f;
-color:white;
-}
-
-td, th{
-padding:10px;
-border:1px solid #ddd;
-text-align:center;
-}
-
+table{border-collapse:collapse;}
+th{background:#0f3a5f;color:white;}
+td,th{text-align:center;padding:10px;}
 </style>
 </head>
 
@@ -69,121 +34,90 @@ text-align:center;
 </header>
 
 <section class="hero">
-    <h2>SPI Mutual Fund Ultra Tracker</h2>
-    <p>Track your real portfolio with live NAV, returns and XIRR.</p>
+    <h2>SPI ULTRA Investment Tracker</h2>
+    <p>Create a self-updating wealth tracker powered by Google Finance.</p>
 </section>
 
 </div>
-
 
 <main>
 
 <section class="section light">
 
+<div class="pro-tip">
+💡 <strong>Pro Tip:</strong> After downloading, upload this file to your 
+<b>Google Drive → Open with Google Sheets</b> to enable automatic price updates forever.
+</div>
+
 <h2>Add Investment</h2>
 
-<div class="grid" style="max-width:1000px;margin:auto">
+<div class="grid" style="max-width:900px;margin:auto">
 
 <div class="card">
-<label>Fund Name</label>
-<input id="fund" placeholder="Example: Nifty 50">
+<label>Asset Name</label><br>
+<input id="name" placeholder="Example: Infosys / Axis Bluechip">
 </div>
 
 <div class="card">
-<label>Type</label>
-<select id="type">
-<option>SIP</option>
-<option>Lumpsum</option>
-</select>
+<label>Google Finance Symbol</label><br>
+<input id="symbol" placeholder="Example: NSE:INFY or MUTF_IN:AXIS_BLUECHIP">
+<small>Search symbol on Google Finance.</small>
 </div>
 
 <div class="card">
-<label>Amount (₹)</label>
+<label>Invested Amount (₹)</label><br>
 <input id="amount" type="number">
 </div>
 
 <div class="card">
-<label>Start Date</label>
-<input id="date" type="date">
+<label>Purchase Price (₹)</label><br>
+<input id="price" type="number">
 </div>
 
 <div class="card">
-<button onclick="addInvestment()">Add Investment</button>
+<button onclick="add()">Add Investment</button>
 </div>
 
 </div>
-
 </section>
 
 
 <section class="section">
 
-<h2>Portfolio Summary</h2>
-
-<div class="summary">
-
-<div>
-<h3>Total Invested</h3>
-<p id="invested">₹0</p>
-</div>
-
-<div>
-<h3>Current Value</h3>
-<p id="current">₹0</p>
-</div>
-
-<div>
-<h3>Total Gain</h3>
-<p id="gain">₹0</p>
-</div>
-
-<div>
-<h3>Return %</h3>
-<p id="return">0%</p>
-</div>
-
-</div>
-
-</section>
-
-
-<section class="section">
-
-<h2>Your Investments</h2>
+<h2>Your Portfolio</h2>
 
 <div style="overflow-x:auto;">
-<table>
+<table width="100%" border="1">
 <thead>
 <tr>
-<th>Fund</th>
+<th>Asset</th>
+<th>Symbol</th>
 <th>Units</th>
-<th>Buy NAV</th>
-<th>Latest NAV</th>
+<th>Buy Price</th>
+<th>Live Price</th>
 <th>Invested</th>
-<th>Value</th>
+<th>Current Value</th>
 <th>Gain</th>
-<th>XIRR</th>
 <th>Remove</th>
 </tr>
 </thead>
+
 <tbody id="table"></tbody>
 </table>
 </div>
 
 <br>
 
-<button onclick="downloadTracker()">Download FULL Tracker</button>
+<button onclick="downloadSheet()">Download AUTO Wealth Tracker</button>
 
 </section>
 
-
 <div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
-Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
-Users should make financial decisions based on their personal judgment.
+After downloading, upload to Google Drive and open in Google Sheets for LIVE tracking.
+No need to revisit this calculator again.
 </div>
 
 </main>
-
 
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
@@ -192,186 +126,88 @@ Users should make financial decisions based on their personal judgment.
 
 <script>
 
-let investments = JSON.parse(localStorage.getItem("ultraMF")) || [];
-let navData = "";
+let data = JSON.parse(localStorage.getItem("ultraTracker")) || [];
 
-/* FETCH NAV */
+function add(){
 
-async function fetchNAV(){
-
-const url =
-"https://api.allorigins.win/raw?url=https://www.amfiindia.com/spages/NAVAll.txt";
-
-navData = await fetch(url).then(r=>r.text());
-
-updateNAV();
-}
-
-/* GET NAV */
-
-function getNAV(name){
-
-const line = navData
-.split("\n")
-.find(l=>l.toLowerCase().includes(name.toLowerCase()));
-
-if(!line) return null;
-
-return parseFloat(line.split(";")[4]);
-}
-
-/* XIRR */
-
-function XIRR(cf,dates){
-
-let rate=.1;
-
-for(let i=0;i<100;i++){
-
-let npv=0;
-let d=0;
-
-for(let j=0;j<cf.length;j++){
-
-let t=(dates[j]-dates[0])/(365*24*60*60*1000);
-
-npv+=cf[j]/Math.pow(1+rate,t);
-d+=-t*cf[j]/Math.pow(1+rate,t+1);
-}
-
-let newRate=rate-npv/d;
-
-if(Math.abs(newRate-rate)<.0001)
-return (rate*100).toFixed(2);
-
-rate=newRate;
-}
-
-return (rate*100).toFixed(2);
-}
-
-/* ADD */
-
-async function addInvestment(){
-
-const fund=document.getElementById("fund").value;
+const name=document.getElementById("name").value;
+const symbol=document.getElementById("symbol").value;
 const amount=Number(document.getElementById("amount").value);
-const date=new Date(document.getElementById("date").value);
+const price=Number(document.getElementById("price").value);
 
-if(!fund||!amount||!date) return alert("Fill all fields");
+if(!name||!symbol||!amount||!price)
+return alert("Please fill all fields");
 
-const nav=getNAV(fund);
+const units=amount/price;
 
-if(!nav) return alert("Fund not found in AMFI");
+data.push({name,symbol,amount,price,units});
 
-const units=amount/nav;
-
-investments.push({
-fund,
-units,
-buyNav:nav,
-amount,
-date:date.toISOString()
-});
-
-localStorage.setItem("ultraMF",JSON.stringify(investments));
+localStorage.setItem("ultraTracker",JSON.stringify(data));
 
 render();
 }
-
-/* UPDATE NAV */
-
-function updateNAV(){
-
-investments.forEach(inv=>{
-
-const latest=getNAV(inv.fund);
-
-if(latest){
-inv.latestNav=latest;
-inv.value=latest*inv.units;
-}
-});
-
-localStorage.setItem("ultraMF",JSON.stringify(investments));
-
-render();
-}
-
-/* RENDER */
 
 function render(){
 
-let tbody=document.getElementById("table");
-
+const tbody=document.getElementById("table");
 tbody.innerHTML="";
 
-let invested=0;
-let current=0;
-
-investments.forEach((inv,i)=>{
-
-const gain=(inv.value||0)-inv.amount;
-
-const cf=[-inv.amount,inv.value||inv.amount];
-const dates=[new Date(inv.date),new Date()];
-
-const xirr=XIRR(cf,dates);
+data.forEach((d,i)=>{
 
 tbody.innerHTML+=`
 <tr>
-<td>${inv.fund}</td>
-<td>${inv.units.toFixed(2)}</td>
-<td>${inv.buyNav.toFixed(2)}</td>
-<td>${(inv.latestNav||0).toFixed(2)}</td>
-<td>₹${inv.amount}</td>
-<td>₹${(inv.value||0).toFixed(0)}</td>
-<td style="color:${gain>0?"green":"red"}">
-₹${gain.toFixed(0)}
-</td>
-<td>${xirr}%</td>
-<td><button onclick="removeInv(${i})">X</button></td>
+<td>${d.name}</td>
+<td>${d.symbol}</td>
+<td>${d.units.toFixed(2)}</td>
+<td>${d.price}</td>
+<td>Live via Google Sheet</td>
+<td>₹${d.amount}</td>
+<td>Auto</td>
+<td>Auto</td>
+<td><button onclick="remove(${i})">X</button></td>
 </tr>
 `;
-
-invested+=inv.amount;
-current+=inv.value||0;
 });
-
-document.getElementById("invested").innerText="₹"+invested.toFixed(0);
-document.getElementById("current").innerText="₹"+current.toFixed(0);
-document.getElementById("gain").innerText="₹"+(current-invested).toFixed(0);
-
-document.getElementById("return").innerText=
-((current-invested)/invested*100||0).toFixed(2)+"%";
 }
 
-/* REMOVE */
-
-function removeInv(i){
-investments.splice(i,1);
-localStorage.setItem("ultraMF",JSON.stringify(investments));
+function remove(i){
+data.splice(i,1);
+localStorage.setItem("ultraTracker",JSON.stringify(data));
 render();
 }
 
-/* DOWNLOAD */
 
-function downloadTracker(){
+/* DOWNLOAD GOOGLE SHEET READY FILE */
 
-const file=document.documentElement.outerHTML;
+function downloadSheet(){
 
-const blob=new Blob([file],{type:"text/html"});
+if(data.length===0)
+return alert("Add investments first");
 
+let csv=`Asset,Symbol,Units,Buy Price,Live Price,Invested,Current Value,Gain\n`;
+
+data.forEach(d=>{
+
+csv+=`${d.name},
+${d.symbol},
+${d.units},
+${d.price},
+=GOOGLEFINANCE("${d.symbol}","price"),
+${d.amount},
+=C2*E2,
+=G2-F2\n`;
+
+});
+
+const blob=new Blob([csv],{type:"text/csv"});
 const a=document.createElement("a");
 
 a.href=URL.createObjectURL(blob);
-a.download="SPI_ULTRA_MF_TRACKER.html";
+a.download="AUTO_FINANCE_ASSIST_TRACKER.csv";
 a.click();
 }
 
-/* INIT */
-
-fetchNAV();
+render();
 
 </script>
 
