@@ -10,21 +10,6 @@
 
     <link rel="stylesheet" href="style.css">
 
-<div style="max-width:700px; margin:25px auto 0;">
-    <a href="index.html" 
-       style="
-       display:inline-block;
-       padding:8px 14px;
-       border-radius:8px;
-       background:#e8f5e9;
-       color:#1b5e20;
-       font-weight:bold;
-       text-decoration:none;">
-        ← Home
-    </a>
-</div>
-
-    
     <style>
         body{
             font-family: Arial, sans-serif;
@@ -32,9 +17,24 @@
             background:#f4f6f8;
         }
 
+        .top-link{
+            max-width:700px;
+            margin:25px auto 0;
+        }
+
+        .top-link a{
+            display:inline-block;
+            padding:8px 14px;
+            border-radius:8px;
+            background:#e8f5e9;
+            color:#1b5e20;
+            font-weight:bold;
+            text-decoration:none;
+        }
+
         .container{
             max-width:700px;
-            margin:40px auto;
+            margin:20px auto 40px;
             background:white;
             padding:30px;
             border-radius:12px;
@@ -100,6 +100,11 @@
 </head>
 
 <body>
+
+<!-- Return Link -->
+<div class="top-link">
+    <a href="index.html">← Return to Tools</a>
+</div>
 
 <div class="container">
 
@@ -185,7 +190,7 @@ function showResult(){
     let efFormatted = emergencyFund.toLocaleString();
     let lcFormatted = lifeCover.toLocaleString();
 
-    // Suggestions based on status
+    // Suggestions
     let healthMsg = health === "no"
         ? "<li><span class='highlight'>Get health insurance immediately.</span> Medical emergencies are the #1 cause of financial stress.</li>"
         : "<li>Good job having health insurance. Ensure parents have a separate policy.</li>";
@@ -193,7 +198,6 @@ function showResult(){
     let investMsg = investing === "no"
         ? "<li><span class='highlight'>Start investing soon.</span> Even small monthly investments grow massively over time.</li>"
         : "<li>Great — continue investing consistently for long-term goals.</li>";
-
 
     let resultHTML = `
         <h3>✅ Great Step! You Have Started Understanding Your Financial Position.</h3>
@@ -247,7 +251,6 @@ function showResult(){
 }
 
 </script>
-
 
 </body>
 </html>
