@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Financial Starter Planner | Auto Finance Assist</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Financial Life Starter | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -20,210 +20,300 @@
 </header>
 
 <section class="section light">
-    <h2>Financial Life Starter</h2>
-    <p>Build protection first. Then build wealth.</p>
+<h2>Financial Life Starter</h2>
+<p>Protection First. Then Wealth.</p>
 
-    <div class="grid" style="grid-template-columns: 1fr 1fr; gap:30px; align-items:start;">
+<div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap:30px; align-items:start;">
 
-        <!-- LEFT SIDE INPUTS -->
-        <div>
+<!-- ================= INPUT COLUMN ================= -->
 
-            <div class="card">
-                <label>Current Age</label><br>
-                <input type="number" id="age" placeholder="30">
-            </div>
+<div>
 
-            <div class="card">
-                <label>Monthly Income</label><br>
-                <input type="number" id="income" placeholder="80000">
-            </div>
+<div class="card">
+<label>Current Age</label><br>
+<input type="number" id="age">
+</div>
 
-            <div class="card">
-                <label>Monthly Expense</label><br>
-                <input type="number" id="expense" placeholder="40000">
-            </div>
+<div class="card">
+<label>Monthly Income</label><br>
+<input type="number" id="income">
+</div>
 
-            <div class="card">
-                <label>Current Savings</label><br>
-                <input type="number" id="savings" placeholder="200000">
-            </div>
+<div class="card">
+<label>Monthly Expense</label><br>
+<input type="number" id="expense">
+</div>
 
-            <!-- Insurance Question -->
-            <div class="card">
-                <label>Do you already have Term Life Insurance?</label><br>
-
-                <select id="insurance" onchange="toggleInsuranceFields()">
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                </select>
-            </div>
-
-            <!-- Hidden fields -->
-            <div id="insuranceFields" style="display:none;">
-
-                <div class="card">
-                    <label>Current Sum Assured</label><br>
-                    <input type="number" id="sumAssured" placeholder="Example: 5000000">
-                </div>
-
-                <div class="card">
-                    <label>Yearly Premium</label><br>
-                    <input type="number" id="premium" placeholder="Example: 15000">
-                </div>
-
-            </div>
-
-            <div class="card">
-                <button onclick="generatePlan()">Generate My Financial Plan</button>
-            </div>
-
-        </div>
+<div class="card">
+<label>Current Savings</label><br>
+<input type="number" id="savings">
+</div>
 
 
-        <!-- RIGHT SIDE REPORT -->
-        <div>
+<!-- TERM INSURANCE -->
 
-            <div class="card">
-                <h3>Your Financial Snapshot</h3>
+<div class="card">
+<label>Do you have Term Life Insurance?</label><br>
+<select id="termInsurance" onchange="toggleTerm()">
+<option value="no">No</option>
+<option value="yes">Yes</option>
+</select>
+</div>
 
-                <p><strong>Emergency Fund Needed:</strong></p>
-                <h2 id="emergency">—</h2>
+<div id="termFields" style="display:none;">
+<div class="card">
+<label>Sum Assured</label><br>
+<input type="number" id="termCover">
+</div>
 
-                <p><strong>Recommended Term Cover:</strong></p>
-                <h2 id="term">—</h2>
+<div class="card">
+<label>Yearly Premium</label><br>
+<input type="number" id="termPremium">
+</div>
+</div>
 
-                <p><strong>Protection Gap:</strong></p>
-                <h2 id="gap">—</h2>
-            </div>
 
-            <div class="card">
-                <h3>Personalized Suggestions</h3>
-                <p id="suggestions">
-                    Enter your details to generate your roadmap.
-                </p>
-            </div>
 
-        </div>
+<!-- HEALTH INSURANCE -->
 
-    </div>
+<div class="card">
+<label>Do you have Health Insurance?</label><br>
+<select id="healthInsurance" onchange="toggleHealth()">
+<option value="no">No</option>
+<option value="yes">Yes</option>
+</select>
+</div>
+
+<div id="healthFields" style="display:none;">
+
+<div class="card">
+<label>Family Cover (Sum Assured)</label><br>
+<input type="number" id="familyCover">
+</div>
+
+<div class="card">
+<label>Parents Cover (Sum Assured)</label><br>
+<input type="number" id="parentsCover">
+</div>
+
+</div>
+
+
+<div class="card">
+<button onclick="generatePlan()">Generate My Financial Plan</button>
+</div>
+
+</div>
+
+
+<!-- ================= SNAPSHOT COLUMN ================= -->
+
+<div>
+
+<div class="card">
+<h3>Financial Snapshot</h3>
+
+<p><strong>Emergency Fund Needed</strong></p>
+<h2 id="emergency">—</h2>
+
+<p><strong>Recommended Term Cover</strong></p>
+<h2 id="term">—</h2>
+
+<p><strong>Term Protection Gap</strong></p>
+<h2 id="termGap">—</h2>
+
+<p><strong>Health Protection Status</strong></p>
+<h2 id="healthGap">—</h2>
+
+</div>
+
+</div>
+
+
+
+<!-- ================= SUGGESTION COLUMN ================= -->
+
+<div>
+
+<div class="card">
+<h3>Personalized Roadmap</h3>
+<div id="suggestions">
+Enter your details to generate your roadmap.
+</div>
+</div>
+
+</div>
+
+</div>
 </section>
 
 <footer>
-    <p>© 2026 Auto Finance Assist | Financial Starter</p>
+<p>© 2026 Auto Finance Assist</p>
 </footer>
 
 <script>
 
 function formatMoney(num){
-    return "₹ " + num.toLocaleString("en-IN", {maximumFractionDigits:0});
+return "₹ " + num.toLocaleString("en-IN",{maximumFractionDigits:0});
 }
 
-function toggleInsuranceFields(){
-    const choice = document.getElementById("insurance").value;
-    document.getElementById("insuranceFields").style.display =
-        choice === "yes" ? "block" : "none";
+function toggleTerm(){
+document.getElementById("termFields").style.display =
+document.getElementById("termInsurance").value === "yes" ? "block":"none";
+}
+
+function toggleHealth(){
+document.getElementById("healthFields").style.display =
+document.getElementById("healthInsurance").value === "yes" ? "block":"none";
 }
 
 function generatePlan(){
 
-    const age = Number(document.getElementById("age").value);
-    const income = Number(document.getElementById("income").value);
-    const monthlyExpense = Number(document.getElementById("expense").value);
-    const savings = Number(document.getElementById("savings").value);
-    const insurance = document.getElementById("insurance").value;
+const age = Number(document.getElementById("age").value);
+const income = Number(document.getElementById("income").value);
+const expense = Number(document.getElementById("expense").value);
+const savings = Number(document.getElementById("savings").value);
 
-    if(!age || !income || !monthlyExpense){
-        alert("Please fill all required values");
-        return;
-    }
+if(!age || !income || !expense){
+alert("Please fill required fields");
+return;
+}
 
-    // Emergency Fund
-    const emergencyFund = monthlyExpense * 6;
+/* ---------- Emergency ---------- */
 
-    // Term Insurance Calculation
-    const yearsLeft = 60 - age;
-    const yearlyExpense = monthlyExpense * 12;
-    const inflationAdjustedExpense = yearlyExpense * Math.pow(1.07, yearsLeft);
-    const requiredCover = inflationAdjustedExpense * yearsLeft;
-
-    let gapText = "";
-    let suggestionInsurance = "";
-
-    if(insurance === "yes"){
-
-        const currentCover = Number(document.getElementById("sumAssured").value);
-
-        if(!currentCover){
-            alert("Enter your sum assured");
-            return;
-        }
-
-        const gap = requiredCover - currentCover;
-
-        if(gap <= 0){
-
-            gapText = "✅ Fully Protected";
-
-            suggestionInsurance = `
-            ✅ <b>Congrats!</b> You are already financially protected with sufficient life cover.
-            Review your policy every few years to stay aligned with inflation.
-            `;
-
-        }else{
-
-            gapText = formatMoney(gap);
-
-            suggestionInsurance = `
-            ⚠️ Your family is under-protected.<br>
-            Increase your term cover by approximately <b>${formatMoney(gap)}</b>.
-            `;
-        }
-
-    }else{
-
-        gapText = formatMoney(requiredCover);
-
-        suggestionInsurance = `
-        🚨 <b>High Priority:</b> You currently have no life insurance.<br>
-        Buy a term plan covering about <b>${formatMoney(requiredCover)}</b> immediately.
-        `;
-    }
-
-    document.getElementById("emergency").textContent = formatMoney(emergencyFund);
-    document.getElementById("term").textContent = formatMoney(requiredCover);
-    document.getElementById("gap").textContent = gapText;
+const emergencyFund = expense * 6;
 
 
-    // Emergency status
-    let emergencyStatus = savings >= emergencyFund
-        ? "✅ Excellent! Your emergency fund is strong."
-        : `Build your emergency fund to <b>${formatMoney(emergencyFund)}</b> for real financial security.`;
+/* ---------- Term Calculation ---------- */
+
+const yearsLeft = 60 - age;
+const yearlyExpense = expense * 12;
+const requiredTerm = yearlyExpense * Math.pow(1.07, yearsLeft) * yearsLeft;
+
+let termGapText="";
+let termSuggestion="";
+
+if(document.getElementById("termInsurance").value === "yes"){
+
+const current = Number(document.getElementById("termCover").value);
+const gap = requiredTerm - current;
+
+if(gap <= 0){
+
+termGapText="✅ Fully Protected";
+
+termSuggestion="✅ Excellent! Your family is financially protected.";
+
+}else{
+
+termGapText=formatMoney(gap);
+
+termSuggestion=`⚠️ Increase your life cover by <b>${formatMoney(gap)}</b>.`;
+}
+
+}else{
+
+termGapText=formatMoney(requiredTerm);
+
+termSuggestion=`🚨 Buy term insurance worth <b>${formatMoney(requiredTerm)}</b> immediately.`;
+}
 
 
 
-    const suggestionsHTML = `
-        <b>Great step!</b> You have started understanding your financial position.<br><br>
+/* ---------- Health Calculation ---------- */
 
-        <b>STEP 1 — PROTECTION:</b><br>
-        ✔ ${suggestionInsurance}<br>
-        ✔ Take health insurance for your family<br>
-        ✔ Take separate health insurance for parents<br><br>
+const familyMin = 1000000; //10L
+const parentsMin = 1500000; //15L
 
-        <b>STEP 2 — STABILITY:</b><br>
-        ✔ ${emergencyStatus}<br>
-        ✔ Avoid high-interest debt<br><br>
+let healthText="";
+let healthSuggestion="";
 
-        <b>STEP 3 — WEALTH:</b><br>
-        ✔ Start long-term investing<br>
-        ✔ Increase investments every year<br>
-        ✔ Stay consistent — wealth is built over decades<br><br>
+if(document.getElementById("healthInsurance").value === "yes"){
 
-        <b>Golden Rule:</b><br>
-        Protection → Emergency Fund → Investments.<br>
-        Follow this order and financial stress reduces drastically.
-    `;
+const fam = Number(document.getElementById("familyCover").value);
+const par = Number(document.getElementById("parentsCover").value);
 
-    document.getElementById("suggestions").innerHTML = suggestionsHTML;
+let issues=[];
+
+if(fam < familyMin){
+issues.push(`Increase family cover by ${formatMoney(familyMin - fam)}`);
+}
+
+if(par < parentsMin){
+issues.push(`Increase parents cover by ${formatMoney(parentsMin - par)}`);
+}
+
+if(issues.length === 0){
+
+healthText="✅ Well Protected";
+
+healthSuggestion="✅ Great! Your health coverage is strong.";
+
+}else{
+
+healthText="⚠️ Under Protected";
+
+healthSuggestion=issues.join("<br>");
+}
+
+}else{
+
+healthText="🚨 No Coverage";
+
+healthSuggestion=`Buy minimum health cover:<br>
+• Family: ${formatMoney(familyMin)}<br>
+• Parents: ${formatMoney(parentsMin)}`;
+}
+
+
+
+/* ---------- Snapshot ---------- */
+
+document.getElementById("emergency").textContent=formatMoney(emergencyFund);
+document.getElementById("term").textContent=formatMoney(requiredTerm);
+document.getElementById("termGap").textContent=termGapText;
+document.getElementById("healthGap").textContent=healthText;
+
+
+/* ---------- Suggestions ---------- */
+
+let emergencyMsg = savings >= emergencyFund
+? "✅ Your emergency fund is strong."
+: `Build emergency savings up to <b>${formatMoney(emergencyFund)}</b>.`;
+
+document.getElementById("suggestions").innerHTML=`
+
+<div style="text-align:center;"><b>STEP 1 — PROTECTION</b></div>
+<div style="text-align:left; margin-top:8px;">
+✔ ${termSuggestion}<br><br>
+✔ ${healthSuggestion}
+</div>
+
+<br>
+
+<div style="text-align:center;"><b>STEP 2 — STABILITY</b></div>
+<div style="text-align:left; margin-top:8px;">
+✔ ${emergencyMsg}<br>
+✔ Avoid high-interest debt
+</div>
+
+<br>
+
+<div style="text-align:center;"><b>STEP 3 — WEALTH</b></div>
+<div style="text-align:left; margin-top:8px;">
+✔ Start long-term investing<br>
+✔ Increase investments yearly<br>
+✔ Stay consistent for decades
+</div>
+
+<br>
+
+<div style="text-align:center;">
+<b>Golden Rule:</b><br>
+Protection → Emergency → Wealth
+</div>
+
+`;
 
 }
 
