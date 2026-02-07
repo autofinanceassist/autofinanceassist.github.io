@@ -2,18 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PPF Calculator | Auto Finance Assist</title>
+<title>PRO PPF Calculator | Auto Finance Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
-<!-- ✅ Font Awesome (MATCH INDEX) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+<style>
+
+/* Investment selector */
+.selector{
+    display:flex;
+    gap:20px;
+    margin-top:10px;
+}
+
+/* Pro Tip Box */
+.pro-tip{
+    background:#e8f2ff;
+    border-left:6px solid #2d6cdf;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:25px;
+    font-weight:500;
+}
+
+/* Result highlight */
+.big{
+    font-size:26px;
+    color:#2d6cdf;
+}
+
+/* Table styling */
+table{
+    border-collapse:collapse;
+}
+
+th{
+    background:#2d6cdf;
+    color:white;
+}
+
+td, th{
+    text-align:center;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<!-- ✅ FIXED TOP AREA -->
 <div class="top-container">
 
 <header>
@@ -30,102 +69,122 @@
     </nav>
 </header>
 
-<!-- ✅ HERO -->
 <section class="hero">
     <h2>Public Provident Fund (PPF) Calculator</h2>
-    <p>Grow long-term, tax-efficient wealth safely with government-backed savings.</p>
+    <p>Maximize tax-free wealth — Invest before April 5 to unlock full compounding power.</p>
 </section>
 
 </div>
 
-
-<!-- ✅ MAIN -->
 <main>
 
 <section class="section light">
-    <h2>PPF Calculator</h2>
-    <p>Yearly PPF investment growth with government interest.</p>
 
-    <div class="grid" style="max-width:600px">
+<div class="pro-tip">
+💡 <strong>Pro Tip:</strong> Invest before <b>April 5</b> to earn FULL interest for the year.  
+Delaying by even a few days can reduce your long-term wealth significantly.
+</div>
 
-        <div class="card">
-            <label>Yearly Contribution</label><br>
-            <input type="number" id="yearly" placeholder="Example: 150000">
-        </div>
+<h2>PRO PPF Calculator</h2>
 
-        <div class="card">
-            <label>Interest Rate (% per year)</label><br>
-            <input type="number" id="rate" placeholder="Example: 7.1">
-        </div>
+<div class="grid" style="max-width:650px">
 
-        <div class="card">
-            <label>Time Period (Years)</label><br>
-            <input type="number" id="years" value="15">
-        </div>
+<div class="card">
+<label>Investment Type</label>
 
-        <div class="card">
-            <button onclick="calculatePPF()">Calculate PPF</button>
-        </div>
+<div class="selector">
+<label>
+<input type="radio" name="type" value="lumpsum" checked>
+ Lump Sum (Recommended ⭐)
+</label>
 
-    </div>
+<label>
+<input type="radio" name="type" value="monthly">
+ Monthly Deposit
+</label>
+</div>
+</div>
+
+<div class="card">
+<label>Yearly Contribution (₹)</label><br>
+<input type="number" id="yearly" placeholder="150000">
+</div>
+
+<div class="card">
+<label>Interest Rate (% per year)</label><br>
+<input type="number" id="rate" value="7.1">
+</div>
+
+<div class="card">
+<label>Time Period (Years)</label><br>
+<input type="number" id="years" value="15">
+</div>
+
+<div class="card">
+<button onclick="calculatePPF()">Calculate PRO PPF</button>
+</div>
+
+</div>
 </section>
+
 
 <section class="section">
-    <h2>Result</h2>
+<h2>Your Wealth Projection</h2>
 
-    <div class="grid" style="max-width:800px">
+<div class="grid" style="max-width:900px">
 
-        <div class="card">
-            <p><strong>Total Investment</strong></p>
-            <h3 id="investment">—</h3>
-        </div>
+<div class="card">
+<p><strong>Total Investment</strong></p>
+<h3 class="big" id="investment">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Total Interest Earned</strong></p>
-            <h3 id="interest">—</h3>
-        </div>
+<div class="card">
+<p><strong>Total Interest Earned</strong></p>
+<h3 class="big" id="interest">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Maturity Amount</strong></p>
-            <h3 id="maturity">—</h3>
-        </div>
+<div class="card">
+<p><strong>Maturity Amount</strong></p>
+<h3 class="big" id="maturity">—</h3>
+</div>
 
-    </div>
+</div>
+
+<p id="lossMsg" style="margin-top:20px;font-weight:600;color:#b00020;"></p>
+
 </section>
+
 
 <section class="section">
-    <h2>Yearly PPF Growth Illustration</h2>
+<h2>Yearly Growth Illustration</h2>
 
-    <div style="overflow-x:auto;">
-        <table id="ppfTable" border="1" cellpadding="8" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Year</th>
-                    <th>Contribution</th>
-                    <th>Opening Balance</th>
-                    <th>Interest</th>
-                    <th>Closing Balance</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+<div style="overflow-x:auto;">
+<table id="ppfTable" border="1" cellpadding="8" width="100%">
+<thead>
+<tr>
+<th>Year</th>
+<th>Contribution</th>
+<th>Opening</th>
+<th>Interest</th>
+<th>Closing</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
 
-    <br>
-    <button onclick="downloadPPFExcel()">Download Excel (CSV)</button>
+<br>
+<button onclick="downloadPPFExcel()">Download Excel</button>
+
 </section>
 
 
-<!-- ✅ Disclaimer -->
-<div style="max-width:900px; margin:40px auto; font-size:14px; text-align:center; color:gray;">
-Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice. 
-Users should make financial decisions based on their personal judgment.
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
 </div>
 
 </main>
 
-
-<!-- ✅ MATCHING FOOTER -->
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
@@ -133,79 +192,127 @@ Users should make financial decisions based on their personal judgment.
 
 
 <script>
+
 let ppfData = [];
 
-function calculatePPF() {
-    const yearly = Number(document.getElementById("yearly").value);
-    const rate = Number(document.getElementById("rate").value) / 100;
-    const years = Number(document.getElementById("years").value);
-
-    if (!yearly || !rate || !years) {
-        alert("Please enter all values correctly");
-        return;
-    }
-
-    let balance = 0;
-    ppfData = [];
-
-    const tableBody = document.querySelector("#ppfTable tbody");
-    tableBody.innerHTML = "";
-
-    for (let y = 1; y <= years; y++) {
-        const opening = balance;
-        const interest = (opening + yearly) * rate;
-        balance = opening + yearly + interest;
-
-        ppfData.push({
-            year: y,
-            contribution: yearly,
-            opening,
-            interest,
-            closing: balance
-        });
-
-        const row = `
-            <tr>
-                <td>${y}</td>
-                <td>${yearly.toFixed(2)}</td>
-                <td>${opening.toFixed(2)}</td>
-                <td>${interest.toFixed(2)}</td>
-                <td>${balance.toFixed(2)}</td>
-            </tr>
-        `;
-        tableBody.insertAdjacentHTML("beforeend", row);
-    }
-
-    const investment = yearly * years;
-    const interestEarned = balance - investment;
-
-    document.getElementById("investment").textContent = investment.toFixed(2);
-    document.getElementById("interest").textContent = interestEarned.toFixed(2);
-    document.getElementById("maturity").textContent = balance.toFixed(2);
+function formatMoney(num){
+    return "₹ " + num.toLocaleString('en-IN',{maximumFractionDigits:0});
 }
 
-function downloadPPFExcel() {
-    if (ppfData.length === 0) {
-        alert("Please calculate PPF first");
-        return;
-    }
+function calculatePPF(){
 
-    let csv = "Year,Contribution,Opening Balance,Interest,Closing Balance\n";
+const yearly = Number(document.getElementById("yearly").value);
+const rate = Number(document.getElementById("rate").value)/100;
+const years = Number(document.getElementById("years").value);
+const type = document.querySelector('input[name="type"]:checked').value;
 
-    ppfData.forEach(r => {
-        csv += `${r.year},${r.contribution.toFixed(2)},${r.opening.toFixed(2)},${r.interest.toFixed(2)},${r.closing.toFixed(2)}\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "PPF_Yearly_Projection.csv";
-    a.click();
-
-    URL.revokeObjectURL(url);
+if(!yearly || !rate || !years){
+    alert("Please enter valid inputs");
+    return;
 }
+
+let balance = 0;
+ppfData=[];
+
+const tbody=document.querySelector("#ppfTable tbody");
+tbody.innerHTML="";
+
+for(let y=1;y<=years;y++){
+
+let opening=balance;
+let contribution=yearly;
+let interest=0;
+
+if(type==="lumpsum"){
+
+interest=(opening+yearly)*rate;
+
+}else{
+
+// realistic monthly interest
+let monthly=yearly/12;
+let tempBalance=opening;
+
+for(let m=0;m<12;m++){
+    tempBalance+=monthly;
+    interest+=tempBalance*(rate/12);
+}
+
+}
+
+balance=opening+contribution+interest;
+
+ppfData.push({y,contribution,opening,interest,closing:balance});
+
+tbody.insertAdjacentHTML("beforeend",`
+<tr>
+<td>${y}</td>
+<td>${formatMoney(contribution)}</td>
+<td>${formatMoney(opening)}</td>
+<td>${formatMoney(interest)}</td>
+<td><b>${formatMoney(balance)}</b></td>
+</tr>
+`);
+
+}
+
+const investment=yearly*years;
+const interestEarned=balance-investment;
+
+document.getElementById("investment").textContent=formatMoney(investment);
+document.getElementById("interest").textContent=formatMoney(interestEarned);
+document.getElementById("maturity").textContent=formatMoney(balance);
+
+
+// show loss message
+if(type==="monthly"){
+
+// calculate lumpsum maturity for comparison
+let lsBalance=0;
+
+for(let y=1;y<=years;y++){
+    let interest=(lsBalance+yearly)*rate;
+    lsBalance+=yearly+interest;
+}
+
+let loss=lsBalance-balance;
+
+document.getElementById("lossMsg").innerHTML=
+"⚠️ You could earn approximately <b>"+formatMoney(loss)+" MORE</b> by investing before April 5 every year.";
+
+}else{
+document.getElementById("lossMsg").innerHTML="";
+}
+
+}
+
+
+
+function downloadPPFExcel(){
+
+if(ppfData.length===0){
+alert("Please calculate first");
+return;
+}
+
+let csv="Year,Contribution,Opening,Interest,Closing\n";
+
+ppfData.forEach(r=>{
+csv+=`${r.y},${r.contribution.toFixed(0)},${r.opening.toFixed(0)},${r.interest.toFixed(0)},${r.closing.toFixed(0)}\n`;
+});
+
+const blob=new Blob([csv],{type:"text/csv"});
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+a.href=url;
+a.download="PRO_PPF_Calculation.csv";
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
 </script>
 
 </body>
