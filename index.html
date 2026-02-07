@@ -9,20 +9,40 @@
 
 <style>
 
-/* ---------- GLOBAL WIDTH FIX (MOST IMPORTANT) ---------- */
+/* ---------- GLOBAL RESET (VERY IMPORTANT) ---------- */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+}
+
+
+/* ---------- HERO FIX (REMOVES HUGE GAP) ---------- */
+
+.hero{
+padding:45px 20px !important;
+}
+
+
+/* ---------- MAIN WIDTH ---------- */
 
 main{
-max-width:1800px;     /* Increased width */
-width:95%;           /* allows stretch */
-margin:auto;
-padding:0 10px;      /* removes fake side spacing */
+max-width:1700px;
+width:96%;
+margin:25px auto;   /* removes big space under hero */
+padding:0;
 }
 
 
 /* ---------- BUTTON ---------- */
 
 .primary-btn{
-margin-top:14px;
+margin-top:12px;
 background:linear-gradient(135deg,#0f3a5f,#155b88);
 color:white;
 border:none;
@@ -48,9 +68,9 @@ box-shadow:0 10px 24px rgba(15,58,95,0.45);
 .trust-strip{
 display:flex;
 flex-wrap:wrap;
-gap:32px;
+gap:26px;
 justify-content:center;
-margin-top:30px;
+margin-top:18px;
 font-weight:400;
 color:white;
 font-size:13px;
@@ -68,25 +88,42 @@ font-size:16px;
 }
 
 
+/* ---------- SECTION SPACING (MAJOR FIX) ---------- */
+
+.section{
+margin-top:45px;   /* was 90px */
+}
+
+
+/* ---------- HEADING FIX ---------- */
+
+h1,h2,h3{
+margin-bottom:10px;
+}
+
+p{
+margin-bottom:12px;
+}
+
+
 /* ---------- GLOBAL GRID ---------- */
 
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-gap:32px;
-margin-top:50px;
+gap:26px;
+margin-top:20px;   /* was 50px */
 align-items:stretch;
 width:100%;
 }
 
 
-/* ⭐⭐⭐⭐⭐ FIX — FORCE STEP CARDS INTO PERFECT ONE ROW */
+/* ⭐ FORCE STEP CARDS INTO ONE PERFECT ROW */
 
 .journey .grid{
-grid-template-columns:repeat(4, minmax(320px,1fr));
-gap:28px;
+grid-template-columns:repeat(4, 1fr);
+gap:24px;
 }
-
 
 /* Tablet */
 @media(max-width:1300px){
@@ -106,11 +143,11 @@ grid-template-columns:1fr;
 /* ---------- CARD ---------- */
 
 .card{
-padding:34px;
+padding:26px;
 border-radius:16px;
 background:white;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-transition:.28s;
+box-shadow:0 10px 26px rgba(0,0,0,.06);
+transition:.25s;
 display:flex;
 flex-direction:column;
 width:100%;
@@ -118,46 +155,40 @@ min-width:0;
 }
 
 .card:hover{
-transform:translateY(-8px);
-box-shadow:0 18px 48px rgba(0,0,0,.12);
+transform:translateY(-6px);
+box-shadow:0 16px 40px rgba(0,0,0,.10);
 }
 
 .card strong{
 font-size:18px;
-margin-bottom:8px;
+margin-bottom:6px;
 }
 
 .card p{
-margin-bottom:18px;
+margin-bottom:14px;
 color:#555;
 }
 
 .card .primary-btn{
 align-self:flex-start;
-min-width:230px;
+min-width:220px;
 }
 
 
-/* ---------- SECTION SPACING ---------- */
-
-.section{
-margin-top:90px;
-}
-
-
-/* ---------- HERO ---------- */
+/* ---------- HERO TEXT TIGHTEN ---------- */
 
 .hero h2{
-font-size:20px;
-letter-spacing:.3px;
+font-size:28px;
 }
 
 .hero p{
-font-size:14px;
+font-size:15px;
 opacity:.9;
+margin-top:6px;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -180,7 +211,7 @@ opacity:.9;
 </header>
 
 <section class="hero">
-    <h2>Take Control of Your Financial Life !!!</h2>
+    <h2>Take Control of Your Financial Life !</h2>
     <p>Know where you stand. Understand what to do next. Move toward financial freedom.</p>
 
     <button class="primary-btn"
