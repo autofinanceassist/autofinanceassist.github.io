@@ -3,58 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>SPI Mutual Fund Ultra Tracker | Auto Finance Assist</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
 <style>
 
-body{
-font-family:Arial;
-margin:0;
-background:#f4f6fb;
-}
-
-/* HEADER */
-
-header{
-background:#1e3a8a;
-color:white;
-padding:18px;
-text-align:center;
-}
-
-/* CARDS */
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:15px;
-max-width:1100px;
-margin:auto;
-}
-
-.card{
-background:white;
-padding:18px;
-border-radius:12px;
-box-shadow:0 4px 10px rgba(0,0,0,.05);
-}
-
-button{
-background:#2563eb;
-color:white;
-border:none;
-padding:10px;
-border-radius:8px;
-cursor:pointer;
-width:100%;
-font-weight:bold;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-/* SUMMARY */
+/* ONLY kept tracker-specific styles */
+/* No header/footer color edits */
 
 .summary{
 max-width:1100px;
@@ -72,51 +30,68 @@ text-align:center;
 box-shadow:0 4px 10px rgba(0,0,0,.05);
 }
 
-/* TABLE */
-
 table{
 width:100%;
 border-collapse:collapse;
 background:white;
 }
 
-th,td{
+th{
+background:#0f3a5f;
+color:white;
+}
+
+td, th{
 padding:10px;
 border:1px solid #ddd;
 text-align:center;
 }
 
-footer{
-text-align:center;
-padding:20px;
-margin-top:40px;
-background:#111827;
-color:white;
-}
-
 </style>
 </head>
+
 <body>
 
+<div class="top-container">
+
 <header>
-<h1>Auto Finance Assist</h1>
-<p>SPI Mutual Fund Ultra Tracker</p>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
 </header>
 
-<section style="padding:30px">
+<section class="hero">
+    <h2>SPI Mutual Fund Ultra Tracker</h2>
+    <p>Track your real portfolio with live NAV, returns and XIRR.</p>
+</section>
 
-<h2 style="text-align:center">Add Investment</h2>
+</div>
 
-<div class="grid">
+
+<main>
+
+<section class="section light">
+
+<h2>Add Investment</h2>
+
+<div class="grid" style="max-width:1000px;margin:auto">
 
 <div class="card">
 <label>Fund Name</label>
-<input id="fund" placeholder="Example: Nifty 50" style="width:100%">
+<input id="fund" placeholder="Example: Nifty 50">
 </div>
 
 <div class="card">
 <label>Type</label>
-<select id="type" style="width:100%">
+<select id="type">
 <option>SIP</option>
 <option>Lumpsum</option>
 </select>
@@ -124,12 +99,12 @@ color:white;
 
 <div class="card">
 <label>Amount (₹)</label>
-<input id="amount" type="number" style="width:100%">
+<input id="amount" type="number">
 </div>
 
 <div class="card">
 <label>Start Date</label>
-<input id="date" type="date" style="width:100%">
+<input id="date" type="date">
 </div>
 
 <div class="card">
@@ -140,7 +115,10 @@ color:white;
 
 </section>
 
-<!-- SUMMARY -->
+
+<section class="section">
+
+<h2>Portfolio Summary</h2>
 
 <div class="summary">
 
@@ -166,8 +144,14 @@ color:white;
 
 </div>
 
-<section style="max-width:1100px;margin:auto">
+</section>
 
+
+<section class="section">
+
+<h2>Your Investments</h2>
+
+<div style="overflow-x:auto;">
 <table>
 <thead>
 <tr>
@@ -184,6 +168,7 @@ color:white;
 </thead>
 <tbody id="table"></tbody>
 </table>
+</div>
 
 <br>
 
@@ -191,9 +176,19 @@ color:white;
 
 </section>
 
+
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
+Users should make financial decisions based on their personal judgment.
+</div>
+
+</main>
+
+
 <footer>
-© 2026 Auto Finance Assist
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
+
 
 <script>
 
@@ -284,7 +279,7 @@ localStorage.setItem("ultraMF",JSON.stringify(investments));
 render();
 }
 
-/* UPDATE NAV DAILY */
+/* UPDATE NAV */
 
 function updateNAV(){
 
@@ -359,7 +354,7 @@ localStorage.setItem("ultraMF",JSON.stringify(investments));
 render();
 }
 
-/* DOWNLOAD FULL TRACKER */
+/* DOWNLOAD */
 
 function downloadTracker(){
 
