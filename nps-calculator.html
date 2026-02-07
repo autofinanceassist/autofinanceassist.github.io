@@ -4,183 +4,63 @@
 <meta charset="UTF-8">
 <title>NPS Calculator | Auto Finance Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 
-<style>
+<!-- Font Awesome (MATCH FD) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
-/* ===== BODY ===== */
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f4f7fb;
-}
-
-/* ===== FIXED HEADER ===== */
-header{
-    position:fixed;
-    top:0;
-    width:100%;
-    background:#0b3d91;
-    color:white;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 40px;
-    z-index:1000;
-}
-
-header h1{
-    margin:0;
-    font-size:22px;
-}
-
-header p{
-    margin:0;
-    font-size:13px;
-    opacity:.9;
-}
-
-nav a{
-    color:white;
-    text-decoration:none;
-    font-weight:bold;
-    background:#1456c3;
-    padding:8px 18px;
-    border-radius:6px;
-}
-
-/* ===== FIXED FOOTER ===== */
-footer{
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#0b3d91;
-    color:white;
-    text-align:center;
-    padding:10px;
-}
-
-/* ===== SCROLLABLE MAIN ===== */
-main{
-    position:fixed;
-    top:80px;
-    bottom:50px;
-    overflow-y:auto;
-    width:100%;
-    padding:30px 20px;
-    box-sizing:border-box;
-}
-
-/* ===== SECTIONS ===== */
-.section{
-    max-width:1100px;
-    margin:auto;
-    margin-bottom:40px;
-}
-
-.section h2{
-    text-align:center;
-    margin-bottom:10px;
-}
-
-/* ===== GRID ===== */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
-    gap:20px;
-    margin-top:20px;
-}
-
-/* ===== CARD ===== */
-.card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 2px 8px rgba(0,0,0,.05);
-    text-align:left;
-}
-
-.card h3{
-    margin-top:5px;
-    color:#0b3d91; /* restored result color */
-}
-
-/* ===== INPUT ===== */
-input{
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
-
-/* ===== BUTTON ===== */
-button{
-    background:#1456c3;
-    color:white;
-    border:none;
-    padding:12px;
-    width:100%;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
-}
-
-button:hover{
-    background:#0b3d91;
-}
-
-/* ===== TABLE ===== */
-table{
-    border-collapse:collapse;
-    background:white;
-}
-
-th{
-    background:#0b3d91;   /* FIXED — no sky blue */
-    color:white;
-}
-
-th, td{
-    padding:10px;
-    text-align:center;
-}
-
-</style>
 </head>
 
 <body>
 
+<!-- ✅ FIXED TOP AREA -->
+<div class="top-container">
+
 <header>
-    <div>
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="index.html">Home</a>
     </nav>
 </header>
 
+<!-- ✅ HERO -->
+<section class="hero">
+    <h2>National Pension System (NPS) Calculator</h2>
+    <p>Estimate your retirement corpus and expected monthly pension.</p>
+</section>
+
+</div>
+
+
+<!-- ✅ MAIN -->
 <main>
 
 <!-- INPUT -->
-<section class="section">
-    <h2>National Pension System (NPS) Calculator</h2>
-    <p style="text-align:center;">Estimate your retirement corpus and expected monthly pension.</p>
+<section class="section light">
+    <h2>NPS Calculator</h2>
+    <p>Estimate your retirement corpus and expected monthly pension.</p>
 
-    <div class="grid" style="max-width:600px;margin:auto;">
+    <div class="grid" style="max-width:600px">
 
         <div class="card">
-            <label>Monthly Contribution</label>
+            <label>Monthly Contribution</label><br>
             <input type="number" id="monthly" placeholder="Example: 5000">
         </div>
 
         <div class="card">
-            <label>Expected Annual Return (%)</label>
+            <label>Expected Annual Return (%)</label><br>
             <input type="number" id="rate" placeholder="Example: 10">
         </div>
 
         <div class="card">
-            <label>Investment Period (Years)</label>
+            <label>Investment Period (Years)</label><br>
             <input type="number" id="years" placeholder="Example: 25">
         </div>
 
@@ -194,28 +74,27 @@ th, td{
 
 <!-- RESULT -->
 <section class="section">
-
     <h2>Result</h2>
 
-    <div class="grid">
+    <div class="grid" style="max-width:900px">
 
         <div class="card">
-            <strong>Total Investment</strong>
+            <p><strong>Total Investment</strong></p>
             <h3 id="investment">—</h3>
         </div>
 
         <div class="card">
-            <strong>Total Gain</strong>
+            <p><strong>Total Gain</strong></p>
             <h3 id="gain">—</h3>
         </div>
 
         <div class="card">
-            <strong>Maturity Amount</strong>
+            <p><strong>Maturity Amount</strong></p>
             <h3 id="maturity">—</h3>
         </div>
 
         <div class="card">
-            <strong>Expected Monthly Pension</strong>
+            <p><strong>Expected Monthly Pension</strong></p>
             <h3 id="pension">—</h3>
         </div>
 
@@ -230,11 +109,10 @@ th, td{
 
 <!-- TABLE -->
 <section class="section">
-
     <h2>Monthly NPS Growth Illustration</h2>
 
     <div style="overflow-x:auto;">
-        <table id="npsTable" width="100%" border="1">
+        <table id="npsTable" border="1" cellpadding="8" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Month</th>
@@ -249,17 +127,20 @@ th, td{
     </div>
 
     <br>
-
-    <div style="max-width:300px;margin:auto;">
-        <button onclick="downloadNPSExcel()">Download Excel (CSV)</button>
-    </div>
-
+    <button onclick="downloadNPSExcel()">Download Excel (CSV)</button>
 </section>
+
+<div style="max-width:900px; margin:40px auto; font-size:14px; text-align:center; color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice. 
+Users should make financial decisions based on their personal judgment.
+</div>
 
 </main>
 
+
+<!-- ✅ MATCHING FOOTER -->
 <footer>
-© 2026 Auto Finance Assist | NPS Calculator
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
 
 
