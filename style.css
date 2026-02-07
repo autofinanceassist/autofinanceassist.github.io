@@ -11,22 +11,25 @@ body{
     background:#f5f7fa;
     color:#1f2937;
 
-    height:100vh;
-
+    min-height:100vh;   /* ✅ better than height */
     display:flex;
     flex-direction:column;
 
-    overflow:hidden; /* prevents double scroll */
+    /* ❌ REMOVE overflow hidden — causes sticky bugs */
 }
 
 
 /* TOP AREA (HEADER + HERO) */
 .top-container{
-    flex-shrink:0;
     position:sticky;
     top:0;
     z-index:1000;
+    flex-shrink:0;
+
+    /* ✅ Prevents tiny jump/glitch on scroll */
+    background:#ffffff;
 }
+
 
 /* HEADER */
 header{
@@ -95,10 +98,13 @@ nav a:hover{
 }
 
 
-/* ✅ SCROLLABLE MAIN */
+/* ✅ SCROLLABLE MAIN — NO OVERLAP EVER */
 main{
     flex:1;
     overflow-y:auto;
+
+    /* critical for flex scrolling */
+    min-height:0;
 }
 
 
@@ -154,7 +160,7 @@ main{
 }
 
 
-/* ✅ FIXED FOOTER */
+/* FOOTER */
 footer{
     height:60px;
     background:#0f3a5f;
@@ -165,6 +171,5 @@ footer{
     justify-content:center;
 
     font-size:12px;
-
     flex-shrink:0;
 }
