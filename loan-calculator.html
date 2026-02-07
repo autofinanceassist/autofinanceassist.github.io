@@ -6,14 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
-<!-- Font Awesome (MATCH FD) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
 </head>
 
 <body>
 
-<!-- ✅ FIXED TOP AREA -->
 <div class="top-container">
 
 <header>
@@ -30,32 +27,22 @@
     </nav>
 </header>
 
-<!-- ✅ HERO -->
 <section class="hero">
     <h2>Loan EMI Calculator</h2>
-    <p>Calculate EMI and view full loan repayment schedule.</p>
+    <p>Calculate EMI, explore prepayment benefits, and close your loan faster.</p>
 </section>
 
 </div>
 
 
-<!-- ✅ MAIN -->
 <main>
 
+<!-- EMI INPUT -->
 <section class="section light">
     <h2>Loan EMI Calculator</h2>
     <p>Calculate EMI and view full loan repayment schedule.</p>
 
     <div class="grid" style="max-width:600px">
-
-        <div class="card">
-            <label>Loan Type</label><br>
-            <select id="loanType">
-                <option>Personal Loan</option>
-                <option>Car Loan</option>
-                <option>Home Loan</option>
-            </select>
-        </div>
 
         <div class="card">
             <label>Loan Amount</label><br>
@@ -80,6 +67,7 @@
 </section>
 
 
+<!-- SUMMARY -->
 <section class="section">
     <h2>Loan Summary</h2>
 
@@ -104,6 +92,49 @@
 </section>
 
 
+<!-- ⭐ ULTRA FEATURE -->
+<section class="section">
+    <h2>Lump Sum Prepayment Planner</h2>
+    <p style="text-align:center;">See how a one-time payment can reduce your loan tenure and save interest.</p>
+
+    <div class="grid" style="max-width:600px">
+
+        <div class="card">
+            <label>Prepayment Amount</label><br>
+            <input type="number" id="prepay" placeholder="Example: 100000">
+        </div>
+
+        <div class="card">
+            <button onclick="calculatePrepayment()">Check Savings</button>
+        </div>
+
+    </div>
+
+    <div class="grid" style="max-width:900px; margin-top:20px;">
+
+        <div class="card">
+            <p><strong>New Loan Tenure</strong></p>
+            <h3 id="newTenure">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Interest Saved</strong></p>
+            <h3 id="interestSaved">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Loan Reduced By</strong></p>
+            <h3 id="monthsSaved">—</h3>
+        </div>
+
+    </div>
+
+    <p id="smartTip" style="text-align:center; margin-top:15px; font-size:14px;"></p>
+
+</section>
+
+
+<!-- TABLE -->
 <section class="section">
     <h2>Monthly Loan Repayment Schedule</h2>
 
@@ -135,16 +166,21 @@ Users should make financial decisions based on their personal judgment.
 </main>
 
 
-<!-- ✅ MATCHING FOOTER -->
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
 
 
 <script>
+
 let loanData = [];
+let originalEMI = 0;
+let originalMonths = 0;
+let originalInterest = 0;
+let monthlyRate = 0;
 
 function calculateLoan() {
+
     const P = Number(document.getElementById("amount").value);
     const annualRate = Number(document.getElementById("rate").value);
     const years = Number(document.getElementById("years").value);
@@ -154,51 +190,94 @@ function calculateLoan() {
         return;
     }
 
-    const r = (annualRate / 100) / 12;
-    const n = years * 12;
+    monthlyRate = (annualRate / 100) / 12;
+    originalMonths = years * 12;
 
-    const emi = (P * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    originalEMI = (P * monthlyRate * Math.pow(1 + monthlyRate, originalMonths)) /
+                  (Math.pow(1 + monthlyRate, originalMonths) - 1);
 
     let balance = P;
     loanData = [];
-
     const tableBody = document.querySelector("#loanTable tbody");
     tableBody.innerHTML = "";
 
-    let totalInterest = 0;
+    originalInterest = 0;
 
-    for (let month = 1; month <= n; month++) {
-        const interest = balance * r;
-        const principal = emi - interest;
+    for (let month = 1; month <= originalMonths; month++) {
+
+        const interest = balance * monthlyRate;
+        const principal = originalEMI - interest;
         balance -= principal;
-        totalInterest += interest;
+        originalInterest += interest;
 
-        loanData.push({
-            month,
-            emi,
-            principal,
-            interest,
-            balance: balance < 0 ? 0 : balance
-        });
+        loanData.push({month, emi: originalEMI, principal, interest, balance});
 
-        const row = `
-            <tr>
-                <td>${month}</td>
-                <td>${emi.toFixed(2)}</td>
-                <td>${principal.toFixed(2)}</td>
-                <td>${interest.toFixed(2)}</td>
-                <td>${balance < 0 ? "0.00" : balance.toFixed(2)}</td>
-            </tr>
-        `;
-        tableBody.insertAdjacentHTML("beforeend", row);
+        tableBody.insertAdjacentHTML("beforeend", `
+        <tr>
+            <td>${month}</td>
+            <td>${originalEMI.toFixed(2)}</td>
+            <td>${principal.toFixed(2)}</td>
+            <td>${interest.toFixed(2)}</td>
+            <td>${balance < 0 ? "0.00" : balance.toFixed(2)}</td>
+        </tr>`);
     }
 
-    document.getElementById("emi").textContent = emi.toFixed(2);
-    document.getElementById("totalInterest").textContent = totalInterest.toFixed(2);
-    document.getElementById("totalPayment").textContent = (P + totalInterest).toFixed(2);
+    document.getElementById("emi").textContent = originalEMI.toFixed(2);
+    document.getElementById("totalInterest").textContent = originalInterest.toFixed(2);
+    document.getElementById("totalPayment").textContent = (P + originalInterest).toFixed(2);
 }
 
+
+function calculatePrepayment() {
+
+    const prepay = Number(document.getElementById("prepay").value);
+
+    if (!prepay || originalEMI === 0) {
+        alert("Calculate EMI first and enter prepayment.");
+        return;
+    }
+
+    let balance = Number(document.getElementById("amount").value) - prepay;
+
+    if(balance <= 0){
+        alert("Your loan would be fully closed!");
+        return;
+    }
+
+    let months = 0;
+    let interestPaid = 0;
+
+    while (balance > 0) {
+
+        const interest = balance * monthlyRate;
+        const principal = originalEMI - interest;
+
+        balance -= principal;
+        interestPaid += interest;
+        months++;
+
+        if(months > 1000) break;
+    }
+
+    const interestSaved = originalInterest - interestPaid;
+    const monthsSaved = originalMonths - months;
+
+    document.getElementById("newTenure").textContent =
+        (months/12).toFixed(1) + " Years";
+
+    document.getElementById("interestSaved").textContent =
+        interestSaved.toFixed(2);
+
+    document.getElementById("monthsSaved").textContent =
+        monthsSaved + " Months Earlier";
+
+    document.getElementById("smartTip").innerHTML =
+        "💡 <strong>Smart Tip:</strong> Prepaying early in the loan saves maximum interest because interest is highest in initial years.";
+}
+
+
 function downloadLoanExcel() {
+
     if (loanData.length === 0) {
         alert("Please calculate EMI first");
         return;
@@ -220,6 +299,7 @@ function downloadLoanExcel() {
 
     URL.revokeObjectURL(url);
 }
+
 </script>
 
 </body>
