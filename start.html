@@ -5,229 +5,86 @@
 <title>Financial Life Starter | Auto Finance Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
+<link rel="stylesheet" href="style.css">
 
-/* ===== RESET ===== */
+<!-- Font Awesome (same as index) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
-}
-
-/* ===== FIXED HEADER ===== */
-
-header{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:70px;
-background:#0d1b2a;
-color:white;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:0 40px;
-z-index:1000;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-font-size:18px;
-}
-
-nav a{
-color:white;
-text-decoration:none;
-margin-left:20px;
-font-weight:500;
-}
-
-nav a:hover{
-text-decoration:underline;
-}
-
-/* ===== FIXED FOOTER ===== */
-
-footer{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:50px;
-background:#0d1b2a;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-}
-
-/* ===== MAIN SCROLL AREA ===== */
-
-main{
-position:fixed;
-top:70px;
-bottom:50px;
-left:0;
-right:0;
-overflow-y:auto;
-padding:40px;
-background:#f4f7fb;
-}
-
-/* HERO (NOW INSIDE MAIN) */
-
-.hero{
-text-align:center;
-margin-bottom:40px;
-}
-
-.hero h2{
-font-size:32px;
-margin-bottom:10px;
-}
-
-.hero p{
-font-size:18px;
-color:#555;
-}
-
-/* GRID */
-
-.grid{
-display:grid;
-grid-template-columns: 1fr 1fr 1fr;
-gap:30px;
-align-items:start;
-}
-
-/* CARD */
-
-.card{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,0.06);
-margin-bottom:20px;
-}
-
-.card h3{
-margin-bottom:15px;
-}
-
-label{
-font-weight:600;
-}
-
-input,select{
-width:100%;
-padding:10px;
-margin-top:8px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:8px;
-background:#0077b6;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#023e8a;
-}
-
-/* Suggestion formatting */
-
-.step-title{
-text-align:center;
-font-weight:bold;
-margin-top:10px;
-}
-
-.step-content{
-text-align:left;
-margin-top:8px;
-}
-
-</style>
 </head>
 
 <body>
 
-<!-- FIXED HEADER -->
+<!-- TOP FIXED AREA (IDENTICAL TO INDEX) -->
+<div class="top-container">
+
 <header>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
+    </div>
 
-<div class="logo">
-<strong>Auto Finance Assist</strong>
-</div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="fd.html">FD Calculator</a>
-<a href="rd.html">RD Calculator</a>
-<a href="mutualfund.html">Mutual Funds</a>
-</nav>
-
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="fd-calculator.html">FD Calculator</a>
+        <a href="rd-calculator.html">RD Calculator</a>
+        <a href="sip-calculator.html">Mutual Funds</a>
+    </nav>
 </header>
 
+<section class="hero">
+    <h2>Financial Life Starter</h2>
 
+    <p style="font-size:18px; max-width:750px; margin:auto;">
+        Know where you stand. Understand what to do next. Move toward financial freedom.
+    </p>
 
-<!-- SCROLLABLE MAIN -->
-<main>
+    <p><strong>Protection First. Then Wealth.</strong></p>
+</section>
 
-<div class="hero">
-<h2>Financial Life Starter</h2>
-
-<p>
-Know where you stand. Understand what to do next. Move toward financial freedom
-</p>
-
-<p><b>Protection First. Then Wealth.</b></p>
 </div>
 
 
-<div class="grid">
+<!-- MAIN -->
+<main>
+
+<section class="section">
+
+<div class="grid" style="
+grid-template-columns: 1fr 1fr 1fr;
+gap:30px;
+align-items:start;
+">
 
 <!-- INPUT COLUMN -->
-
 <div>
 
 <div class="card">
-<label>Current Age</label>
+<label>Current Age</label><br>
 <input type="number" id="age">
 </div>
 
 <div class="card">
-<label>Monthly Income</label>
+<label>Monthly Income</label><br>
 <input type="number" id="income">
 </div>
 
 <div class="card">
-<label>Monthly Expense</label>
+<label>Monthly Expense</label><br>
 <input type="number" id="expense">
 </div>
 
 <div class="card">
-<label>Current Savings</label>
+<label>Current Savings</label><br>
 <input type="number" id="savings">
 </div>
 
 
 <!-- TERM -->
-
 <div class="card">
-<label>Do you have Term Life Insurance?</label>
+<label>Do you have Term Life Insurance?</label><br>
 <select id="termInsurance" onchange="toggleTerm()">
 <option value="no">No</option>
 <option value="yes">Yes</option>
@@ -235,24 +92,21 @@ Know where you stand. Understand what to do next. Move toward financial freedom
 </div>
 
 <div id="termFields" style="display:none;">
-
 <div class="card">
-<label>Sum Assured</label>
+<label>Sum Assured</label><br>
 <input type="number" id="termCover">
 </div>
 
 <div class="card">
-<label>Yearly Premium</label>
+<label>Yearly Premium</label><br>
 <input type="number" id="termPremium">
 </div>
-
 </div>
 
 
 <!-- HEALTH -->
-
 <div class="card">
-<label>Do you have Health Insurance?</label>
+<label>Do you have Health Insurance?</label><br>
 <select id="healthInsurance" onchange="toggleHealth()">
 <option value="no">No</option>
 <option value="yes">Yes</option>
@@ -260,17 +114,15 @@ Know where you stand. Understand what to do next. Move toward financial freedom
 </div>
 
 <div id="healthFields" style="display:none;">
-
 <div class="card">
-<label>Family Cover (Sum Assured)</label>
+<label>Family Cover (Sum Assured)</label><br>
 <input type="number" id="familyCover">
 </div>
 
 <div class="card">
-<label>Parents Cover (Sum Assured)</label>
+<label>Parents Cover (Sum Assured)</label><br>
 <input type="number" id="parentsCover">
 </div>
-
 </div>
 
 <div class="card">
@@ -281,8 +133,8 @@ Know where you stand. Understand what to do next. Move toward financial freedom
 
 
 <!-- SNAPSHOT -->
-
 <div>
+
 <div class="card">
 <h3>Financial Snapshot</h3>
 
@@ -299,27 +151,29 @@ Know where you stand. Understand what to do next. Move toward financial freedom
 <h2 id="healthGap">—</h2>
 
 </div>
+
 </div>
 
 
 
 <!-- SUGGESTIONS -->
-
 <div>
+
 <div class="card">
 <h3>Personalized Roadmap</h3>
 <div id="suggestions">
 Enter your details to generate your roadmap.
 </div>
 </div>
+
 </div>
 
 </div>
+</section>
+
 </main>
 
 
-
-<!-- FIXED FOOTER -->
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
@@ -344,18 +198,21 @@ document.getElementById("healthInsurance").value === "yes" ? "block":"none";
 
 function generatePlan(){
 
-const age = Number(ageEl.value);
-const income = Number(incomeEl.value);
-const expense = Number(expenseEl.value);
-const savings = Number(savingsEl.value);
+const age = Number(document.getElementById("age").value);
+const income = Number(document.getElementById("income").value);
+const expense = Number(document.getElementById("expense").value);
+const savings = Number(document.getElementById("savings").value);
 
 if(!age || !income || !expense){
 alert("Please fill required fields");
 return;
 }
 
+/* Emergency */
 const emergencyFund = expense * 6;
 
+
+/* Term */
 const yearsLeft = 60 - age;
 const yearlyExpense = expense * 12;
 const requiredTerm = yearlyExpense * Math.pow(1.07, yearsLeft) * yearsLeft;
@@ -363,37 +220,36 @@ const requiredTerm = yearlyExpense * Math.pow(1.07, yearsLeft) * yearsLeft;
 let termGapText="";
 let termSuggestion="";
 
-if(termInsurance.value === "yes"){
+if(document.getElementById("termInsurance").value === "yes"){
 
-const current = Number(termCover.value);
+const current = Number(document.getElementById("termCover").value);
 const gap = requiredTerm - current;
 
 if(gap <= 0){
 termGapText="✅ Fully Protected";
-termSuggestion="Excellent! Your family is financially protected.";
+termSuggestion="✅ Excellent! Your family is financially protected.";
 }else{
 termGapText=formatMoney(gap);
-termSuggestion=`Increase your life cover by <b>${formatMoney(gap)}</b>.`;
+termSuggestion=`⚠️ Increase your life cover by <b>${formatMoney(gap)}</b>.`;
 }
 
 }else{
 termGapText=formatMoney(requiredTerm);
-termSuggestion=`Buy term insurance worth <b>${formatMoney(requiredTerm)}</b>.`;
+termSuggestion=`🚨 Buy term insurance worth <b>${formatMoney(requiredTerm)}</b>.`;
 }
 
 
-/* HEALTH */
-
+/* Health */
 const familyMin = 1000000;
 const parentsMin = 1500000;
 
 let healthText="";
 let healthSuggestion="";
 
-if(healthInsurance.value === "yes"){
+if(document.getElementById("healthInsurance").value === "yes"){
 
-const fam = Number(familyCover.value);
-const par = Number(parentsCover.value);
+const fam = Number(document.getElementById("familyCover").value);
+const par = Number(document.getElementById("parentsCover").value);
 
 let issues=[];
 
@@ -407,7 +263,7 @@ issues.push(`Increase parents cover by ${formatMoney(parentsMin - par)}`);
 
 if(issues.length === 0){
 healthText="✅ Well Protected";
-healthSuggestion="Great! Your health coverage is strong.";
+healthSuggestion="✅ Great! Your health coverage is strong.";
 }else{
 healthText="⚠️ Under Protected";
 healthSuggestion=issues.join("<br>");
@@ -415,52 +271,59 @@ healthSuggestion=issues.join("<br>");
 
 }else{
 
-healthText="No Coverage";
-healthSuggestion=`Buy minimum cover:<br>
-Family: ${formatMoney(familyMin)}<br>
-Parents: ${formatMoney(parentsMin)}`;
+healthText="🚨 No Coverage";
+healthSuggestion=`Buy minimum health cover:<br>
+• Family: ${formatMoney(familyMin)}<br>
+• Parents: ${formatMoney(parentsMin)}`;
 }
 
 
-/* SNAPSHOT */
+/* Snapshot */
+document.getElementById("emergency").textContent=formatMoney(emergencyFund);
+document.getElementById("term").textContent=formatMoney(requiredTerm);
+document.getElementById("termGap").textContent=termGapText;
+document.getElementById("healthGap").textContent=healthText;
 
-emergency.textContent=formatMoney(emergencyFund);
-term.textContent=formatMoney(requiredTerm);
-termGap.textContent=termGapText;
-healthGap.textContent=healthText;
 
-
-/* SUGGESTIONS */
-
+/* Suggestions */
 let emergencyMsg = savings >= emergencyFund
-? "Your emergency fund is strong."
+? "✅ Your emergency fund is strong."
 : `Build emergency savings up to <b>${formatMoney(emergencyFund)}</b>.`;
 
-suggestions.innerHTML=`
+document.getElementById("suggestions").innerHTML=`
 
-<div class="step-title">STEP 1 — PROTECTION</div>
-<div class="step-content">
+<div style="text-align:center;"><b>STEP 1 — PROTECTION</b></div>
+<div style="text-align:left; margin-top:8px;">
 ✔ ${termSuggestion}<br><br>
 ✔ ${healthSuggestion}
 </div>
 
-<div class="step-title">STEP 2 — STABILITY</div>
-<div class="step-content">
+<br>
+
+<div style="text-align:center;"><b>STEP 2 — STABILITY</b></div>
+<div style="text-align:left; margin-top:8px;">
 ✔ ${emergencyMsg}<br>
 ✔ Avoid high-interest debt
 </div>
 
-<div class="step-title">STEP 3 — WEALTH</div>
-<div class="step-content">
+<br>
+
+<div style="text-align:center;"><b>STEP 3 — WEALTH</b></div>
+<div style="text-align:left; margin-top:8px;">
 ✔ Start long-term investing<br>
 ✔ Increase investments yearly<br>
 ✔ Stay consistent for decades
 </div>
 
-<div class="step-title">
-Golden Rule: Protection → Emergency → Wealth
+<br>
+
+<div style="text-align:center;">
+<b>Golden Rule:</b><br>
+Protection → Emergency → Wealth
 </div>
+
 `;
+
 }
 
 </script>
