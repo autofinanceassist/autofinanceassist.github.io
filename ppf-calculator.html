@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PRO PPF Calculator | Auto Finance Assist</title>
+<title>ULTRA PRO PPF Calculator | Auto Finance Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
@@ -45,13 +45,29 @@ td, th{
 
 input:disabled{
     background:#f2f2f2;
-    cursor:not-allowed;
 }
 
 .limit-msg{
     color:#b00020;
     font-weight:600;
     margin-top:10px;
+}
+
+/* ⭐ Wealth Difference Card */
+.wealth-card{
+    max-width:900px;
+    margin:30px auto;
+    background:#f4f8ff;
+    border-left:8px solid #0f3a5f;
+    padding:22px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:500;
+}
+
+.wealth-card b{
+    color:#0f3a5f;
+    font-size:22px;
 }
 
 </style>
@@ -91,7 +107,7 @@ input:disabled{
 💡 <strong>Pro Tip:</strong> Invest before <b>April 5</b> to earn FULL interest for the year.
 </div>
 
-<h2>PRO PPF Calculator</h2>
+<h2>ULTRA PRO PPF Calculator</h2>
 
 <div class="grid" style="max-width:650px">
 
@@ -133,7 +149,7 @@ input:disabled{
 </div>
 
 <div class="card">
-<button onclick="calculatePPF()">Calculate PRO PPF</button>
+<button onclick="calculatePPF()">Calculate ULTRA PPF</button>
 </div>
 
 </div>
@@ -163,6 +179,9 @@ input:disabled{
 </div>
 
 <p id="lossMsg" style="margin-top:20px;font-weight:600;color:#b00020;"></p>
+
+<!-- ⭐ NEW WEALTH CARD -->
+<div id="wealthCard" class="wealth-card" style="display:none;"></div>
 
 </section>
 
@@ -213,6 +232,7 @@ const type=document.querySelector('input[name="type"]:checked').value;
 
 const yearly=document.getElementById("yearly");
 const monthly=document.getElementById("monthly");
+
 document.getElementById("limitMsg").innerHTML="";
 
 if(type==="lumpsum"){
@@ -227,32 +247,61 @@ if(type==="lumpsum"){
 
 }
 
-
-// ⭐ RBI LIMIT ENFORCER
 function enforceLimits(){
 
-const yearlyField=document.getElementById("yearly");
-const monthlyField=document.getElementById("monthly");
+const yearly=document.getElementById("yearly");
+const monthly=document.getElementById("monthly");
 const msg=document.getElementById("limitMsg");
 
 msg.innerHTML="";
 
-if(yearlyField.value>150000){
-    yearlyField.value=150000;
+if(yearly.value>150000){
+    yearly.value=150000;
     msg.innerHTML="PPF maximum yearly contribution is ₹1,50,000.";
 }
 
-if(monthlyField.value>12500){
-    monthlyField.value=12500;
+if(monthly.value>12500){
+    monthly.value=12500;
     msg.innerHTML="Monthly limit is ₹12,500 (₹1.5L per year).";
 }
 
 }
 
-
 function formatMoney(num){
     return "₹ " + num.toLocaleString('en-IN',{maximumFractionDigits:0});
 }
+
+
+// ⭐ reusable maturity calculator
+function getMaturity(yearly,rate,years,type){
+
+let balance=0;
+
+for(let y=1;y<=years;y++){
+
+let interest=0;
+
+if(type==="lumpsum"){
+interest=(balance+yearly)*rate;
+}else{
+
+let monthly=yearly/12;
+let temp=balance;
+
+for(let m=0;m<12;m++){
+    temp+=monthly;
+    interest+=temp*(rate/12);
+}
+
+}
+
+balance+=yearly+interest;
+}
+
+return balance;
+}
+
+
 
 function calculatePPF(){
 
@@ -263,14 +312,14 @@ const years=Number(document.getElementById("years").value);
 let yearly;
 
 if(type==="lumpsum"){
-    yearly=Number(document.getElementById("yearly").value);
+yearly=Number(document.getElementById("yearly").value);
 }else{
-    yearly=Number(document.getElementById("monthly").value)*12;
+yearly=Number(document.getElementById("monthly").value)*12;
 }
 
 if(!yearly || !rate || !years){
-    alert("Please enter valid inputs");
-    return;
+alert("Please enter valid inputs");
+return;
 }
 
 let balance=0;
@@ -289,11 +338,11 @@ interest=(opening+yearly)*rate;
 }else{
 
 let monthly=yearly/12;
-let tempBalance=opening;
+let temp=opening;
 
 for(let m=0;m<12;m++){
-    tempBalance+=monthly;
-    interest+=tempBalance*(rate/12);
+    temp+=monthly;
+    interest+=temp*(rate/12);
 }
 
 }
@@ -311,7 +360,6 @@ tbody.insertAdjacentHTML("beforeend",`
 <td><b>${formatMoney(balance)}</b></td>
 </tr>
 `);
-
 }
 
 const investment=yearly*years;
@@ -322,24 +370,26 @@ document.getElementById("interest").textContent=formatMoney(interestEarned);
 document.getElementById("maturity").textContent=formatMoney(balance);
 
 
-// comparison warning
-if(type==="monthly"){
+// ⭐ WEALTH DIFFERENCE ENGINE
+const lumpSumMaturity=getMaturity(yearly,rate,years,"lumpsum");
+const monthlyMaturity=getMaturity(yearly,rate,years,"monthly");
 
-let lsBalance=0;
+const diff=Math.abs(lumpSumMaturity-monthlyMaturity);
 
-for(let y=1;y<=years;y++){
-    let interest=(lsBalance+yearly)*rate;
-    lsBalance+=yearly+interest;
-}
+const card=document.getElementById("wealthCard");
 
-let loss=lsBalance-balance;
+card.style.display="block";
 
-document.getElementById("lossMsg").innerHTML=
-"⚠️ You could earn approximately <b>"+formatMoney(loss)+" MORE</b> by investing before April 5 every year.";
+card.innerHTML=`
+💰 <b>Lump Sum vs Monthly Insight</b><br><br>
 
-}else{
-document.getElementById("lossMsg").innerHTML="";
-}
+If you invest before April 5 every year:
+
+✅ Lump Sum Wealth: <b>${formatMoney(lumpSumMaturity)}</b><br>
+📉 Monthly Wealth: <b>${formatMoney(monthlyMaturity)}</b><br><br>
+
+🚀 <b>You gain ${formatMoney(diff)} EXTRA</b> by investing early every year.
+`;
 
 }
 
@@ -363,7 +413,7 @@ const url=URL.createObjectURL(blob);
 
 const a=document.createElement("a");
 a.href=url;
-a.download="PRO_PPF_Calculation.csv";
+a.download="ULTRA_PPF_Calculation.csv";
 a.click();
 
 URL.revokeObjectURL(url);
