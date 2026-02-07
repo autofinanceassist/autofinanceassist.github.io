@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <title>Auto Finance Assist | For Common Man</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
 <style>
 
@@ -18,41 +20,43 @@ box-sizing:border-box;
 }
 
 body{
+margin:0;
 background:#f7f9fc;
-font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
 }
 
-/* ⭐ MASTER CONTAINER (VERY IMPORTANT) */
-
-.container{
-max-width:1400px;
-margin:auto;
-padding:0 24px;
-width:100%;
-}
-
-/* ---------- HEADER + HERO WRAPPER ---------- */
-
-.top-container{
-background:white;
-}
-
-/* ---------- HERO ---------- */
+/* ---------- HERO FIX ---------- */
 
 .hero{
-padding:40px 0;
+padding:35px 20px !important;
 text-align:center;
 }
 
-.hero h2{
-font-size:28px;
-margin-bottom:6px;
+/* ---------- MAIN WIDTH ---------- */
+
+main{
+max-width:1700px;
+width:96%;
+margin:12px auto;
+padding:0;
 }
 
-.hero p{
-font-size:15px;
-opacity:.9;
-margin-bottom:14px;
+/* ---------- HEADER FIX ---------- */
+
+header{
+max-width:1700px;
+width:96%;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 0;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
 }
 
 /* ---------- BUTTON ---------- */
@@ -69,10 +73,13 @@ border-radius:10px;
 cursor:pointer;
 box-shadow:0 6px 18px rgba(15,58,95,0.35);
 transition:.25s;
+white-space:nowrap;
 }
 
 .primary-btn:hover{
 transform:translateY(-2px);
+background:linear-gradient(135deg,#155b88,#1f6fa3);
+box-shadow:0 10px 24px rgba(15,58,95,0.45);
 }
 
 /* ---------- TRUST STRIP ---------- */
@@ -82,12 +89,10 @@ display:flex;
 flex-wrap:wrap;
 gap:26px;
 justify-content:center;
-margin-top:20px;
-font-size:13px;
+margin-top:18px;
+font-weight:400;
 color:white;
-background:#0f3a5f;
-padding:12px;
-border-radius:10px;
+font-size:13px;
 }
 
 .trust-strip div{
@@ -96,38 +101,43 @@ align-items:center;
 gap:8px;
 }
 
-/* ---------- MAIN ---------- */
-
-main{
-margin-top:20px;
+.trust-strip i{
+color:white;
+font-size:16px;
 }
 
 /* ---------- SECTIONS ---------- */
 
 .section{
-padding:42px 0;
+margin-top:8px;
 text-align:center;
 }
 
 .section p{
-max-width:850px;
-margin:8px auto 16px auto;
-color:#444;
+margin:6px auto 12px auto;
+max-width:900px;
+}
+
+section{
+display:flow-root;
 }
 
 /* ---------- GRID ---------- */
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:22px;
-margin-top:14px;
+grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+gap:26px;
+margin-top:4px;
+align-items:stretch;
+width:100%;
 }
 
-/* Force journey row */
+/* ⭐ STEP ROW */
 
 .journey .grid{
-grid-template-columns:repeat(4,1fr);
+grid-template-columns:repeat(4, 1fr);
+gap:24px;
 }
 
 @media(max-width:1300px){
@@ -145,15 +155,14 @@ grid-template-columns:1fr;
 /* ---------- CARD ---------- */
 
 .card{
-padding:24px;
+padding:26px;
 border-radius:16px;
 background:white;
 box-shadow:0 10px 26px rgba(0,0,0,.06);
 transition:.25s;
 display:flex;
 flex-direction:column;
-align-items:flex-start;
-text-align:left;
+width:100%;
 }
 
 .card:hover{
@@ -167,26 +176,32 @@ margin-bottom:6px;
 }
 
 .card p{
-margin-bottom:12px;
+margin-bottom:14px;
+color:#555;
 }
 
-/* ---------- DISCLAIMER ---------- */
+.card .primary-btn{
+align-self:flex-start;
+min-width:210px;
+}
 
-.disclaimer{
-max-width:850px;
-margin:30px auto;
+/* ---------- HERO TEXT ---------- */
+
+.hero h2{
+font-size:22px;
+}
+
+.hero p{
 font-size:14px;
-text-align:center;
-color:gray;
+opacity:.9;
+margin-top:4px;
 }
 
 /* ---------- FOOTER ---------- */
 
 footer{
 text-align:center;
-padding:26px;
-background:white;
-margin-top:30px;
+padding:24px;
 }
 
 </style>
@@ -195,18 +210,17 @@ margin-top:30px;
 <body>
 
 <div class="top-container">
-<div class="container">
 
-<header style="display:flex;justify-content:space-between;align-items:center;padding:18px 0;">
-    <div style="display:flex;align-items:center;gap:10px;">
-        <i class="fas fa-chart-line"></i>
+<header>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
         <div>
             <strong>Auto Finance Assist</strong><br>
             <small>For Common Man</small>
         </div>
     </div>
 
-    <nav style="display:flex;gap:18px;">
+    <nav>
         <a href="#expense">Expense Manager</a>
         <a href="#tracker">Investment Tracker</a>
         <a href="#about">About</a>
@@ -231,10 +245,8 @@ margin-top:30px;
 </section>
 
 </div>
-</div>
 
-
-<main class="container">
+<main>
 
 <section class="section journey">
 <h2>Your Financial Journey Starts Here !</h2>
@@ -282,7 +294,6 @@ Start Tracking
 </div>
 </section>
 
-
 <section id="expense" class="section">
 <h2>Expense Manager</h2>
 <p>Track monthly expenses and control your money wisely.</p>
@@ -300,12 +311,12 @@ Start Tracking
 </div>
 </section>
 
-
 <section id="tracker" class="section">
 <h2>Investment Tracker</h2>
 <p>Track Your monthly Investment and grow your money wisely.</p>
 
 <div class="grid">
+
 <div class="card" onclick="location.href='mutual-fund-tracker.html'">
 <strong>Mutual Fund Tracker</strong>
 <p>Track NAV & performance</p>
@@ -315,27 +326,25 @@ Start Tracking
 <strong>Stock Tracker</strong>
 <p>Monitor equity investments</p>
 </div>
+
 </div>
 </section>
 
-
 <section id="about" class="section">
 <h2>About</h2>
-<p>
+<p style="max-width:800px; margin:auto;">
 Created with a mission to help everyday families make smarter financial decisions by
 <strong>Raguram Gunasekaran (Common Man)</strong><br><br>
 Auto Finance Assist is built to help common people make smarter financial decisions using simple and transparent tools.
 </p>
 </section>
 
-
-<div class="disclaimer">
+<div style="max-width:900px; margin:20px auto; font-size:14px; text-align:center; color:gray;">
 Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
 Users should make financial decisions based on their personal judgment.
 </div>
 
 </main>
-
 
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
