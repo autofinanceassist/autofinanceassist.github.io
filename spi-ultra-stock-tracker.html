@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SPI Stock Ultra Tracker | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+<style>
+table{border-collapse:collapse;}
+th{background:#0f3a5f;color:white;}
+td,th{text-align:center;padding:10px;}
+.pro-tip{
+background:#e8f4ff;
+border-left:6px solid #0f3a5f;
+padding:15px;
+margin-bottom:25px;
+border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-container">
+
+<header>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>SPI ULTRA Stock Tracker</h2>
+    <p>Create a self-updating stock portfolio powered by Google Finance.</p>
+</section>
+
+</div>
+
+<main>
+
+<section class="section light">
+
+<div class="pro-tip">
+💡 <strong>Pro Tip:</strong> After downloading, upload this file to your 
+<b>Google Drive → Open with Google Sheets</b> to enable automatic LIVE stock price updates forever.
+<br><br>
+✅ Once uploaded, this becomes your permanent wealth tracker — no need to revisit this website again.
+</div>
+
+<h2>Add Stock</h2>
+
+<div class="grid" style="max-width:900px;margin:auto">
+
+<div class="card">
+<label>Stock Name</label><br>
+<input id="name" placeholder="Example: Infosys / Apple">
+</div>
+
+<div class="card">
+<label>Google Finance Symbol</label><br>
+<input id="symbol" placeholder="Example: NSE:INFY or NASDAQ:AAPL">
+<small>Search the symbol directly on Google Finance.</small>
+</div>
+
+<div class="card">
+<label>Total Invested Amount (₹)</label><br>
+<input id="amount" type="number">
+</div>
+
+<div class="card">
+<label>Buy Price Per Share (₹)</label><br>
+<input id="price" type="number">
+</div>
+
+<div class="card">
+<button onclick="add()">Add Stock</button>
+</div>
+
+</div>
+</section>
+
+
+<section class="section">
+
+<h2>Your Portfolio</h2>
+
+<div style="overflow-x:auto;">
+<table width="100%" border="1">
+<thead>
+<tr>
+<th>Stock</th>
+<th>Symbol</th>
+<th>Shares</th>
+<th>Buy Price</th>
+<th>Live Price</th>
+<th>Invested</th>
+<th>Current Value</th>
+<th>Gain / Loss</th>
+<th>Remove</th>
+</tr>
+</thead>
+
+<tbody id="table"></tbody>
+</table>
+</div>
+
+<br>
+
+<button onclick="downloadSheet()">Download AUTO Stock Tracker</button>
+
+</section>
+
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+After downloading, upload to Google Drive and open in Google Sheets for LIVE tracking.<br>
+Your sheet will automatically calculate prices, gains, and portfolio value forever.
+</div>
+
+</main>
+
+<footer>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+</footer>
+
+
+<script>
+
+/* Separate storage from mutual funds */
+let data = JSON.parse(localStorage.getItem("ultraStockTracker")) || [];
+
+function add(){
+
+const name=document.getElementById("name").value.trim();
+const symbol=document.getElementById("symbol").value.trim().toUpperCase();
+const amount=Number(document.getElementById("amount").value);
+const price=Number(document.getElementById("price").value);
+
+if(!name||!symbol||!amount||!price)
+return alert("Please fill all fields");
+
+const shares=amount/price;
+
+data.push({name,symbol,amount,price,shares});
+
+localStorage.setItem("ultraStockTracker",JSON.stringify(data));
+
+render();
+
+/* clear inputs */
+document.getElementById("name").value="";
+document.getElementById("symbol").value="";
+document.getElementById("amount").value="";
+document.getElementById("price").value="";
+}
+
+function render(){
+
+const tbody=document.getElementById("table");
+tbody.innerHTML="";
+
+data.forEach((d,i)=>{
+
+tbody.innerHTML+=`
+<tr>
+<td>${d.name}</td>
+<td>${d.symbol}</td>
+<td>${d.shares.toFixed(2)}</td>
+<td>₹${d.price}</td>
+<td>Live via Google Sheet</td>
+<td>₹${d.amount}</td>
+<td>Auto</td>
+<td>Auto</td>
+<td><button onclick="removeStock(${i})">X</button></td>
+</tr>
+`;
+});
+}
+
+function removeStock(i){
+data.splice(i,1);
+localStorage.setItem("ultraStockTracker",JSON.stringify(data));
+render();
+}
+
+
+/* GOOGLE SHEET WITH AUTO FORMULAS */
+
+function downloadSheet(){
+
+if(data.length===0)
+return alert("Add stocks first");
+
+let csv=`Stock,Symbol,Shares,Buy Price,Live Price,Invested,Current Value,Gain/Loss,Return %\n`;
+
+data.forEach((d,index)=>{
+
+const row=index+2;
+
+csv+=`${d.name},
+${d.symbol},
+${d.shares},
+${d.price},
+=GOOGLEFINANCE(B${row},"price"),
+${d.amount},
+=C${row}*E${row},
+=G${row}-F${row},
+=(H${row}/F${row})*100\n`;
+
+});
+
+const blob=new Blob([csv],{type:"text/csv"});
+const a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+a.download="SPI_ULTRA_STOCK_TRACKER.csv";
+a.click();
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+
