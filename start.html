@@ -9,30 +9,34 @@
 
 <body>
 
-<header>
-    <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
-    </div>
-    <nav>
-        <a href="index.html">Home</a>
-    </nav>
-</header>
+<!-- LOAD HEADER -->
+<div id="header"></div>
+
 
 <section class="section light">
+
 <h2>Financial Life Starter</h2>
+
 <p style="
 text-align:center;
 font-size:18px;
 color:#555;
 max-width:750px;
-margin:10px auto 5px;
-">
+margin:10px auto 5px;">
 Know where you stand. Understand what to do next. Move toward financial freedom
 </p>
-<p>Protection First. Then Wealth.</p>
 
-<div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap:30px; align-items:start;">
+<p style="text-align:center;">Protection First. Then Wealth.</p>
+
+
+<div class="grid" style="
+grid-template-columns: 1fr 1fr 1fr;
+gap:30px;
+align-items:start;
+height: calc(100vh - 220px);
+overflow-y:auto;
+padding-right:10px;
+">
 
 <!-- ================= INPUT COLUMN ================= -->
 
@@ -82,7 +86,6 @@ Know where you stand. Understand what to do next. Move toward financial freedom
 </div>
 
 
-
 <!-- HEALTH INSURANCE -->
 
 <div class="card">
@@ -106,7 +109,6 @@ Know where you stand. Understand what to do next. Move toward financial freedom
 </div>
 
 </div>
-
 
 <div class="card">
 <button onclick="generatePlan()">Generate My Financial Plan</button>
@@ -156,11 +158,25 @@ Enter your details to generate your roadmap.
 </div>
 </section>
 
-<footer>
-<p>© 2026 Auto Finance Assist</p>
-</footer>
+
+<!-- LOAD FOOTER -->
+<div id="footer"></div>
+
+
 
 <script>
+
+/* LOAD HEADER */
+fetch("header.html")
+.then(res => res.text())
+.then(data => document.getElementById("header").innerHTML = data);
+
+/* LOAD FOOTER */
+fetch("footer.html")
+.then(res => res.text())
+.then(data => document.getElementById("footer").innerHTML = data);
+
+
 
 function formatMoney(num){
 return "₹ " + num.toLocaleString("en-IN",{maximumFractionDigits:0});
@@ -210,20 +226,17 @@ const gap = requiredTerm - current;
 if(gap <= 0){
 
 termGapText="✅ Fully Protected";
-
 termSuggestion="✅ Excellent! Your family is financially protected.";
 
 }else{
 
 termGapText=formatMoney(gap);
-
 termSuggestion=`⚠️ Increase your life cover by <b>${formatMoney(gap)}</b>.`;
 }
 
 }else{
 
 termGapText=formatMoney(requiredTerm);
-
 termSuggestion=`🚨 Buy term insurance worth <b>${formatMoney(requiredTerm)}</b> immediately.`;
 }
 
@@ -231,8 +244,8 @@ termSuggestion=`🚨 Buy term insurance worth <b>${formatMoney(requiredTerm)}</b
 
 /* ---------- Health Calculation ---------- */
 
-const familyMin = 1000000; //10L
-const parentsMin = 1500000; //15L
+const familyMin = 1000000;
+const parentsMin = 1500000;
 
 let healthText="";
 let healthSuggestion="";
@@ -255,20 +268,17 @@ issues.push(`Increase parents cover by ${formatMoney(parentsMin - par)}`);
 if(issues.length === 0){
 
 healthText="✅ Well Protected";
-
 healthSuggestion="✅ Great! Your health coverage is strong.";
 
 }else{
 
 healthText="⚠️ Under Protected";
-
 healthSuggestion=issues.join("<br>");
 }
 
 }else{
 
 healthText="🚨 No Coverage";
-
 healthSuggestion=`Buy minimum health cover:<br>
 • Family: ${formatMoney(familyMin)}<br>
 • Parents: ${formatMoney(parentsMin)}`;
@@ -282,6 +292,7 @@ document.getElementById("emergency").textContent=formatMoney(emergencyFund);
 document.getElementById("term").textContent=formatMoney(requiredTerm);
 document.getElementById("termGap").textContent=termGapText;
 document.getElementById("healthGap").textContent=healthText;
+
 
 
 /* ---------- Suggestions ---------- */
