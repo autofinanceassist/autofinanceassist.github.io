@@ -1,140 +1,174 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Auto Finance Assist</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
-<style>
 /* RESET */
-* { box-sizing: border-box; margin:0; padding:0; }
-body { font-family: "Segoe UI", Roboto, Arial, sans-serif; background:#f5f7fa; color:#1f2937; }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-/* FIXED TOP CONTAINER */
-.top-container {
-    position: fixed;
-    top:0; left:0;
+body{
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    background:#f5f7fa;
+    color:#1f2937;
+
+    height:100vh;
+    overflow:hidden; /* prevents body scroll */
+}
+
+
+/* FIXED HEADER + HERO */
+.top-container{
+    position:fixed;
+    top:0;
+    left:0;
     width:100%;
     z-index:1000;
 }
 
 /* HEADER */
-header {
-    height: 70px;
+header{
+    height:70px;
     background:#0f3a5f;
     color:white;
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding: 0 24px;
+    padding:0 24px;
 }
 
 /* Logo */
-.logo { display:flex; align-items:center; gap:12px; }
-.logo .icon { font-size: 26px; }
-.logo strong { font-size: 18px; }
-.logo small { font-size:12px; opacity:0.85; }
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo .icon{
+    font-size:26px;
+}
+
+/* 👇 Enlarged Title (you asked this earlier) */
+.logo strong{
+    font-size:26px;
+    font-weight:700;
+}
+
+.logo small{
+    font-size:12px;
+    opacity:0.85;
+}
 
 /* Navigation */
-nav a { color:#e5f0ff; margin-left:18px; font-size:14px; font-weight:500; text-decoration:none; }
-nav a:hover { text-decoration:underline; }
+nav a{
+    color:#e5f0ff;
+    margin-left:18px;
+    font-size:14px;
+    font-weight:500;
+    text-decoration:none;
+}
+
+nav a:hover{
+    text-decoration:underline;
+}
+
 
 /* HERO */
-.hero {
-    background: linear-gradient(180deg,#1f6fa3,#155b88);
+.hero{
+    background:linear-gradient(180deg,#1f6fa3,#155b88);
     color:white;
     text-align:center;
     padding:20px 15px;
 }
-.hero h2 { font-size:24px; margin-bottom:8px; font-weight:600; }
-.hero p { font-size:14px; margin-bottom:12px; opacity:0.95; }
-.hero select { padding:6px 10px; border-radius:5px; border:none; font-size:14px; }
 
-/* OFFSET MAIN CONTENT */
-main { margin-top: 70px + 160px; /* header + hero height approx */ }
-main { margin-top: 170px; } /* adjust if padding changes */
+.hero h2{
+    font-size:24px;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.hero p{
+    font-size:14px;
+    margin-bottom:12px;
+    opacity:0.95;
+}
+
+
+/* ✅ MAIN SCROLL AREA */
+main{
+    position:fixed;
+    top:140px;   /* header + hero height */
+    bottom:60px; /* footer height */
+    left:0;
+    right:0;
+
+    overflow-y:auto;
+}
+
 
 /* SECTION */
-.section { padding:40px 20px; max-width:1200px; margin:auto; }
-.section h2 { text-align:center; color:#0f3a5f; margin-bottom:22px; font-size:22px; }
-
-/* GRID CARDS */
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; }
-.card { background:white; padding:24px 18px; border-radius:12px; text-align:center; box-shadow:0 4px 14px rgba(0,0,0,0.06); cursor:pointer; transition: transform 0.2s, box-shadow 0.2s;}
-.card:hover { transform:translateY(-3px); box-shadow:0 10px 22px rgba(0,0,0,0.12);}
-.card-icon { font-size:40px; margin-bottom:12px; color:#0f3a5f; transition: transform 0.2s,color 0.2s; }
-.card:hover .card-icon { transform:scale(1.2); color:#1f6fa3; }
-.card strong { font-size:16px; color:#0f3a5f; display:block; margin-bottom:4px; }
-.card p { font-size:13px; color:#555; opacity:0.9; }
-
-/* FOOTER */
-footer { background:#0f3a5f; color:#dbeafe; text-align:center; padding:14px; font-size:12px; margin-top:40px; }
-
-/* MOBILE */
-@media(max-width:768px){
-    header{ padding:6px 12px; }
-    nav a{ margin-left:10px; font-size:12px; }
-    .hero h2{ font-size:20px; }
-    .hero{ padding:15px 12px; }
-    main{ margin-top:160px; }
+.section{
+    padding:40px 20px;
+    max-width:1200px;
+    margin:auto;
 }
-</style>
-</head>
 
-<body>
+.section h2{
+    text-align:center;
+    color:#0f3a5f;
+    margin-bottom:22px;
+    font-size:22px;
+}
 
-<div class="top-container">
-<header>
-    <div class="logo">
-        <span class="icon"><i class="fas fa-chart-line"></i></span>
-        <div>
-            <strong>Auto Finance Assist</strong><br>
-            <small>For Common Man</small>
-        </div>
-    </div>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="fd.html">FD Calculator</a>
-        <a href="rd.html">RD Calculator</a>
-        <a href="mutualfund.html">Mutual Funds</a>
-        <a href="about.html">About</a>
-    </nav>
-</header>
 
-<section class="hero">
-    <h2>Simple Finance Tools for Common Man</h2>
-    <p>FD • RD • PPF • NPS • Loans • Mutual Funds • Expense Tracking</p>
-    <label>
-        Select Country:
-        <select>
-            <option>India</option>
-            <option>Qatar</option>
-            <option>UAE</option>
-        </select>
-    </label>
-</section>
-</div>
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+}
 
-<main>
-<section class="section">
-<h2>Financial Calculators</h2>
-<div class="grid">
-    <div class="card"><div class="card-icon"><i class="fas fa-coins"></i></div><strong>FD Calculator</strong><p>Fixed Deposit</p></div>
-    <div class="card"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div><strong>RD Calculator</strong><p>Recurring Deposit</p></div>
-    <div class="card"><div class="card-icon"><i class="fas fa-university"></i></div><strong>PPF Calculator</strong><p>Public Provident Fund</p></div>
-    <div class="card"><div class="card-icon"><i class="fas fa-user-clock"></i></div><strong>NPS Calculator</strong><p>Pension Planning</p></div>
-    <div class="card"><div class="card-icon"><i class="fas fa-credit-card"></i></div><strong>Loan EMI</strong><p>Loan Calculator</p></div>
-    <div class="card"><div class="card-icon"><i class="fas fa-chart-line"></i></div><strong>Mutual Fund Tracker</strong><p>Investment Planning</p></div>
-</div>
-</section>
+/* CARD */
+.card{
+    background:white;
+    padding:24px 18px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+    cursor:pointer;
+    transition:0.2s;
+}
 
-<footer>
-  © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
-</footer>
-</main>
+.card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 22px rgba(0,0,0,0.12);
+}
 
-</body>
-</html>
+.card strong{
+    font-size:16px;
+    color:#0f3a5f;
+    display:block;
+    margin-bottom:4px;
+}
+
+.card p{
+    font-size:13px;
+    color:#555;
+}
+
+
+/* ✅ FIXED FOOTER */
+footer{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:60px;
+
+    background:#0f3a5f;
+    color:#dbeafe;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:12px;
+}
