@@ -2,27 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SIP Calculator | Auto Finance Assist</title>
+<title>ULTRA PRO SIP Calculator | Auto Finance Assist</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
-<!-- ✅ ICON (same as PPF) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
-<!-- ✅ Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
-/* ONLY chart sizing — matches PPF */
 .chart-card{
     background:white;
     padding:16px;
     border-radius:12px;
-
     max-width:420px;
     height:300px;
-
     display:flex;
     align-items:center;
     justify-content:center;
@@ -33,17 +27,36 @@
     color:#0f3a5f;
 }
 
+.pro-tip{
+    background:#e8f2ff;
+    border-left:6px solid #0f3a5f;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:25px;
+    font-weight:500;
+}
+
+.wealth-card{
+    max-width:900px;
+    margin:30px auto;
+    background:#f4f8ff;
+    border-left:8px solid #0f3a5f;
+    padding:22px;
+    border-radius:12px;
+    font-size:18px;
+}
+
 table{
-    border-collapse:collapse;
+border-collapse:collapse;
 }
 
 th{
-    background:#0f3a5f;
-    color:white;
+background:#0f3a5f;
+color:white;
 }
 
 td, th{
-    text-align:center;
+text-align:center;
 }
 
 </style>
@@ -51,7 +64,6 @@ td, th{
 
 <body>
 
-<!-- ✅ TOP CONTAINER (matches PPF) -->
 <div class="top-container">
 
 <header>
@@ -70,20 +82,22 @@ td, th{
 
 <section class="hero">
     <h2>Mutual Fund SIP Calculator</h2>
-    <p>Build long-term wealth with disciplined monthly investing.</p>
+    <p>Turn small monthly investments into massive long-term wealth.</p>
 </section>
 
 </div>
 
-
-<!-- ✅ SCROLLABLE MAIN -->
 <main>
 
 <section class="section light">
 
+<div class="pro-tip">
+💡 <strong>Investor Tip:</strong> Increasing your SIP by just <b>5% yearly</b> can potentially create 
+<b>30-50% MORE wealth</b> over long horizons due to compounding.
+</div>
+
 <h2>SIP Calculator</h2>
 
-<!-- FLEX like PPF -->
 <div style="
 display:flex;
 gap:40px;
@@ -94,7 +108,6 @@ max-width:1000px;
 margin:auto;
 ">
 
-<!-- INPUT SIDE -->
 <div style="flex:1; min-width:300px; max-width:520px;">
 
 <div class="card">
@@ -112,22 +125,27 @@ margin:auto;
 <input type="number" id="sipYears" placeholder="Example: 20">
 </div>
 
+<!-- NEW TOPUP -->
 <div class="card">
-<button onclick="calculateSIP()">Calculate SIP</button>
+<label>Yearly SIP Top-Up (%)</label><br>
+<input type="number" id="topup" placeholder="5 (Recommended)">
+<small>Leave 0 if you don't want to increase SIP.</small>
+</div>
+
+<div class="card">
+<button onclick="calculateSIP()">Calculate ULTRA SIP</button>
 </div>
 
 </div>
 
-<!-- CHART -->
 <div class="chart-card">
-<canvas id="sipChart" height="240"></canvas>
+<canvas id="sipChart"></canvas>
 </div>
 
 </div>
 </section>
 
 
-<!-- RESULTS -->
 <section class="section">
 <h2>Your Wealth Projection</h2>
 
@@ -154,10 +172,12 @@ margin:auto;
 </div>
 
 </div>
+
+<div id="wealthCard" class="wealth-card" style="display:none;"></div>
+
 </section>
 
 
-<!-- TABLE -->
 <section class="section">
 <h2>Monthly SIP Growth Illustration</h2>
 
@@ -166,10 +186,10 @@ margin:auto;
 <thead>
 <tr>
 <th>Month</th>
-<th>Monthly SIP</th>
-<th>Opening Balance</th>
+<th>SIP</th>
+<th>Opening</th>
 <th>Return</th>
-<th>Closing Balance</th>
+<th>Closing</th>
 </tr>
 </thead>
 <tbody></tbody>
@@ -181,7 +201,6 @@ margin:auto;
 
 </section>
 
-
 <div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
 Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
 Users should make financial decisions based on their personal judgment.
@@ -189,11 +208,9 @@ Users should make financial decisions based on their personal judgment.
 
 </main>
 
-
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
-
 
 
 <script>
@@ -201,22 +218,25 @@ Users should make financial decisions based on their personal judgment.
 let sipData=[];
 let sipChart;
 
+function formatMoney(num){
+return "₹ "+Math.round(num).toLocaleString('en-IN');
+}
+
 function calculateSIP(){
 
-const P=Number(document.getElementById("sipAmount").value);
-const annualRate=Number(document.getElementById("sipRate").value)/100;
+const sip=Number(document.getElementById("sipAmount").value);
+const rate=Number(document.getElementById("sipRate").value)/100;
 const years=Number(document.getElementById("sipYears").value);
+const topup=Number(document.getElementById("topup").value)/100 || 0;
 
-if(!P || !annualRate || !years){
+if(!sip || !rate || !years){
 alert("Please enter all values correctly");
 return;
 }
 
-const months=years*12;
-const monthlyRate=annualRate/12;
-let balance=0;
-
 sipData=[];
+let balance=0;
+let monthlyRate=rate/12;
 
 const tbody=document.querySelector("#sipTable tbody");
 tbody.innerHTML="";
@@ -224,37 +244,77 @@ tbody.innerHTML="";
 let labels=[];
 let balances=[];
 
-for(let m=1;m<=months;m++){
+let currentSip=sip;
+let totalInvestment=0;
 
-const opening=balance+P;
+for(let y=1;y<=years;y++){
+
+for(let m=1;m<=12;m++){
+
+const opening=balance+currentSip;
 const gain=opening*monthlyRate;
 balance=opening+gain;
 
-sipData.push({month:m,sip:P,opening,gain,closing:balance});
+sipData.push({month:(y-1)*12+m,sip:currentSip,opening,gain,closing:balance});
 
-labels.push("M"+m);
+labels.push("M"+((y-1)*12+m));
 balances.push(balance);
 
 tbody.insertAdjacentHTML("beforeend",`
 <tr>
-<td>${m}</td>
-<td>${P.toFixed(2)}</td>
-<td>${opening.toFixed(2)}</td>
-<td>${gain.toFixed(2)}</td>
-<td><b>${balance.toFixed(2)}</b></td>
+<td>${(y-1)*12+m}</td>
+<td>${formatMoney(currentSip)}</td>
+<td>${formatMoney(opening)}</td>
+<td>${formatMoney(gain)}</td>
+<td><b>${formatMoney(balance)}</b></td>
 </tr>
 `);
+
+totalInvestment+=currentSip;
 }
 
-const totalInvestment=P*months;
+currentSip += currentSip * topup;
+}
+
 const maturity=balance;
-const totalGain=maturity-totalInvestment;
+const gain=maturity-totalInvestment;
 const multiplier=(maturity/totalInvestment).toFixed(2);
 
-document.getElementById("investment").textContent="₹ "+totalInvestment.toFixed(0);
-document.getElementById("gain").textContent="₹ "+totalGain.toFixed(0);
-document.getElementById("maturity").textContent="₹ "+maturity.toFixed(0);
+document.getElementById("investment").textContent=formatMoney(totalInvestment);
+document.getElementById("gain").textContent=formatMoney(gain);
+document.getElementById("maturity").textContent=formatMoney(maturity);
 document.getElementById("multiplier").textContent=multiplier+" X";
+
+
+/* ===== comparison WITHOUT topup ===== */
+
+let normalBalance=0;
+let normalSip=sip;
+
+for(let m=1;m<=years*12;m++){
+normalBalance=(normalBalance+normalSip)*(1+monthlyRate);
+}
+
+const extra=maturity-normalBalance;
+
+const card=document.getElementById("wealthCard");
+card.style.display="block";
+
+if(topup>0){
+card.innerHTML=`
+🚀 <b>Top-Up Strategy Insight</b><br><br>
+
+Without SIP increase: <b>${formatMoney(normalBalance)}</b><br>
+With ${topup*100}% yearly increase: <b>${formatMoney(maturity)}</b><br><br>
+
+💰 <b>You create ${formatMoney(extra)} EXTRA wealth!</b>
+`;
+}else{
+card.innerHTML=`
+💡 Increase SIP yearly to dramatically accelerate wealth creation.
+Even a 5% rise can add lakhs over time.
+`;
+}
 
 drawChart(labels,balances);
 
@@ -281,12 +341,8 @@ fill:true
 options:{
 responsive:true,
 maintainAspectRatio:false,
-plugins:{
-legend:{display:false}
-},
-scales:{
-x:{display:false}
-}
+plugins:{legend:{display:false}},
+scales:{x:{display:false}}
 }
 });
 
@@ -300,10 +356,10 @@ alert("Please calculate SIP first");
 return;
 }
 
-let csv="Month,Monthly SIP,Opening Balance,Return,Closing Balance\n";
+let csv="Month,SIP,Opening,Return,Closing\n";
 
 sipData.forEach(r=>{
-csv+=`${r.month},${r.sip.toFixed(2)},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
+csv+=`${r.month},${r.sip},${r.opening},${r.gain},${r.closing}\n`;
 });
 
 const blob=new Blob([csv],{type:"text/csv"});
@@ -311,10 +367,11 @@ const url=URL.createObjectURL(blob);
 
 const a=document.createElement("a");
 a.href=url;
-a.download="SIP_Monthly_Projection.csv";
+a.download="ULTRA_SIP_Projection.csv";
 a.click();
 
 URL.revokeObjectURL(url);
+
 }
 
 </script>
