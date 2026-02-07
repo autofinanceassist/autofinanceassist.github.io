@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>Financial Health Check | Auto Finance Assist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Boost -->
+    <meta name="description" content="Check your financial health in less than 5 minutes. Calculate emergency fund, insurance needs, and get a clear path toward financial freedom.">
+
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -66,11 +70,17 @@
 
         .result{
             margin-top:30px;
-            padding:20px;
+            padding:25px;
             border-radius:10px;
             background:#e8f5e9;
             display:none;
         }
+
+        .highlight{
+            color:#1b5e20;
+            font-weight:bold;
+        }
+
     </style>
 </head>
 
@@ -79,57 +89,150 @@
 <div class="container">
 
     <h1>Financial Health Check</h1>
+
     <p class="subtitle">
-        Answer a few simple questions to understand where you stand financially.
-        It takes less than 5 minutes.
+        Not sure where to begin? Start with your Financial Health Check — it takes less than 5 minutes.
     </p>
 
+    <!-- FORM -->
+
+    <label>Your Age</label>
+    <input id="age" type="number" placeholder="Enter your age">
+
     <label>Monthly Income</label>
-    <input type="number" placeholder="Enter your total monthly income">
+    <input id="income" type="number" placeholder="Enter your total monthly income">
 
     <label>Monthly Expenses</label>
-    <input type="number" placeholder="Enter your total monthly expenses">
+    <input id="expenses" type="number" placeholder="Enter your total monthly expenses">
 
     <label>Total Savings</label>
-    <input type="number" placeholder="Emergency fund + bank balance">
+    <input id="savings" type="number" placeholder="Emergency fund + bank balance">
 
     <label>Total Loans / EMIs</label>
-    <input type="number" placeholder="Outstanding loans">
+    <input id="loans" type="number" placeholder="Outstanding loans">
 
     <label>Do you have Health Insurance?</label>
-    <select>
-        <option>Yes</option>
-        <option>No</option>
+    <select id="health">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
     </select>
 
     <label>Are you investing regularly?</label>
-    <select>
-        <option>Yes</option>
-        <option>No</option>
+    <select id="investing">
+        <option value="yes">Yes</option>
+        <option value="no">No</option>
     </select>
 
     <button onclick="showResult()">Check My Financial Health</button>
 
-    <div class="result" id="resultBox">
-        ✅ Great step! You have started understanding your financial position.
-
-        <br><br>
-
-        Next Step:
-        <ul>
-            <li>Build an emergency fund (6 months expenses)</li>
-            <li>Reduce high-interest loans</li>
-            <li>Start investing for long-term goals</li>
-        </ul>
-    </div>
+    <!-- RESULT BOX -->
+    <div class="result" id="resultBox"></div>
 
 </div>
 
+
 <script>
+
 function showResult(){
-    document.getElementById("resultBox").style.display = "block";
+
+    let age = Number(document.getElementById("age").value);
+    let income = Number(document.getElementById("income").value);
+    let expenses = Number(document.getElementById("expenses").value);
+    let savings = Number(document.getElementById("savings").value);
+    let loans = Number(document.getElementById("loans").value);
+    let health = document.getElementById("health").value;
+    let investing = document.getElementById("investing").value;
+
+    if(!age || !income || !expenses){
+        alert("Please fill Age, Income, and Expenses.");
+        return;
+    }
+
+    if(age >= 60){
+        alert("This tool is designed for working-age individuals below 60.");
+        return;
+    }
+
+    // Calculations
+    let emergencyFund = expenses * 6;
+    let yearlyExpense = expenses * 12;
+
+    let yearsLeft = 60 - age;
+    let inflationRate = 0.07;
+
+    let lifeCover = yearlyExpense * 
+        ((Math.pow(1 + inflationRate, yearsLeft) - 1) / inflationRate);
+
+    emergencyFund = Math.round(emergencyFund);
+    lifeCover = Math.round(lifeCover);
+
+    // Formatting
+    let efFormatted = emergencyFund.toLocaleString();
+    let lcFormatted = lifeCover.toLocaleString();
+
+    // Suggestions based on status
+    let healthMsg = health === "no"
+        ? "<li><span class='highlight'>Get health insurance immediately.</span> Medical emergencies are the #1 cause of financial stress.</li>"
+        : "<li>Good job having health insurance. Ensure parents have a separate policy.</li>";
+
+    let investMsg = investing === "no"
+        ? "<li><span class='highlight'>Start investing soon.</span> Even small monthly investments grow massively over time.</li>"
+        : "<li>Great — continue investing consistently for long-term goals.</li>";
+
+
+    let resultHTML = `
+        <h3>✅ Great Step! You Have Started Understanding Your Financial Position.</h3>
+
+        <p>Based on your inputs, here are your important financial safety targets:</p>
+
+        <ul>
+
+            <li>
+            <strong>Emergency Fund Target:</strong> ₹ ${efFormatted}
+            <br><small>(6 months of your expenses — protects you from job loss or unexpected situations)</small>
+            </li>
+
+            <br>
+
+            <li>
+            <strong>Recommended Life Insurance Cover:</strong> ₹ ${lcFormatted}
+            <br><small>((60 − your age) × yearly expenses adjusted with 7% inflation)</small>
+            </li>
+
+            <br>
+
+            <li>
+            Build a proper <span class='highlight'>term life insurance plan</span> to financially protect your family.
+            </li>
+
+            ${healthMsg}
+
+            <li>
+            Focus on building your emergency fund BEFORE aggressive investing.
+            </li>
+
+            <li>
+            Reduce high-interest loans as early as possible.
+            </li>
+
+            ${investMsg}
+
+        </ul>
+
+        <p style="margin-top:20px; font-weight:bold; color:#2e7d32;">
+        You are already ahead of most people — because you are planning.
+        Financial freedom begins with clarity.
+        </p>
+    `;
+
+    let box = document.getElementById("resultBox");
+    box.innerHTML = resultHTML;
+    box.style.display = "block";
+
 }
+
 </script>
+
 
 </body>
 </html>
