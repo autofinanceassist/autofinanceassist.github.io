@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Financial Health Check | Auto Finance Assist</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:0;
+            background:#f4f6f8;
+        }
+
+        .container{
+            max-width:700px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        h1{
+            text-align:center;
+            color:#2e7d32;
+        }
+
+        p.subtitle{
+            text-align:center;
+            color:gray;
+            margin-bottom:30px;
+        }
+
+        label{
+            font-weight:bold;
+            display:block;
+            margin-top:18px;
+        }
+
+        input, select{
+            width:100%;
+            padding:12px;
+            margin-top:6px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            font-size:16px;
+        }
+
+        button{
+            width:100%;
+            margin-top:30px;
+            padding:14px;
+            font-size:18px;
+            background:#2e7d32;
+            color:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        button:hover{
+            background:#256628;
+        }
+
+        .result{
+            margin-top:30px;
+            padding:20px;
+            border-radius:10px;
+            background:#e8f5e9;
+            display:none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Financial Health Check</h1>
+    <p class="subtitle">
+        Answer a few simple questions to understand where you stand financially.
+        It takes less than 5 minutes.
+    </p>
+
+    <label>Monthly Income</label>
+    <input type="number" placeholder="Enter your total monthly income">
+
+    <label>Monthly Expenses</label>
+    <input type="number" placeholder="Enter your total monthly expenses">
+
+    <label>Total Savings</label>
+    <input type="number" placeholder="Emergency fund + bank balance">
+
+    <label>Total Loans / EMIs</label>
+    <input type="number" placeholder="Outstanding loans">
+
+    <label>Do you have Health Insurance?</label>
+    <select>
+        <option>Yes</option>
+        <option>No</option>
+    </select>
+
+    <label>Are you investing regularly?</label>
+    <select>
+        <option>Yes</option>
+        <option>No</option>
+    </select>
+
+    <button onclick="showResult()">Check My Financial Health</button>
+
+    <div class="result" id="resultBox">
+        ✅ Great step! You have started understanding your financial position.
+
+        <br><br>
+
+        Next Step:
+        <ul>
+            <li>Build an emergency fund (6 months expenses)</li>
+            <li>Reduce high-interest loans</li>
+            <li>Start investing for long-term goals</li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+function showResult(){
+    document.getElementById("resultBox").style.display = "block";
+}
+</script>
+
+</body>
+</html>
