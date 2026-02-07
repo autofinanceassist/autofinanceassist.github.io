@@ -6,7 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
+<!-- ICON (same as SIP) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -20,29 +23,17 @@
     align-items:center;
     justify-content:center;
 }
-
-table{
-border-collapse:collapse;
-}
-
-th{
-background:#0f3a5f;
-color:white;
-}
-
-td, th{
-text-align:center;
-}
 </style>
 </head>
 
 <body>
 
+<!-- ✅ EXACT SIP HEADER STRUCTURE -->
 <div class="top-container">
 
 <header>
     <div class="logo">
-        <span class="icon"><i class="fas fa-wallet"></i></span>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
         <div>
             <strong>Auto Finance Assist</strong><br>
             <small>For Common Man</small>
@@ -56,17 +47,16 @@ text-align:center;
 
 <section class="hero">
     <h2>Monthly Expense Calculator</h2>
-    <p>Track spending, control budget, and improve savings.</p>
+    <p>Track your monthly expenses and understand where your money goes.</p>
 </section>
 
 </div>
 
+<!-- ✅ MAIN SCROLLABLE (same as SIP) -->
 <main>
 
 <!-- INPUT + CHART -->
 <section class="section light">
-
-<h2>Expense Calculator</h2>
 
 <div style="
 display:flex;
@@ -78,61 +68,64 @@ max-width:1000px;
 margin:auto;
 ">
 
+<!-- INPUT SIDE -->
 <div style="flex:1; min-width:300px; max-width:520px;">
 
-<div class="card">
-<label>Expense Category</label><br>
-<input type="text" id="category" placeholder="Example: Rent">
+    <div class="card">
+        <label>Expense Category</label><br>
+        <input type="text" id="category" placeholder="Example: Rent">
+    </div>
+
+    <div class="card">
+        <label>Amount (₹)</label><br>
+        <input type="number" id="amount" placeholder="Example: 15000">
+    </div>
+
+    <div class="card">
+        <button onclick="addExpense()">Add Expense</button>
+    </div>
+
 </div>
 
-<div class="card">
-<label>Amount (₹)</label><br>
-<input type="number" id="amount" placeholder="Example: 15000">
-</div>
-
-<div class="card">
-<button onclick="addExpense()">Add Expense</button>
-</div>
-
-</div>
-
+<!-- CHART SIDE -->
 <div class="chart-card">
-<canvas id="expenseChart" height="260"></canvas>
+    <canvas id="expenseChart"></canvas>
 </div>
 
 </div>
 </section>
 
-
+<!-- TABLE -->
 <section class="section">
-<h2>Expense Tracker</h2>
+    <h2>Expense Tracker</h2>
 
-<div style="overflow-x:auto;">
-<table id="expenseTable" border="1" cellpadding="8" width="100%">
-<thead>
-<tr>
-<th>#</th>
-<th>Category</th>
-<th>Amount (₹)</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
+    <div style="overflow-x:auto;">
+        <table id="expenseTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Amount (₹)</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
-<div class="grid" style="max-width:400px; margin-top:20px;">
-<div class="card">
-<p><strong>Total Monthly Expense</strong></p>
-<h3 id="total">₹ 0</h3>
-</div>
-</div>
+    <div class="grid" style="max-width:400px; margin-top:20px;">
+        <div class="card">
+            <p><strong>Total Monthly Expense</strong></p>
+            <h3 id="total">₹ 0</h3>
+        </div>
+    </div>
 
-<br>
-<button onclick="downloadExpenseExcel()">Download Excel (CSV)</button>
+    <br>
+    <button onclick="downloadExpenseExcel()">Download Excel (CSV)</button>
 
 </section>
 
+<!-- SAME DISCLAIMER STYLE AS SIP -->
 <div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
 Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
 Users should make financial decisions based on their personal judgment.
@@ -140,134 +133,169 @@ Users should make financial decisions based on their personal judgment.
 
 </main>
 
+<!-- ✅ EXACT SIP FOOTER -->
 <footer>
 © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
 
-
 <script>
 
+//////////////////////////////////////////////////
+// LOCAL STORAGE
+//////////////////////////////////////////////////
+
 let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+//////////////////////////////////////////////////
+// CHART
+//////////////////////////////////////////////////
+
 let chart;
 
 function buildChart(){
 
-const ctx = document.getElementById('expenseChart');
+    const ctx = document.getElementById('expenseChart');
 
-if(chart) chart.destroy();
+    if(chart) chart.destroy();
 
-if(expenses.length === 0){
-chart = new Chart(ctx,{
-type:'doughnut',
-data:{
-labels:['No Data'],
-datasets:[{ data:[1] }]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{display:false}}
-}
-});
-return;
+    if(expenses.length === 0){
+        chart = new Chart(ctx,{
+            type:'doughnut',
+            data:{
+                labels:['No Data'],
+                datasets:[{
+                    data:[1]
+                }]
+            },
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+                plugins:{legend:{display:false}}
+            }
+        });
+        return;
+    }
+
+    const categories = expenses.map(e=>e.category);
+    const amounts = expenses.map(e=>e.amount);
+
+    chart = new Chart(ctx,{
+        type:'doughnut',
+        data:{
+            labels:categories,
+            datasets:[{
+                data:amounts
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false
+        }
+    });
 }
 
-const categories = expenses.map(e=>e.category);
-const amounts = expenses.map(e=>e.amount);
-
-chart = new Chart(ctx,{
-type:'doughnut',
-data:{
-labels:categories,
-datasets:[{ data:amounts }]
-},
-options:{
-responsive:true,
-maintainAspectRatio:false
-}
-});
-}
+//////////////////////////////////////////////////
+// ADD EXPENSE
+//////////////////////////////////////////////////
 
 function addExpense() {
 
-const category = document.getElementById("category").value.trim();
-const amount = Number(document.getElementById("amount").value);
+    const category = document.getElementById("category").value.trim();
+    const amount = Number(document.getElementById("amount").value);
 
-if (!category || amount <= 0) {
-alert("Please enter valid category and amount");
-return;
+    if (!category || amount <= 0) {
+        alert("Please enter valid category and amount");
+        return;
+    }
+
+    expenses.push({ category, amount });
+
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    document.getElementById("category").value = "";
+    document.getElementById("amount").value = "";
+
+    renderTable();
 }
 
-expenses.push({ category, amount });
-
-localStorage.setItem("expenses", JSON.stringify(expenses));
-
-document.getElementById("category").value = "";
-document.getElementById("amount").value = "";
-
-renderTable();
-}
+//////////////////////////////////////////////////
+// TABLE
+//////////////////////////////////////////////////
 
 function renderTable() {
 
-const tableBody = document.querySelector("#expenseTable tbody");
-tableBody.innerHTML = "";
+    const tableBody = document.querySelector("#expenseTable tbody");
+    tableBody.innerHTML = "";
 
-let total = 0;
+    let total = 0;
 
-expenses.forEach((e, index) => {
+    expenses.forEach((e, index) => {
 
-total += e.amount;
+        total += e.amount;
 
-const row = `
-<tr>
-<td>${index + 1}</td>
-<td>${e.category}</td>
-<td>${e.amount.toFixed(2)}</td>
-<td>
-<button onclick="deleteExpense(${index})">Delete</button>
-</td>
-</tr>
-`;
+        const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${e.category}</td>
+                <td>${e.amount.toFixed(2)}</td>
+                <td>
+                    <button onclick="deleteExpense(${index})">Delete</button>
+                </td>
+            </tr>
+        `;
 
-tableBody.insertAdjacentHTML("beforeend", row);
-});
+        tableBody.insertAdjacentHTML("beforeend", row);
+    });
 
-document.getElementById("total").textContent = "₹ " + total.toFixed(2);
+    document.getElementById("total").textContent = "₹ " + total.toFixed(2);
 
-buildChart();
+    buildChart();
 }
+
+//////////////////////////////////////////////////
+// DELETE
+//////////////////////////////////////////////////
 
 function deleteExpense(index) {
 
-expenses.splice(index, 1);
-localStorage.setItem("expenses", JSON.stringify(expenses));
-renderTable();
+    expenses.splice(index, 1);
+
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    renderTable();
 }
+
+//////////////////////////////////////////////////
+// CSV DOWNLOAD
+//////////////////////////////////////////////////
 
 function downloadExpenseExcel() {
 
-if (expenses.length === 0) {
-alert("No expenses to download");
-return;
+    if (expenses.length === 0) {
+        alert("No expenses to download");
+        return;
+    }
+
+    let csv = "Category,Amount\n";
+
+    expenses.forEach(e => {
+        csv += `${e.category},${e.amount}\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Monthly_Expense_Report.csv";
+    a.click();
+
+    URL.revokeObjectURL(url);
 }
 
-let csv = "Category,Amount\n";
-
-expenses.forEach(e => {
-csv += `${e.category},${e.amount}\n`;
-});
-
-const blob = new Blob([csv], { type: "text/csv" });
-const url = URL.createObjectURL(blob);
-
-const a = document.createElement("a");
-a.href = url;
-a.download = "Monthly_Expense_Report.csv";
-a.click();
-
-URL.revokeObjectURL(url);
-}
+//////////////////////////////////////////////////
+// INIT
+//////////////////////////////////////////////////
 
 renderTable();
 
