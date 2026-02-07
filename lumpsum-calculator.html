@@ -5,6 +5,9 @@
     <title>Lumpsum Calculator | Auto Finance Assist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -23,25 +26,55 @@
     <h2>Mutual Fund – Lumpsum Calculator</h2>
     <p>Calculate future value of a one-time mutual fund investment.</p>
 
-    <div class="grid" style="max-width:600px">
+    <!-- GRID EXPANDED TO USE FREE SPACE -->
+    <div class="grid" style="max-width:1100px">
 
-        <div class="card">
-            <label>Investment Amount (₹)</label><br>
-            <input type="number" id="amount" placeholder="Example: 100000">
+        <!-- INPUT SIDE -->
+        <div>
+
+            <div class="card">
+                <label>Investment Amount (₹)</label><br>
+                <input type="number" id="amount" placeholder="Example: 100000">
+            </div>
+
+            <div class="card">
+                <label>Expected Annual Return (%)</label><br>
+                <input type="number" id="rate" placeholder="Example: 12">
+            </div>
+
+            <div class="card">
+                <label>Investment Period (Years)</label><br>
+                <input type="number" id="years" placeholder="Example: 15">
+            </div>
+
+            <!-- PRO OPTION -->
+            <div class="card">
+                <label>Yearly Top-up Investment (Optional ₹)</label><br>
+                <input type="number" id="topup" placeholder="Example: 10000">
+            </div>
+
+            <div class="card">
+                <label>Check Value After Year (Optional)</label><br>
+                <input type="number" id="goalYear" placeholder="Example: 10">
+            </div>
+
+            <div class="card">
+                <button onclick="calculateLumpsum()">Calculate</button>
+            </div>
+
+            <!-- PRO TIP -->
+            <div class="card">
+                <strong>💡 Pro Tip:</strong><br><br>
+                • Adding just <b>5–10% yearly top-up</b> can double long-term wealth.<br>
+                • Stay invested longer — compounding accelerates after year 8–10.<br>
+                • Avoid early withdrawal unless it is for a major life goal.
+            </div>
+
         </div>
 
+        <!-- CHART SIDE -->
         <div class="card">
-            <label>Expected Annual Return (%)</label><br>
-            <input type="number" id="rate" placeholder="Example: 12">
-        </div>
-
-        <div class="card">
-            <label>Investment Period (Years)</label><br>
-            <input type="number" id="years" placeholder="Example: 15">
-        </div>
-
-        <div class="card">
-            <button onclick="calculateLumpsum()">Calculate</button>
+            <canvas id="growthChart"></canvas>
         </div>
 
     </div>
@@ -72,6 +105,17 @@
             <h3 id="multiplier">—</h3>
         </div>
 
+        <!-- NEW CARD -->
+        <div class="card">
+            <p><strong>Extra Wealth from Top-ups</strong></p>
+            <h3 id="extraWealth">—</h3>
+        </div>
+
+        <div class="card">
+            <p><strong>Value at Selected Year</strong></p>
+            <h3 id="goalValue">—</h3>
+        </div>
+
     </div>
 </section>
 
@@ -84,6 +128,7 @@
                 <tr>
                     <th>Year</th>
                     <th>Opening Balance</th>
+                    <th>Top-up</th>
                     <th>Return</th>
                     <th>Closing Balance</th>
                 </tr>
@@ -101,79 +146,126 @@
 </footer>
 
 <script>
+
 let lumpData = [];
+let chart;
 
 function calculateLumpsum() {
-    const P = Number(document.getElementById("amount").value);
-    const annualRate = Number(document.getElementById("rate").value) / 100;
-    const years = Number(document.getElementById("years").value);
+
+    const P = Number(amount.value);
+    const annualRate = Number(rate.value) / 100;
+    const years = Number(yearsInput = document.getElementById("years").value);
+    const topup = Number(document.getElementById("topup").value) || 0;
+    const goalYear = Number(document.getElementById("goalYear").value);
 
     if (!P || !annualRate || !years) {
         alert("Please enter all values correctly");
         return;
     }
 
-    let balance = P;
+    let balanceWithTopup = P;
+    let balanceWithoutTopup = P;
+
     lumpData = [];
+
+    const labels = [];
+    const data = [];
 
     const tableBody = document.querySelector("#lumpTable tbody");
     tableBody.innerHTML = "";
 
-    for (let y = 1; y <= years; y++) {
-        const opening = balance;
-        const gain = opening * annualRate;
-        balance = opening + gain;
+    let goalValue = 0;
 
-        lumpData.push({
-            year: y,
-            opening,
-            gain,
-            closing: balance
-        });
+    for (let y = 1; y <= years; y++) {
+
+        const opening = balanceWithTopup;
+
+        balanceWithTopup += topup;
+
+        const gain = balanceWithTopup * annualRate;
+        balanceWithTopup += gain;
+
+        // Without topup calc for difference
+        balanceWithoutTopup += balanceWithoutTopup * annualRate;
+
+        if (goalYear === y) goalValue = balanceWithTopup;
+
+        lumpData.push({year:y, opening, topup, gain, closing:balanceWithTopup});
+
+        labels.push("Year " + y);
+        data.push(balanceWithTopup);
 
         const row = `
-            <tr>
-                <td>${y}</td>
-                <td>${opening.toFixed(2)}</td>
-                <td>${gain.toFixed(2)}</td>
-                <td>${balance.toFixed(2)}</td>
-            </tr>
-        `;
+        <tr>
+            <td>${y}</td>
+            <td>${opening.toFixed(2)}</td>
+            <td>${topup.toFixed(2)}</td>
+            <td>${gain.toFixed(2)}</td>
+            <td>${balanceWithTopup.toFixed(2)}</td>
+        </tr>`;
+
         tableBody.insertAdjacentHTML("beforeend", row);
     }
 
-    const maturity = balance;
-    const totalGain = maturity - P;
+    const maturity = balanceWithTopup;
+    const totalGain = maturity - (P + (topup*years));
     const multiplier = (maturity / P).toFixed(2);
+    const extraWealth = maturity - balanceWithoutTopup;
 
-    document.getElementById("invested").textContent = "₹ " + P.toFixed(2);
-    document.getElementById("gain").textContent = "₹ " + totalGain.toFixed(2);
-    document.getElementById("maturity").textContent = "₹ " + maturity.toFixed(2);
-    document.getElementById("multiplier").textContent = multiplier + " X";
+    invested.textContent = "₹ " + (P + topup*years).toFixed(2);
+    gain.textContent = "₹ " + totalGain.toFixed(2);
+    maturity.textContent = "₹ " + maturity.toFixed(2);
+    multiplier.textContent = multiplier + " X";
+    extraWealth.textContent = "₹ " + extraWealth.toFixed(2);
+    goalValue.textContent = goalYear ? "₹ " + goalValue.toFixed(2) : "—";
+
+    // CHART
+    if(chart) chart.destroy();
+
+    chart = new Chart(document.getElementById("growthChart"), {
+        type:'line',
+        data:{
+            labels:labels,
+            datasets:[{
+                label:'Investment Growth',
+                data:data,
+                tension:0.3
+            }]
+        },
+        options:{
+            responsive:true,
+            plugins:{
+                legend:{display:true}
+            }
+        }
+    });
 }
 
-function downloadLumpsumExcel() {
-    if (lumpData.length === 0) {
+
+function downloadLumpsumExcel(){
+
+    if(lumpData.length===0){
         alert("Please calculate first");
         return;
     }
 
-    let csv = "Year,Opening Balance,Return,Closing Balance\n";
+    let csv="Year,Opening,Topup,Return,Closing\n";
 
-    lumpData.forEach(r => {
-        csv += `${r.year},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
+    lumpData.forEach(r=>{
+        csv+=`${r.year},${r.opening.toFixed(2)},${r.topup.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
     });
 
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
+    const blob=new Blob([csv],{type:"text/csv"});
+    const url=URL.createObjectURL(blob);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "Lumpsum_Yearly_Projection.csv";
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="Lumpsum_Projection.csv";
     a.click();
 
     URL.revokeObjectURL(url);
 }
+
 </script>
 
 </body>
