@@ -2,250 +2,381 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mutual Fund Tracker | Auto Finance Assist</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="../style.css">
+<title>SPI Mutual Fund Ultra Tracker | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f4f6fb;
+}
+
+/* HEADER */
+
+header{
+background:#1e3a8a;
+color:white;
+padding:18px;
+text-align:center;
+}
+
+/* CARDS */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+max-width:1100px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:18px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:10px;
+border-radius:8px;
+cursor:pointer;
+width:100%;
+font-weight:bold;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+/* SUMMARY */
+
+.summary{
+max-width:1100px;
+margin:25px auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.summary div{
+background:white;
+padding:18px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,.05);
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+footer{
+text-align:center;
+padding:20px;
+margin-top:40px;
+background:#111827;
+color:white;
+}
+
+</style>
 </head>
-
 <body>
 
-<!-- ✅ SAME SIP TOP CONTAINER -->
-<div class="top-container">
-
 <header>
-    <div class="logo">
-        <span class="icon"><i class="fas fa-chart-line"></i></span>
-        <div>
-            <strong>Auto Finance Assist</strong><br>
-            <small>For Common Man</small>
-        </div>
-    </div>
-
-    <nav>
-        <a href="index.html">Home</a>
-    </nav>
+<h1>Auto Finance Assist</h1>
+<p>SPI Mutual Fund Ultra Tracker</p>
 </header>
 
-<section class="hero">
-    <h2>Mutual Fund Investment Tracker</h2>
-    <p>Track your Mutual Fund investments (SIP / Lumpsum)</p>
-</section>
+<section style="padding:30px">
 
+<h2 style="text-align:center">Add Investment</h2>
+
+<div class="grid">
+
+<div class="card">
+<label>Fund Name</label>
+<input id="fund" placeholder="Example: Nifty 50" style="width:100%">
 </div>
 
-<!-- ✅ SCROLLABLE MAIN -->
-<main>
+<div class="card">
+<label>Type</label>
+<select id="type" style="width:100%">
+<option>SIP</option>
+<option>Lumpsum</option>
+</select>
+</div>
 
-<section class="section light">
+<div class="card">
+<label>Amount (₹)</label>
+<input id="amount" type="number" style="width:100%">
+</div>
 
-<h2>Investment Entry</h2>
+<div class="card">
+<label>Start Date</label>
+<input id="date" type="date" style="width:100%">
+</div>
 
-<div class="grid" style="max-width:900px; margin:auto">
-
-    <div class="card">
-      <label>Fund Name</label><br />
-      <input type="text" id="fundName" placeholder="Nifty 50 Index Fund" />
-    </div>
-
-    <div class="card">
-      <label>Investment Type</label><br />
-      <select id="investmentType">
-        <option value="SIP">SIP</option>
-        <option value="Lumpsum">Lumpsum</option>
-      </select>
-    </div>
-
-    <div class="card">
-      <label>Monthly / Invested Amount (₹)</label><br />
-      <input type="number" id="amount" placeholder="5000" />
-    </div>
-
-    <div class="card">
-      <label>Start Date</label><br />
-      <input type="date" id="startDate" />
-    </div>
-
-    <div class="card">
-      <label>Expected Annual Return (%)</label><br />
-      <input type="number" id="returnRate" placeholder="12" />
-    </div>
-
-    <div class="card">
-      <button onclick="addInvestment()">Add Investment</button>
-    </div>
+<div class="card">
+<button onclick="addInvestment()">Add Investment</button>
+</div>
 
 </div>
 
 </section>
 
+<!-- SUMMARY -->
 
-<section class="section">
-  <h2>My Investments</h2>
+<div class="summary">
 
-  <div style="overflow-x:auto">
-    <table border="1" cellpadding="8" cellspacing="0" width="100%" id="investmentTable">
-      <thead>
-        <tr>
-          <th>Fund</th>
-          <th>Type</th>
-          <th>Amount (₹)</th>
-          <th>Start Date</th>
-          <th>Return %</th>
-          <th>Estimated Value (₹)</th>
-          <th>XIRR %</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <br />
-  <button onclick="exportTrackerCSV()">Download CSV</button>
-</section>
-
-
-<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
-Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
-Users should make financial decisions based on their personal judgment.
+<div>
+<h3>Total Invested</h3>
+<p id="invested">₹0</p>
 </div>
 
-</main>
+<div>
+<h3>Current Value</h3>
+<p id="current">₹0</p>
+</div>
 
-<!-- ✅ SAME SIP FOOTER -->
+<div>
+<h3>Total Gain</h3>
+<p id="gain">₹0</p>
+</div>
+
+<div>
+<h3>Return %</h3>
+<p id="return">0%</p>
+</div>
+
+</div>
+
+<section style="max-width:1100px;margin:auto">
+
+<table>
+<thead>
+<tr>
+<th>Fund</th>
+<th>Units</th>
+<th>Buy NAV</th>
+<th>Latest NAV</th>
+<th>Invested</th>
+<th>Value</th>
+<th>Gain</th>
+<th>XIRR</th>
+<th>Remove</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+
+<br>
+
+<button onclick="downloadTracker()">Download FULL Tracker</button>
+
+</section>
+
 <footer>
-© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+© 2026 Auto Finance Assist
 </footer>
 
 <script>
 
-let investments = JSON.parse(localStorage.getItem("mfTracker")) || [];
+let investments = JSON.parse(localStorage.getItem("ultraMF")) || [];
+let navData = "";
 
-/* ---------- XIRR CALCULATION ---------- */
-function calculateXIRR(cashflows, dates) {
-  let rate = 0.1;
-  for (let i = 0; i < 100; i++) {
-    let npv = 0, dnpv = 0;
-    for (let j = 0; j < cashflows.length; j++) {
-      const t = (dates[j] - dates[0]) / (1000 * 60 * 60 * 24 * 365);
-      npv += cashflows[j] / Math.pow(1 + rate, t);
-      dnpv += -t * cashflows[j] / Math.pow(1 + rate, t + 1);
-    }
-    const newRate = rate - npv / dnpv;
-    if (Math.abs(newRate - rate) < 0.00001) return rate * 100;
-    rate = newRate;
-  }
-  return rate * 100;
+/* FETCH NAV */
+
+async function fetchNAV(){
+
+const url =
+"https://api.allorigins.win/raw?url=https://www.amfiindia.com/spages/NAVAll.txt";
+
+navData = await fetch(url).then(r=>r.text());
+
+updateNAV();
 }
 
-/* ---------- ADD INVESTMENT ---------- */
-function addInvestment() {
-  const fund = fundName.value.trim();
-  const type = investmentType.value;
-  const amountVal = Number(amount.value);
-  const start = new Date(startDate.value);
-  const rate = Number(returnRate.value);
+/* GET NAV */
 
-  if (!fund || !amountVal || !startDate.value || !rate) {
-    alert("Please fill all fields");
-    return;
-  }
+function getNAV(name){
 
-  const today = new Date();
-  const years = (today - start) / (1000 * 60 * 60 * 24 * 365);
-  if (years <= 0) return alert("Start date must be in the past");
+const line = navData
+.split("\n")
+.find(l=>l.toLowerCase().includes(name.toLowerCase()));
 
-  let estimated, cashflows = [], dates = [];
+if(!line) return null;
 
-  if (type === "SIP") {
-    const months = Math.floor(years * 12);
-    const monthlyRate = rate / 100 / 12;
-
-    for (let i = 0; i < months; i++) {
-      cashflows.push(-amountVal);
-      const d = new Date(start);
-      d.setMonth(d.getMonth() + i);
-      dates.push(d);
-    }
-
-    estimated = amountVal * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-  } else {
-    cashflows.push(-amountVal);
-    dates.push(start);
-    estimated = amountVal * Math.pow(1 + rate / 100, years);
-  }
-
-  cashflows.push(estimated);
-  dates.push(today);
-
-  const xirr = calculateXIRR(cashflows, dates).toFixed(2);
-
-  investments.push({
-    fund,
-    type,
-    amount: amountVal,
-    start: startDate.value,
-    rate,
-    estimated: Math.round(estimated),
-    xirr
-  });
-
-  localStorage.setItem("mfTracker", JSON.stringify(investments));
-  renderTable();
-  clearInputs();
+return parseFloat(line.split(";")[4]);
 }
 
-/* ---------- RENDER TABLE ---------- */
-function renderTable() {
-  const tbody = investmentTable.querySelector("tbody");
-  tbody.innerHTML = "";
+/* XIRR */
 
-  investments.forEach((inv, i) => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${inv.fund}</td>
-        <td>${inv.type}</td>
-        <td>${inv.amount}</td>
-        <td>${inv.start}</td>
-        <td>${inv.rate}%</td>
-        <td>₹ ${inv.estimated}</td>
-        <td>${inv.xirr} %</td>
-        <td><button onclick="removeInvestment(${i})">Remove</button></td>
-      </tr>`;
-  });
+function XIRR(cf,dates){
+
+let rate=.1;
+
+for(let i=0;i<100;i++){
+
+let npv=0;
+let d=0;
+
+for(let j=0;j<cf.length;j++){
+
+let t=(dates[j]-dates[0])/(365*24*60*60*1000);
+
+npv+=cf[j]/Math.pow(1+rate,t);
+d+=-t*cf[j]/Math.pow(1+rate,t+1);
 }
 
-/* ---------- REMOVE ---------- */
-function removeInvestment(i) {
-  investments.splice(i, 1);
-  localStorage.setItem("mfTracker", JSON.stringify(investments));
-  renderTable();
+let newRate=rate-npv/d;
+
+if(Math.abs(newRate-rate)<.0001)
+return (rate*100).toFixed(2);
+
+rate=newRate;
 }
 
-/* ---------- CSV ---------- */
-function exportTrackerCSV() {
-  if (!investments.length) return alert("No data to export");
-  let csv = "Fund,Type,Amount,Start Date,Return %,Estimated,XIRR\n";
-  investments.forEach(i => {
-    csv += `${i.fund},${i.type},${i.amount},${i.start},${i.rate},${i.estimated},${i.xirr}\n`;
-  });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-  a.download = "Mutual_Fund_Tracker.csv";
-  a.click();
+return (rate*100).toFixed(2);
 }
 
-/* ---------- CLEAR ---------- */
-function clearInputs() {
-  fundName.value = "";
-  amount.value = "";
-  startDate.value = "";
-  returnRate.value = "";
+/* ADD */
+
+async function addInvestment(){
+
+const fund=document.getElementById("fund").value;
+const amount=Number(document.getElementById("amount").value);
+const date=new Date(document.getElementById("date").value);
+
+if(!fund||!amount||!date) return alert("Fill all fields");
+
+const nav=getNAV(fund);
+
+if(!nav) return alert("Fund not found in AMFI");
+
+const units=amount/nav;
+
+investments.push({
+fund,
+units,
+buyNav:nav,
+amount,
+date:date.toISOString()
+});
+
+localStorage.setItem("ultraMF",JSON.stringify(investments));
+
+render();
 }
 
-renderTable();
+/* UPDATE NAV DAILY */
+
+function updateNAV(){
+
+investments.forEach(inv=>{
+
+const latest=getNAV(inv.fund);
+
+if(latest){
+inv.latestNav=latest;
+inv.value=latest*inv.units;
+}
+});
+
+localStorage.setItem("ultraMF",JSON.stringify(investments));
+
+render();
+}
+
+/* RENDER */
+
+function render(){
+
+let tbody=document.getElementById("table");
+
+tbody.innerHTML="";
+
+let invested=0;
+let current=0;
+
+investments.forEach((inv,i)=>{
+
+const gain=(inv.value||0)-inv.amount;
+
+const cf=[-inv.amount,inv.value||inv.amount];
+const dates=[new Date(inv.date),new Date()];
+
+const xirr=XIRR(cf,dates);
+
+tbody.innerHTML+=`
+<tr>
+<td>${inv.fund}</td>
+<td>${inv.units.toFixed(2)}</td>
+<td>${inv.buyNav.toFixed(2)}</td>
+<td>${(inv.latestNav||0).toFixed(2)}</td>
+<td>₹${inv.amount}</td>
+<td>₹${(inv.value||0).toFixed(0)}</td>
+<td style="color:${gain>0?"green":"red"}">
+₹${gain.toFixed(0)}
+</td>
+<td>${xirr}%</td>
+<td><button onclick="removeInv(${i})">X</button></td>
+</tr>
+`;
+
+invested+=inv.amount;
+current+=inv.value||0;
+});
+
+document.getElementById("invested").innerText="₹"+invested.toFixed(0);
+document.getElementById("current").innerText="₹"+current.toFixed(0);
+document.getElementById("gain").innerText="₹"+(current-invested).toFixed(0);
+
+document.getElementById("return").innerText=
+((current-invested)/invested*100||0).toFixed(2)+"%";
+}
+
+/* REMOVE */
+
+function removeInv(i){
+investments.splice(i,1);
+localStorage.setItem("ultraMF",JSON.stringify(investments));
+render();
+}
+
+/* DOWNLOAD FULL TRACKER */
+
+function downloadTracker(){
+
+const file=document.documentElement.outerHTML;
+
+const blob=new Blob([file],{type:"text/html"});
+
+const a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+a.download="SPI_ULTRA_MF_TRACKER.html";
+a.click();
+}
+
+/* INIT */
+
+fetchNAV();
 
 </script>
 
