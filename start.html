@@ -21,27 +21,56 @@
 
 <section class="section light">
     <h2>Financial Life Starter</h2>
-    <p>Understand your financial position and build a strong foundation for your life mission.</p>
+    <p>Build protection first. Then build wealth.</p>
 
-    <!-- LEFT INPUT + RIGHT RESULT -->
     <div class="grid" style="grid-template-columns: 1fr 1fr; gap:30px; align-items:start;">
 
-        <!-- LEFT SIDE -->
+        <!-- LEFT SIDE INPUTS -->
         <div>
 
             <div class="card">
                 <label>Current Age</label><br>
-                <input type="number" id="age" placeholder="Example: 30">
+                <input type="number" id="age" placeholder="30">
+            </div>
+
+            <div class="card">
+                <label>Monthly Income</label><br>
+                <input type="number" id="income" placeholder="80000">
             </div>
 
             <div class="card">
                 <label>Monthly Expense</label><br>
-                <input type="number" id="expense" placeholder="Example: 40000">
+                <input type="number" id="expense" placeholder="40000">
             </div>
 
             <div class="card">
                 <label>Current Savings</label><br>
-                <input type="number" id="savings" placeholder="Example: 200000">
+                <input type="number" id="savings" placeholder="200000">
+            </div>
+
+            <!-- Insurance Question -->
+            <div class="card">
+                <label>Do you already have Term Life Insurance?</label><br>
+
+                <select id="insurance" onchange="toggleInsuranceFields()">
+                    <option value="no">No</option>
+                    <option value="yes">Yes</option>
+                </select>
+            </div>
+
+            <!-- Hidden fields -->
+            <div id="insuranceFields" style="display:none;">
+
+                <div class="card">
+                    <label>Current Sum Assured</label><br>
+                    <input type="number" id="sumAssured" placeholder="Example: 5000000">
+                </div>
+
+                <div class="card">
+                    <label>Yearly Premium</label><br>
+                    <input type="number" id="premium" placeholder="Example: 15000">
+                </div>
+
             </div>
 
             <div class="card">
@@ -50,23 +79,27 @@
 
         </div>
 
-        <!-- RIGHT SIDE -->
+
+        <!-- RIGHT SIDE REPORT -->
         <div>
 
             <div class="card">
                 <h3>Your Financial Snapshot</h3>
 
-                <p><strong>Recommended Emergency Fund:</strong></p>
+                <p><strong>Emergency Fund Needed:</strong></p>
                 <h2 id="emergency">—</h2>
 
-                <p><strong>Suggested Term Insurance Cover:</strong></p>
+                <p><strong>Recommended Term Cover:</strong></p>
                 <h2 id="term">—</h2>
+
+                <p><strong>Protection Gap:</strong></p>
+                <h2 id="gap">—</h2>
             </div>
 
             <div class="card">
                 <h3>Personalized Suggestions</h3>
                 <p id="suggestions">
-                    Enter your details and generate your life financial roadmap.
+                    Enter your details to generate your roadmap.
                 </p>
             </div>
 
@@ -85,57 +118,113 @@ function formatMoney(num){
     return "₹ " + num.toLocaleString("en-IN", {maximumFractionDigits:0});
 }
 
+function toggleInsuranceFields(){
+    const choice = document.getElementById("insurance").value;
+    document.getElementById("insuranceFields").style.display =
+        choice === "yes" ? "block" : "none";
+}
+
 function generatePlan(){
 
     const age = Number(document.getElementById("age").value);
+    const income = Number(document.getElementById("income").value);
     const monthlyExpense = Number(document.getElementById("expense").value);
     const savings = Number(document.getElementById("savings").value);
+    const insurance = document.getElementById("insurance").value;
 
-    if(!age || !monthlyExpense){
-        alert("Please enter all required values");
+    if(!age || !income || !monthlyExpense){
+        alert("Please fill all required values");
         return;
     }
 
-    // Emergency fund
+    // Emergency Fund
     const emergencyFund = monthlyExpense * 6;
 
-    // Term insurance with 7% inflation
+    // Term Insurance Calculation
     const yearsLeft = 60 - age;
     const yearlyExpense = monthlyExpense * 12;
     const inflationAdjustedExpense = yearlyExpense * Math.pow(1.07, yearsLeft);
-    const termCover = inflationAdjustedExpense * yearsLeft;
+    const requiredCover = inflationAdjustedExpense * yearsLeft;
+
+    let gapText = "";
+    let suggestionInsurance = "";
+
+    if(insurance === "yes"){
+
+        const currentCover = Number(document.getElementById("sumAssured").value);
+
+        if(!currentCover){
+            alert("Enter your sum assured");
+            return;
+        }
+
+        const gap = requiredCover - currentCover;
+
+        if(gap <= 0){
+
+            gapText = "✅ Fully Protected";
+
+            suggestionInsurance = `
+            ✅ <b>Congrats!</b> You are already financially protected with sufficient life cover.
+            Review your policy every few years to stay aligned with inflation.
+            `;
+
+        }else{
+
+            gapText = formatMoney(gap);
+
+            suggestionInsurance = `
+            ⚠️ Your family is under-protected.<br>
+            Increase your term cover by approximately <b>${formatMoney(gap)}</b>.
+            `;
+        }
+
+    }else{
+
+        gapText = formatMoney(requiredCover);
+
+        suggestionInsurance = `
+        🚨 <b>High Priority:</b> You currently have no life insurance.<br>
+        Buy a term plan covering about <b>${formatMoney(requiredCover)}</b> immediately.
+        `;
+    }
 
     document.getElementById("emergency").textContent = formatMoney(emergencyFund);
-    document.getElementById("term").textContent = formatMoney(termCover);
+    document.getElementById("term").textContent = formatMoney(requiredCover);
+    document.getElementById("gap").textContent = gapText;
 
-    // Status logic
+
+    // Emergency status
     let emergencyStatus = savings >= emergencyFund
-        ? "✅ You already have a strong emergency buffer."
-        : "⚠️ Build your emergency fund immediately for financial safety.";
+        ? "✅ Excellent! Your emergency fund is strong."
+        : `Build your emergency fund to <b>${formatMoney(emergencyFund)}</b> for real financial security.`;
+
+
 
     const suggestionsHTML = `
         <b>Great step!</b> You have started understanding your financial position.<br><br>
 
-        <b>Priority Protection (DO THIS FIRST):</b><br>
-        ✔ Build a Life Term Insurance plan covering approx <b>${formatMoney(termCover)}</b><br>
-        ✔ Take Health Insurance for yourself and your family<br>
-        ✔ Buy separate health insurance for parents (very critical)<br><br>
+        <b>STEP 1 — PROTECTION:</b><br>
+        ✔ ${suggestionInsurance}<br>
+        ✔ Take health insurance for your family<br>
+        ✔ Take separate health insurance for parents<br><br>
 
-        <b>Financial Stability:</b><br>
-        ✔ Build an emergency fund of <b>${formatMoney(emergencyFund)}</b> (6 months expenses)<br>
-        ${emergencyStatus}<br>
-        ✔ Reduce high-interest loans if any<br><br>
+        <b>STEP 2 — STABILITY:</b><br>
+        ✔ ${emergencyStatus}<br>
+        ✔ Avoid high-interest debt<br><br>
 
-        <b>Wealth Creation:</b><br>
-        ✔ Start investing for long-term goals<br>
-        ✔ Increase investments every year with salary growth<br>
-        ✔ Stay invested for decades — this builds real wealth<br><br>
+        <b>STEP 3 — WEALTH:</b><br>
+        ✔ Start long-term investing<br>
+        ✔ Increase investments every year<br>
+        ✔ Stay consistent — wealth is built over decades<br><br>
 
-        <b>Confidence Rule:</b><br>
-        Once protection + emergency fund are ready, your financial stress drops massively and confidence rises.
+        <b>Golden Rule:</b><br>
+        Protection → Emergency Fund → Investments.<br>
+        Follow this order and financial stress reduces drastically.
     `;
 
     document.getElementById("suggestions").innerHTML = suggestionsHTML;
+
 }
 
 </script>
