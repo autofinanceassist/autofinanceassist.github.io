@@ -64,75 +64,49 @@ text-align:center;
 
 <body>
 
-<div class="top-container">
-
 <header>
-    <div class="logo">
-        <span class="icon"><i class="fas fa-chart-line"></i></span>
-        <div>
-            <strong>Auto Finance Assist</strong><br>
-            <small>For Common Man</small>
-        </div>
-    </div>
-
-    <nav>
-        <a href="index.html">Home</a>
-    </nav>
-</header>
-
-<section class="hero">
-    <h2>Mutual Fund Lumpsum Calculator</h2>
-    <p>Invest once today — let compounding build your future wealth.</p>
-</section>
-
+<div class="logo">
+<i class="fas fa-chart-line"></i>
+<strong> Auto Finance Assist</strong>
 </div>
-
-<main>
+</header>
 
 <section class="section light">
 
 <div class="pro-tip">
-💡 <strong>Investor Tip:</strong> Adding yearly top-ups dramatically accelerates wealth creation.
-Even small additions can create <b>25–40% MORE corpus</b> over long horizons.
+💡 <strong>Investor Tip:</strong> Stay invested longer — wealth creation accelerates in later years due to compounding.
+Avoid early withdrawals unless aligned with major life goals.
 </div>
 
 <h2>Lumpsum Calculator</h2>
 
-<div style="
-display:flex;
-gap:40px;
-flex-wrap:wrap;
-align-items:flex-start;
-justify-content:center;
-max-width:1000px;
-margin:auto;
-">
+<div style="display:flex;gap:40px;flex-wrap:wrap;justify-content:center;max-width:1000px;margin:auto;">
 
-<div style="flex:1; min-width:300px; max-width:520px;">
+<div style="flex:1;min-width:300px;max-width:520px;">
 
 <div class="card">
-<label>Investment Amount (₹)</label><br>
-<input type="number" id="amount" placeholder="Example: 100000">
+<label>Investment Amount (₹)</label>
+<input type="number" id="amount">
 </div>
 
 <div class="card">
-<label>Expected Annual Return (%)</label><br>
-<input type="number" id="rate" placeholder="Example: 12">
+<label>Expected Annual Return (%)</label>
+<input type="number" id="rate">
 </div>
 
 <div class="card">
-<label>Investment Period (Years)</label><br>
-<input type="number" id="years" placeholder="Example: 15">
+<label>Investment Period (Years)</label>
+<input type="number" id="years">
 </div>
 
 <div class="card">
-<label>Yearly Top-up Investment (Optional ₹)</label><br>
-<input type="number" id="topup" placeholder="Example: 10000">
+<label>Yearly Top-up Investment (Optional ₹)</label>
+<input type="number" id="topup">
 </div>
 
 <div class="card">
-<label>Check Value After Year (Optional)</label><br>
-<input type="number" id="goalYear" placeholder="Example: 10">
+<label>Check Value After Year (Optional — if we withdraw after this year)</label>
+<input type="number" id="goalYear">
 </div>
 
 <div class="card">
@@ -204,17 +178,6 @@ margin:auto;
 
 </section>
 
-<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
-Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
-Users should make financial decisions based on their personal judgment.
-</div>
-
-</main>
-
-<footer>
-© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
-</footer>
-
 
 <script>
 
@@ -222,24 +185,26 @@ let lumpData=[];
 let chart;
 
 function formatMoney(num){
-return "₹ "+Math.round(num).toLocaleString('en-IN');
+return "₹ " + Math.round(num).toLocaleString('en-IN');
 }
 
 function calculateLumpsum(){
 
-const P=Number(amount.value);
+const P=Number(document.getElementById("amount").value);
 const rate=Number(document.getElementById("rate").value)/100;
 const years=Number(document.getElementById("years").value);
 const topup=Number(document.getElementById("topup").value)||0;
-const goalYear=Number(document.getElementById("goalYear").value);
+const goalYear=Number(document.getElementById("goalYear").value); // optional
 
 if(!P || !rate || !years){
-alert("Please enter all values correctly");
+alert("Please enter Investment, Return, and Years");
 return;
 }
 
 let balance=P;
 let normalBalance=P;
+let totalInvested=P;
+let goalValue=null;
 
 lumpData=[];
 
@@ -249,9 +214,6 @@ const withoutTopup=[];
 
 const tbody=document.querySelector("#lumpTable tbody");
 tbody.innerHTML="";
-
-let goalValue=0;
-let totalInvested=P;
 
 for(let y=1;y<=years;y++){
 
@@ -266,7 +228,9 @@ balance+=gain;
 /* without topup */
 normalBalance+=normalBalance*rate;
 
-if(goalYear===y) goalValue=balance;
+if(goalYear && goalYear===y){
+goalValue=balance;
+}
 
 labels.push("Year "+y);
 withTopup.push(balance);
@@ -285,32 +249,59 @@ tbody.insertAdjacentHTML("beforeend",`
 `);
 }
 
-const maturity=balance;
-const totalGain=maturity-totalInvested;
-const multiplier=(maturity/P).toFixed(2);
-const extra=maturity-normalBalance;
+/* FINAL VALUES */
 
-invested.textContent=formatMoney(totalInvested);
-gain.textContent=formatMoney(totalGain);
-maturity.textContent=formatMoney(maturity);
-multiplier.textContent=multiplier+" X";
+const maturityAmount=balance;
+const totalGain=maturityAmount-totalInvested;
+const multiplierValue=(maturityAmount/P).toFixed(2);
+const extra=maturityAmount-normalBalance;
 
+/* OUTPUT */
+
+document.getElementById("invested").textContent=formatMoney(totalInvested);
+document.getElementById("gain").textContent=formatMoney(totalGain);
+document.getElementById("maturity").textContent=formatMoney(maturityAmount);
+document.getElementById("multiplier").textContent=multiplierValue+" X";
+
+/* Wealth Insight */
 
 const card=document.getElementById("wealthCard");
 card.style.display="block";
 
+let earlyExitText="";
+
+if(goalValue){
+const earlyGain=goalValue-totalInvested;
+
+earlyExitText=`
+<br><br>
+📊 <b>Early Withdrawal Insight (Year ${goalYear})</b><br>
+Value if redeemed: <b>${formatMoney(goalValue)}</b><br>
+Approx Gain: <b>${formatMoney(earlyGain)}</b>
+`;
+}
+
 if(topup>0){
+
 card.innerHTML=`
 🚀 <b>Top-Up Strategy Insight</b><br><br>
 
 Without top-ups: <b>${formatMoney(normalBalance)}</b><br>
-With yearly top-ups: <b>${formatMoney(maturity)}</b><br><br>
+With yearly top-ups: <b>${formatMoney(maturityAmount)}</b><br><br>
 
 💰 <b>You generate ${formatMoney(extra)} EXTRA wealth!</b>
+
+${earlyExitText}
 `;
+
 }else{
+
 card.innerHTML=`
-💡 Adding yearly investments can significantly accelerate compounding and long-term wealth.
+💡 <b>Wealth Insight:</b><br>
+Staying invested for the full duration maximizes compounding power.
+Even small yearly additions can dramatically increase long-term corpus.
+
+${earlyExitText}
 `;
 }
 
@@ -340,8 +331,7 @@ fill:true
 },
 options:{
 responsive:true,
-maintainAspectRatio:false,
-plugins:{legend:{display:true}}
+maintainAspectRatio:false
 }
 });
 
