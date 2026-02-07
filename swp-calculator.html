@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ULTRA PRO SWP Calculator | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+.chart-card{
+    background:white;
+    padding:16px;
+    border-radius:12px;
+    max-width:420px;
+    height:300px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.big{
+    font-size:26px;
+    color:#0f3a5f;
+}
+
+.pro-tip{
+    background:#fff4e5;
+    border-left:6px solid #0f3a5f;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:25px;
+    font-weight:500;
+}
+
+.wealth-card{
+    max-width:900px;
+    margin:30px auto;
+    background:#f4f8ff;
+    border-left:8px solid #0f3a5f;
+    padding:22px;
+    border-radius:12px;
+    font-size:18px;
+}
+
+table{
+border-collapse:collapse;
+}
+
+th{
+background:#0f3a5f;
+color:white;
+}
+
+td, th{
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="top-container">
+
+<header>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Mutual Fund SWP Calculator</h2>
+    <p>Create predictable income from your investments without exhausting your wealth early.</p>
+</section>
+
+</div>
+
+<main>
+
+<section class="section light">
+
+<div class="pro-tip">
+💡 <strong>Retirement Tip:</strong> A safe withdrawal rate is typically 
+<b>4%–6% yearly</b>. With higher returns than withdrawals, your wealth can last decades.
+</div>
+
+<h2>SWP Calculator</h2>
+
+<div style="
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+align-items:flex-start;
+justify-content:center;
+max-width:1000px;
+margin:auto;
+">
+
+<div style="flex:1; min-width:300px; max-width:520px;">
+
+<div class="card">
+<label>Initial Investment (₹)</label><br>
+<input type="number" id="corpus" placeholder="Example: 50,00,000">
+</div>
+
+<div class="card">
+<label>Monthly Withdrawal (₹)</label><br>
+<input type="number" id="withdrawal" placeholder="Example: 25,000">
+</div>
+
+<div class="card">
+<label>Expected Annual Return (%)</label><br>
+<input type="number" id="rate" placeholder="Example: 10">
+</div>
+
+<div class="card">
+<label>Withdrawal Period (Years)</label><br>
+<input type="number" id="years" placeholder="Example: 25">
+</div>
+
+<div class="card">
+<button onclick="calculateSWP()">Calculate SWP</button>
+</div>
+
+</div>
+
+<div class="chart-card">
+<canvas id="swpChart"></canvas>
+</div>
+
+</div>
+</section>
+
+
+<section class="section">
+<h2>Your Withdrawal Projection</h2>
+
+<div class="grid" style="max-width:900px">
+
+<div class="card">
+<p><strong>Total Withdrawn</strong></p>
+<h3 class="big" id="totalWithdrawn">—</h3>
+</div>
+
+<div class="card">
+<p><strong>Final Corpus</strong></p>
+<h3 class="big" id="finalCorpus">—</h3>
+</div>
+
+<div class="card">
+<p><strong>Interest Earned</strong></p>
+<h3 class="big" id="interestEarned">—</h3>
+</div>
+
+<div class="card">
+<p><strong>Corpus Longevity</strong></p>
+<h3 class="big" id="longevity">—</h3>
+</div>
+
+</div>
+
+<div id="wealthCard" class="wealth-card" style="display:none;"></div>
+
+</section>
+
+
+<section class="section">
+<h2>Monthly SWP Illustration</h2>
+
+<div style="overflow-x:auto;">
+<table id="swpTable" border="1" cellpadding="8" width="100%">
+<thead>
+<tr>
+<th>Month</th>
+<th>Opening</th>
+<th>Return</th>
+<th>Withdrawal</th>
+<th>Closing</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+<br>
+<button onclick="downloadSWPExcel()">Download Excel</button>
+
+</section>
+
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
+Users should make financial decisions based on their personal judgment.
+</div>
+
+</main>
+
+<footer>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+</footer>
+
+
+<script>
+
+let swpData=[];
+let swpChart;
+
+function formatMoney(num){
+return "₹ "+Math.round(num).toLocaleString('en-IN');
+}
+
+function calculateSWP(){
+
+const corpus=Number(document.getElementById("corpus").value);
+const withdrawal=Number(document.getElementById("withdrawal").value);
+const rate=Number(document.getElementById("rate").value)/100;
+const years=Number(document.getElementById("years").value);
+
+if(!corpus || !withdrawal || !rate || !years){
+alert("Please enter all values correctly");
+return;
+}
+
+swpData=[];
+let balance=corpus;
+let monthlyRate=rate/12;
+
+const tbody=document.querySelector("#swpTable tbody");
+tbody.innerHTML="";
+
+let labels=[];
+let balances=[];
+let withdrawnTotal=0;
+
+for(let m=1;m<=years*12;m++){
+
+if(balance<=0) break;
+
+const opening=balance;
+const gain=opening*monthlyRate;
+
+balance=opening+gain-withdrawal;
+
+if(balance<0) balance=0;
+
+withdrawnTotal+=withdrawal;
+
+labels.push("M"+m);
+balances.push(balance);
+
+tbody.insertAdjacentHTML("beforeend",`
+<tr>
+<td>${m}</td>
+<td>${formatMoney(opening)}</td>
+<td>${formatMoney(gain)}</td>
+<td>${formatMoney(withdrawal)}</td>
+<td><b>${formatMoney(balance)}</b></td>
+</tr>
+`);
+}
+
+const interestEarned=(withdrawnTotal+balance)-corpus;
+
+document.getElementById("totalWithdrawn").textContent=formatMoney(withdrawnTotal);
+document.getElementById("finalCorpus").textContent=formatMoney(balance);
+document.getElementById("interestEarned").textContent=formatMoney(interestEarned);
+document.getElementById("longevity").textContent=Math.floor(labels.length/12)+" Years";
+
+const card=document.getElementById("wealthCard");
+card.style.display="block";
+
+if(balance>0){
+card.innerHTML=`✅ Excellent strategy! Your corpus survives the withdrawal period while generating income.`;
+}else{
+card.innerHTML=`⚠️ Warning: Your corpus gets depleted. Consider reducing withdrawal or increasing returns.`;
+}
+
+drawChart(labels,balances);
+
+}
+
+
+function drawChart(labels,balances){
+
+if(swpChart){
+swpChart.destroy();
+}
+
+swpChart=new Chart(document.getElementById("swpChart"),{
+type:'line',
+data:{
+labels,
+datasets:[
+{
+label:'Remaining Corpus',
+data:balances,
+tension:.35,
+fill:true
+}
+]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:true}},
+scales:{x:{display:false}}
+}
+});
+
+}
+
+
+function downloadSWPExcel(){
+
+if(swpData.length===0){
+alert("Please calculate SWP first");
+return;
+}
+
+let csv="Month,Opening,Return,Withdrawal,Closing\n";
+
+document.querySelectorAll("#swpTable tbody tr").forEach(row=>{
+let cols=row.innerText.replace(/\t/g,",");
+csv+=cols+"\n";
+});
+
+const blob=new Blob([csv],{type:"text/csv"});
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+a.href=url;
+a.download="SWP_Projection.csv";
+a.click();
+
+URL.revokeObjectURL(url);
+
+}
+
+</script>
+
+</body>
+</html>
