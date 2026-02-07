@@ -1,20 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Auto Finance Assist | For Common Man</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Auto Finance Assist | For Common Man</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- TOP FIXED AREA -->
+<div class="top-container">
+
 <header>
     <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="#calculators">Calculators</a>
         <a href="#expense">Expense Manager</a>
@@ -24,27 +35,23 @@
 </header>
 
 
-<!-- ================= HERO ================= -->
 <section class="hero">
     <h2>Take Control of Your Financial Life</h2>
     <p>Know where you stand. Understand what to do next. Move toward financial freedom.</p>
 
-    <div style="margin-top:25px;">
-        <button onclick="location.href='start.html'" 
-        style="padding:14px 28px;
-               font-size:18px;
-               background:#2e7d32;
-               color:white;
-               border:none;
-               border-radius:8px;
-               cursor:pointer;">
-            START HERE – Start Free Financial Check
-        </button>
-    </div>
+    <button class="primary-btn"
+        onclick="location.href='start.html'">
+        START HERE – Start Free Financial Check
+    </button>
 </section>
 
+</div>
 
-<!-- ================= CALCULATORS ================= -->
+
+<!-- MAIN -->
+<main>
+
+<!-- CALCULATORS -->
 <section id="calculators" class="section">
     <h2>Financial Calculators</h2>
 
@@ -54,41 +61,22 @@
 
     <div class="grid">
 
-        <div class="card" onclick="location.href='fd-calculator.html'">
-            FD Calculator
-        </div>
-
-        <div class="card" onclick="location.href='rd-calculator.html'">
-            RD Calculator
-        </div>
-
-        <div class="card" onclick="location.href='ppf-calculator.html'">
-            PPF Calculator
-        </div>
-
-        <div class="card" onclick="location.href='nps-calculator.html'">
-            NPS Calculator
-        </div>
-
-        <div class="card" onclick="location.href='loan-calculator.html'">
-            Loan EMI Calculator
-        </div>
-
-        <div class="card" onclick="location.href='sip-calculator.html'">
-            Mutual Fund – SIP Calculator
-        </div>
-
-        <div class="card" onclick="location.href='lumpsum-calculator.html'">
-            Mutual Fund – Lumpsum Calculator
-        </div>
+        <div class="card" onclick="location.href='fd-calculator.html'">FD Calculator</div>
+        <div class="card" onclick="location.href='rd-calculator.html'">RD Calculator</div>
+        <div class="card" onclick="location.href='ppf-calculator.html'">PPF Calculator</div>
+        <div class="card" onclick="location.href='nps-calculator.html'">NPS Calculator</div>
+        <div class="card" onclick="location.href='loan-calculator.html'">Loan EMI Calculator</div>
+        <div class="card" onclick="location.href='sip-calculator.html'">Mutual Fund – SIP Calculator</div>
+        <div class="card" onclick="location.href='lumpsum-calculator.html'">Mutual Fund – Lumpsum Calculator</div>
 
     </div>
 </section>
 
-<!-- ================= EXPENSE ================= -->
-<section id="expense" class="section light">
+
+<!-- EXPENSE -->
+<section id="expense" class="section">
     <h2>Expense Manager</h2>
-    <p>Track monthly expenses and control your money wisely.</p>
+    <p style="text-align:center;">Track monthly expenses and control your money wisely.</p>
 
     <div class="grid">
         <div class="card" onclick="location.href='expense.html'">
@@ -97,7 +85,8 @@
     </div>
 </section>
 
-<!-- ================= INVESTMENT TRACKER ================= -->
+
+<!-- TRACKER -->
 <section id="tracker" class="section">
     <h2>Investment Tracker</h2>
 
@@ -116,8 +105,9 @@
     </div>
 </section>
 
-<!-- ================= ABOUT ================= -->
-<section id="about" class="section light">
+
+<!-- ABOUT -->
+<section id="about" class="section">
     <h2>About</h2>
     <p style="max-width:800px; margin:auto; text-align:center;">
         Created with a mission to help everyday families make smarter financial decisions by
@@ -126,17 +116,18 @@
     </p>
 </section>
 
-<!-- ================= DISCLAIMER ================= -->
+
 <div style="max-width:900px; margin:40px auto; font-size:14px; text-align:center; color:gray;">
 Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice. 
 Users should make financial decisions based on their personal judgment.
 </div>
 
-    
-<!-- ================= FOOTER ================= -->
+
 <footer>
-    <p>© 2026 Auto Finance Assist | Built for Common Man</p>
+    © 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
+
+</main>
 
 </body>
 </html>
