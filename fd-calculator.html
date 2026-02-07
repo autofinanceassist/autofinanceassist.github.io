@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>FD Calculator | Auto Finance Assist</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>FD Calculator | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome (MATCH INDEX) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
 </head>
 
 <body>
 
+<!-- ✅ FIXED TOP AREA -->
+<div class="top-container">
+
 <header>
     <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="index.html">Home</a>
     </nav>
 </header>
 
-<section class="section light">
+<!-- ✅ HERO (MATCH STYLE) -->
+<section class="hero">
     <h2>Fixed Deposit (FD) Calculator</h2>
+    <p>Calculate your FD maturity with quarterly compounding and plan safer savings.</p>
+</section>
+
+</div>
+
+
+<!-- ✅ MAIN -->
+<main>
+
+<section class="section light">
+    <h2>FD Calculator</h2>
     <p>Calculate FD maturity with quarterly compounding.</p>
 
     <div class="grid" style="max-width:600px">
@@ -92,9 +115,14 @@
     <button onclick="downloadFDExcel()">Download Excel (CSV)</button>
 </section>
 
+</main>
+
+
+<!-- ✅ MATCHING FOOTER -->
 <footer>
-    <p>© 2026 Auto Finance Assist | FD Calculator</p>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
+
 
 <script>
 let fdData = [];
