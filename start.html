@@ -9,33 +9,51 @@
 
 <body>
 
-<!-- LOAD HEADER -->
-<div id="header"></div>
+<!-- ✅ FIXED HEADER (Same as Index) -->
+<div class="top-container">
+
+<header>
+    <div class="logo">
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="fd.html">FD Calculator</a>
+        <a href="rd.html">RD Calculator</a>
+        <a href="mutualfund.html">Mutual Funds</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h2>Financial Life Starter</h2>
+
+    <p style="
+    font-size:18px;
+    max-width:750px;
+    margin:auto;">
+    Know where you stand. Understand what to do next. Move toward financial freedom
+    </p>
+
+    <p>Protection First. Then Wealth.</p>
+</section>
+
+</div>
 
 
-<section class="section light">
+<!-- ✅ MAIN CONTENT -->
+<main>
 
-<h2>Financial Life Starter</h2>
-
-<p style="
-text-align:center;
-font-size:18px;
-color:#555;
-max-width:750px;
-margin:10px auto 5px;">
-Know where you stand. Understand what to do next. Move toward financial freedom
-</p>
-
-<p style="text-align:center;">Protection First. Then Wealth.</p>
-
+<section class="section">
 
 <div class="grid" style="
 grid-template-columns: 1fr 1fr 1fr;
 gap:30px;
 align-items:start;
-height: calc(100vh - 220px);
-overflow-y:auto;
-padding-right:10px;
 ">
 
 <!-- ================= INPUT COLUMN ================= -->
@@ -158,25 +176,17 @@ Enter your details to generate your roadmap.
 </div>
 </section>
 
+</main>
 
-<!-- LOAD FOOTER -->
-<div id="footer"></div>
+
+<!-- ✅ FOOTER -->
+<footer>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
+</footer>
 
 
 
 <script>
-
-/* LOAD HEADER */
-fetch("header.html")
-.then(res => res.text())
-.then(data => document.getElementById("header").innerHTML = data);
-
-/* LOAD FOOTER */
-fetch("footer.html")
-.then(res => res.text())
-.then(data => document.getElementById("footer").innerHTML = data);
-
-
 
 function formatMoney(num){
 return "₹ " + num.toLocaleString("en-IN",{maximumFractionDigits:0});
@@ -204,13 +214,11 @@ alert("Please fill required fields");
 return;
 }
 
-/* ---------- Emergency ---------- */
-
+/* Emergency */
 const emergencyFund = expense * 6;
 
 
-/* ---------- Term Calculation ---------- */
-
+/* Term */
 const yearsLeft = 60 - age;
 const yearlyExpense = expense * 12;
 const requiredTerm = yearlyExpense * Math.pow(1.07, yearsLeft) * yearsLeft;
@@ -224,26 +232,20 @@ const current = Number(document.getElementById("termCover").value);
 const gap = requiredTerm - current;
 
 if(gap <= 0){
-
 termGapText="✅ Fully Protected";
 termSuggestion="✅ Excellent! Your family is financially protected.";
-
 }else{
-
 termGapText=formatMoney(gap);
 termSuggestion=`⚠️ Increase your life cover by <b>${formatMoney(gap)}</b>.`;
 }
 
 }else{
-
 termGapText=formatMoney(requiredTerm);
 termSuggestion=`🚨 Buy term insurance worth <b>${formatMoney(requiredTerm)}</b> immediately.`;
 }
 
 
-
-/* ---------- Health Calculation ---------- */
-
+/* Health */
 const familyMin = 1000000;
 const parentsMin = 1500000;
 
@@ -266,12 +268,9 @@ issues.push(`Increase parents cover by ${formatMoney(parentsMin - par)}`);
 }
 
 if(issues.length === 0){
-
 healthText="✅ Well Protected";
 healthSuggestion="✅ Great! Your health coverage is strong.";
-
 }else{
-
 healthText="⚠️ Under Protected";
 healthSuggestion=issues.join("<br>");
 }
@@ -285,18 +284,14 @@ healthSuggestion=`Buy minimum health cover:<br>
 }
 
 
-
-/* ---------- Snapshot ---------- */
-
+/* Snapshot */
 document.getElementById("emergency").textContent=formatMoney(emergencyFund);
 document.getElementById("term").textContent=formatMoney(requiredTerm);
 document.getElementById("termGap").textContent=termGapText;
 document.getElementById("healthGap").textContent=healthText;
 
 
-
-/* ---------- Suggestions ---------- */
-
+/* Suggestions */
 let emergencyMsg = savings >= emergencyFund
 ? "✅ Your emergency fund is strong."
 : `Build emergency savings up to <b>${formatMoney(emergencyFund)}</b>.`;
