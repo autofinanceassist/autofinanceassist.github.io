@@ -9,16 +9,17 @@
 
 <style>
 
-/* ---------- GLOBAL WIDTH BOOST ---------- */
+/* ---------- GLOBAL WIDTH FIX (MOST IMPORTANT) ---------- */
 
 main{
-max-width:1500px;
+max-width:1800px;     /* Increased width */
+width:95%;           /* allows stretch */
 margin:auto;
-padding:0 40px;
+padding:0 10px;      /* removes fake side spacing */
 }
 
 
-/* ---------- BUTTON (UNCHANGED DESIGN) ---------- */
+/* ---------- BUTTON ---------- */
 
 .primary-btn{
 margin-top:14px;
@@ -71,30 +72,31 @@ font-size:16px;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit, minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
 gap:32px;
 margin-top:50px;
 align-items:stretch;
+width:100%;
 }
 
 
-/* ---------- ⭐ STEP GRID (FORCE ONE ROW) ---------- */
+/* ⭐⭐⭐⭐⭐ FIX — FORCE STEP CARDS INTO PERFECT ONE ROW */
 
 .journey .grid{
-display:grid;
-grid-template-columns:repeat(4, 1fr);
-gap:34px;
+grid-template-columns:repeat(4, minmax(320px,1fr));
+gap:28px;
 }
 
-/* Laptop */
-@media(max-width:1200px){
+
+/* Tablet */
+@media(max-width:1300px){
 .journey .grid{
 grid-template-columns:repeat(2,1fr);
 }
 }
 
 /* Mobile */
-@media(max-width:650px){
+@media(max-width:700px){
 .journey .grid{
 grid-template-columns:1fr;
 }
@@ -109,9 +111,10 @@ border-radius:16px;
 background:white;
 box-shadow:0 10px 30px rgba(0,0,0,.06);
 transition:.28s;
-height:100%;
 display:flex;
 flex-direction:column;
+width:100%;
+min-width:0;
 }
 
 .card:hover{
@@ -119,24 +122,15 @@ transform:translateY(-8px);
 box-shadow:0 18px 48px rgba(0,0,0,.12);
 }
 
-
-/* Titles */
-
 .card strong{
 font-size:18px;
 margin-bottom:8px;
 }
 
-
-/* Paragraph */
-
 .card p{
 margin-bottom:18px;
 color:#555;
 }
-
-
-/* Button alignment */
 
 .card .primary-btn{
 align-self:flex-start;
@@ -147,14 +141,14 @@ min-width:230px;
 /* ---------- SECTION SPACING ---------- */
 
 .section{
-margin-top:80px;
+margin-top:90px;
 }
 
 
-/* ---------- HERO BOOST ---------- */
+/* ---------- HERO ---------- */
 
 .hero h2{
-font-size:34px;
+font-size:36px;
 letter-spacing:.3px;
 }
 
@@ -195,27 +189,10 @@ opacity:.9;
     </button>
 
 <div class="trust-strip">
-
-<div>
-<i class="far fa-check-square"></i>
-100% Free Tools
-</div>
-
-<div>
-<i class="far fa-check-square"></i>
-No Login Required
-</div>
-
-<div>
-<i class="far fa-check-square"></i>
-No Data Stored
-</div>
-
-<div>
-<i class="far fa-check-square"></i>
-Built for Common Man
-</div>
-
+<div><i class="far fa-check-square"></i>100% Free Tools</div>
+<div><i class="far fa-check-square"></i>No Login Required</div>
+<div><i class="far fa-check-square"></i>No Data Stored</div>
+<div><i class="far fa-check-square"></i>Built for Common Man</div>
 </div>
 
 </section>
@@ -225,8 +202,7 @@ Built for Common Man
 
 <section class="section journey">
 
-<h2>Your Financial Journey Starts Here !</h2>
-<h2>⭐ Most Used Tools</h2>
+<h2 style="text-align:center;">⭐ Most Used Tools</h2>
 
 <p style="text-align:center;max-width:900px;margin:10px auto 30px auto;color:#444;">
 If you're confused about where to begin — follow this simple order used by smart investors. Start with your Financial Health Check — it takes less than 5 minutes.
@@ -245,110 +221,29 @@ Start Tracking
 <div class="card">
 <strong>STEP 2 — Build Emergency Fund</strong>
 <p>Use FD / RD calculators for safety.</p>
-<button class="primary-btn" onclick="location.href='fd-calculator.html'">
-Open FD Calculator
-</button>
-<button class="primary-btn" onclick="location.href='rd-calculator.html'">
-Open RD Calculator
-</button>
+<button class="primary-btn" onclick="location.href='fd-calculator.html'">Open FD Calculator</button>
+<button class="primary-btn" onclick="location.href='rd-calculator.html'">Open RD Calculator</button>
 </div>
 
 <div class="card">
 <strong>STEP 3 — Start Investing</strong>
 <p>Create wealth using below calculators.</p>
-<button class="primary-btn" onclick="location.href='lumpsum-calculator.html'">
-Start MF Lumpsum
-</button>
-<button class="primary-btn" onclick="location.href='sip-calculator.html'">
-Start MF SIP
-</button>
-<button class="primary-btn" onclick="location.href='nps-calculator.html'">
-Start NPS Savings
-</button>
-<button class="primary-btn" onclick="location.href='ppf-calculator.html'">
-Start PPF Savings
-</button>
-<button class="primary-btn" onclick="location.href='swp-calculator.html'">
-Start SWP Investment 
-</button>
+<button class="primary-btn" onclick="location.href='lumpsum-calculator.html'">Start MF Lumpsum</button>
+<button class="primary-btn" onclick="location.href='sip-calculator.html'">Start MF SIP</button>
+<button class="primary-btn" onclick="location.href='nps-calculator.html'">Start NPS Savings</button>
+<button class="primary-btn" onclick="location.href='ppf-calculator.html'">Start PPF Savings</button>
+<button class="primary-btn" onclick="location.href='swp-calculator.html'">Start SWP Investment</button>
 </div>
 
 <div class="card">
 <strong>STEP 4 — Track Investing</strong>
 <p>Monitor Equity investments.</p>
-<button class="primary-btn" onclick="location.href='spi-ultra-stock-tracker.html'">
-Stock Tracking
-</button>
-<button class="primary-btn" onclick="location.href='mutual-fund-tracker.html'">
-Mutual Fund Tracking
-</button>
+<button class="primary-btn" onclick="location.href='spi-ultra-stock-tracker.html'">Stock Tracking</button>
+<button class="primary-btn" onclick="location.href='mutual-fund-tracker.html'">Mutual Fund Tracking</button>
 </div>
 
 </div>
 </section>
-
-<section id="calculators" class="section">
-<h2>⭐ Most Used Tools - Financial Calculators</h2>
-
-<p style="text-align:center; max-width:700px; margin:10px auto 30px auto; color:#444;">
-Not sure where to begin? Start with your Financial Health Check — it takes less than 5 minutes.
-</p>
-
-<div class="grid">
-
-<div class="card" onclick="location.href='fd-calculator.html'">FD Calculator</div>
-<div class="card" onclick="location.href='rd-calculator.html'">RD Calculator</div>
-<div class="card" onclick="location.href='ppf-calculator.html'">PPF Calculator</div>
-<div class="card" onclick="location.href='nps-calculator.html'">NPS Calculator</div>
-<div class="card" onclick="location.href='loan-calculator.html'">Loan EMI Calculator</div>
-<div class="card" onclick="location.href='sip-calculator.html'">Mutual Fund – SIP Calculator</div>
-<div class="card" onclick="location.href='lumpsum-calculator.html'">Mutual Fund – Lumpsum Calculator</div>
-
-</div>
-</section>
-
-<section id="expense" class="section">
-<h2>Expense Manager</h2>
-<p style="text-align:center;">Track monthly expenses and control your money wisely.</p>
-
-<div class="grid">
-<div class="card" onclick="location.href='expense.html'">
-Expense Calculator & Tracker
-</div>
-</div>
-</section>
-
-<section id="tracker" class="section">
-<h2>Investment Tracker</h2>
-
-<div class="grid">
-
-<div class="card" onclick="location.href='mutual-fund-tracker.html'">
-<strong>Mutual Fund Tracker</strong>
-<p>Track NAV & performance</p>
-</div>
-
-<div class="card" onclick="location.href='spi-ultra-stock-tracker.html'">
-<strong>Stock Tracker</strong>
-<p>Monitor equity investments</p>
-</div>
-
-</div>
-</section>
-
-<section id="about" class="section">
-<h2>About</h2>
-<p style="max-width:800px; margin:auto; text-align:center;">
-Created with a mission to help everyday families make smarter financial decisions by
-<strong>Raguram Gunasekaran (Common Man)</strong><br><br>
-Auto Finance Assist is built to help common people make smarter financial decisions using simple and transparent tools.
-</p>
-</section>
-
-<div style="max-width:900px; margin:40px auto; font-size:14px; text-align:center; color:gray;">
-Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice. 
-Users should make financial decisions based on their personal judgment.
-</div>
 
 </main>
 
