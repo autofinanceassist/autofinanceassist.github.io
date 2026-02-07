@@ -6,11 +6,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
+<!-- ✅ Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
 
+<!-- ✅ FIXED TOP AREA -->
 <div class="top-container">
 
 <header>
@@ -37,30 +43,41 @@
 
 <main>
 
-<!-- EMI INPUT -->
+<!-- ✅ INPUT + CHART -->
 <section class="section light">
     <h2>Loan EMI Calculator</h2>
     <p>Calculate EMI and view full loan repayment schedule.</p>
 
-    <div class="grid" style="max-width:600px">
+    <div style="display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start; justify-content:center;">
 
-        <div class="card">
-            <label>Loan Amount</label><br>
-            <input type="number" id="amount" placeholder="Example: 500000">
+        <!-- INPUT GRID -->
+        <div class="grid" style="max-width:400px; flex:1; min-width:280px;">
+
+            <div class="card">
+                <label>Loan Amount</label><br>
+                <input type="number" id="amount" placeholder="Example: 500000">
+            </div>
+
+            <div class="card">
+                <label>Interest Rate (% per year)</label><br>
+                <input type="number" id="rate" placeholder="Example: 9">
+            </div>
+
+            <div class="card">
+                <label>Loan Tenure (Years)</label><br>
+                <input type="number" id="years" placeholder="Example: 5">
+            </div>
+
+            <div class="card">
+                <button onclick="calculateLoan()">Calculate EMI</button>
+            </div>
+
         </div>
 
-        <div class="card">
-            <label>Interest Rate (% per year)</label><br>
-            <input type="number" id="rate" placeholder="Example: 9">
-        </div>
-
-        <div class="card">
-            <label>Loan Tenure (Years)</label><br>
-            <input type="number" id="years" placeholder="Example: 5">
-        </div>
-
-        <div class="card">
-            <button onclick="calculateLoan()">Calculate EMI</button>
+        <!-- ✅ CHART -->
+        <div class="card" style="flex:1; min-width:320px; max-width:520px;">
+            <h3 style="text-align:center;">Loan Balance Over Time</h3>
+            <canvas id="loanChart"></canvas>
         </div>
 
     </div>
@@ -92,7 +109,7 @@
 </section>
 
 
-<!-- ⭐ ULTRA FEATURE -->
+<!-- PREPAYMENT -->
 <section class="section">
     <h2>Lump Sum Prepayment Planner</h2>
     <p style="text-align:center;">See how a one-time payment can reduce your loan tenure and save interest.</p>
@@ -178,6 +195,7 @@ let originalEMI = 0;
 let originalMonths = 0;
 let originalInterest = 0;
 let monthlyRate = 0;
+let loanChart = null;
 
 function calculateLoan() {
 
@@ -225,6 +243,53 @@ function calculateLoan() {
     document.getElementById("emi").textContent = originalEMI.toFixed(2);
     document.getElementById("totalInterest").textContent = originalInterest.toFixed(2);
     document.getElementById("totalPayment").textContent = (P + originalInterest).toFixed(2);
+
+    /* ✅ BUILD CHART */
+    const labels = [];
+    const balances = [];
+
+    let runningBalance = P;
+
+    for (let m = 1; m <= originalMonths; m++) {
+
+        const interest = runningBalance * monthlyRate;
+        const principal = originalEMI - interest;
+        runningBalance -= principal;
+
+        labels.push("M" + m);
+        balances.push(runningBalance < 0 ? 0 : runningBalance);
+    }
+
+    if (loanChart) {
+        loanChart.destroy();
+    }
+
+    const ctx = document.getElementById("loanChart");
+
+    loanChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Remaining Loan Balance",
+                data: balances,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 
 
