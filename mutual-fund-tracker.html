@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mutual Fund Tracker | Auto Finance Assist</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../style.css" />
+<meta charset="UTF-8">
+<title>Mutual Fund Tracker | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../style.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 </head>
+
 <body>
+
+<!-- ✅ SAME SIP TOP CONTAINER -->
+<div class="top-container">
 
 <header>
     <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="index.html">Home</a>
     </nav>
 </header>
 
-<section class="section light">
-  <h2>Mutual Fund Investment Tracker</h2>
-  <p style="text-align:center">Track your Mutual Fund investments (SIP / Lumpsum)</p>
+<section class="hero">
+    <h2>Mutual Fund Investment Tracker</h2>
+    <p>Track your Mutual Fund investments (SIP / Lumpsum)</p>
+</section>
 
-  <div class="grid" style="max-width:900px; margin:auto">
+</div>
+
+<!-- ✅ SCROLLABLE MAIN -->
+<main>
+
+<section class="section light">
+
+<h2>Investment Entry</h2>
+
+<div class="grid" style="max-width:900px; margin:auto">
 
     <div class="card">
       <label>Fund Name</label><br />
@@ -56,8 +76,10 @@
       <button onclick="addInvestment()">Add Investment</button>
     </div>
 
-  </div>
+</div>
+
 </section>
+
 
 <section class="section">
   <h2>My Investments</h2>
@@ -84,11 +106,21 @@
   <button onclick="exportTrackerCSV()">Download CSV</button>
 </section>
 
+
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
+Users should make financial decisions based on their personal judgment.
+</div>
+
+</main>
+
+<!-- ✅ SAME SIP FOOTER -->
 <footer>
-  <p>© 2026 Auto Finance Assist | Mutual Fund Tracker</p>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
 
 <script>
+
 let investments = JSON.parse(localStorage.getItem("mfTracker")) || [];
 
 /* ---------- XIRR CALCULATION ---------- */
@@ -112,11 +144,11 @@ function calculateXIRR(cashflows, dates) {
 function addInvestment() {
   const fund = fundName.value.trim();
   const type = investmentType.value;
-  const amount = Number(amount.value);
+  const amountVal = Number(amount.value);
   const start = new Date(startDate.value);
   const rate = Number(returnRate.value);
 
-  if (!fund || !amount || !start || !rate) {
+  if (!fund || !amountVal || !startDate.value || !rate) {
     alert("Please fill all fields");
     return;
   }
@@ -132,17 +164,17 @@ function addInvestment() {
     const monthlyRate = rate / 100 / 12;
 
     for (let i = 0; i < months; i++) {
-      cashflows.push(-amount);
+      cashflows.push(-amountVal);
       const d = new Date(start);
       d.setMonth(d.getMonth() + i);
       dates.push(d);
     }
 
-    estimated = amount * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+    estimated = amountVal * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
   } else {
-    cashflows.push(-amount);
+    cashflows.push(-amountVal);
     dates.push(start);
-    estimated = amount * Math.pow(1 + rate / 100, years);
+    estimated = amountVal * Math.pow(1 + rate / 100, years);
   }
 
   cashflows.push(estimated);
@@ -151,8 +183,13 @@ function addInvestment() {
   const xirr = calculateXIRR(cashflows, dates).toFixed(2);
 
   investments.push({
-    fund, type, amount, start: startDate.value,
-    rate, estimated: Math.round(estimated), xirr
+    fund,
+    type,
+    amount: amountVal,
+    start: startDate.value,
+    rate,
+    estimated: Math.round(estimated),
+    xirr
   });
 
   localStorage.setItem("mfTracker", JSON.stringify(investments));
@@ -202,10 +239,14 @@ function exportTrackerCSV() {
 
 /* ---------- CLEAR ---------- */
 function clearInputs() {
-  fundName.value = amount.value = startDate.value = returnRate.value = "";
+  fundName.value = "";
+  amount.value = "";
+  startDate.value = "";
+  returnRate.value = "";
 }
 
 renderTable();
+
 </script>
 
 </body>
