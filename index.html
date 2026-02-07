@@ -14,31 +14,40 @@
 
 .primary-btn{
     margin-top:20px;
-    background:linear-gradient(135deg,#22c55e,#16a34a);
+
+    /* ✅ Match header blue */
+    background:linear-gradient(135deg,#0f3a5f,#155b88);
+
     color:white;
     border:none;
 
-    padding:16px 40px;   /* Bigger */
+    padding:16px 42px;
     font-size:18px;
     font-weight:700;
 
     border-radius:12px;
     cursor:pointer;
 
-    box-shadow:0 8px 22px rgba(34,197,94,0.35);
+    /* softer shadow for professional look */
+    box-shadow:0 6px 18px rgba(15,58,95,0.35);
     transition:all 0.25s ease;
 }
 
 .primary-btn:hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 28px rgba(34,197,94,0.45);
+    transform:translateY(-2px);
+
+    /* slightly brighter on hover */
+    background:linear-gradient(135deg,#155b88,#1f6fa3);
+
+    box-shadow:0 10px 24px rgba(15,58,95,0.45);
 }
 
 .primary-btn:active{
-    transform:scale(0.97);
+    transform:scale(0.98);
 }
 
 </style>
+
 
 </head>
 <body>
