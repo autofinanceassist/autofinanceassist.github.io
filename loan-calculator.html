@@ -6,17 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="style.css">
 
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
-<!-- ✅ Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
 <body>
 
-<!-- ✅ FIXED TOP AREA -->
 <div class="top-container">
 
 <header>
@@ -43,14 +39,12 @@
 
 <main>
 
-<!-- ✅ INPUT + CHART -->
 <section class="section light">
     <h2>Loan EMI Calculator</h2>
     <p>Calculate EMI and view full loan repayment schedule.</p>
 
     <div style="display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start; justify-content:center;">
 
-        <!-- INPUT GRID -->
         <div class="grid" style="max-width:400px; flex:1; min-width:280px;">
 
             <div class="card">
@@ -74,7 +68,6 @@
 
         </div>
 
-        <!-- ✅ CHART -->
         <div class="card" style="flex:1; min-width:320px; max-width:520px;">
             <h3 style="text-align:center;">Loan Balance Over Time</h3>
             <canvas id="loanChart"></canvas>
@@ -84,7 +77,6 @@
 </section>
 
 
-<!-- SUMMARY -->
 <section class="section">
     <h2>Loan Summary</h2>
 
@@ -109,12 +101,18 @@
 </section>
 
 
-<!-- PREPAYMENT -->
+<!-- ✅ PREPAYMENT -->
 <section class="section">
     <h2>Lump Sum Prepayment Planner</h2>
     <p style="text-align:center;">See how a one-time payment can reduce your loan tenure and save interest.</p>
 
     <div class="grid" style="max-width:600px">
+
+        <!-- ⭐ NEW FIELD -->
+        <div class="card">
+            <label>Prepayment After (Years)</label><br>
+            <input type="number" id="prepayYears" placeholder="Example: 2">
+        </div>
 
         <div class="card">
             <label>Prepayment Amount</label><br>
@@ -151,7 +149,6 @@
 </section>
 
 
-<!-- TABLE -->
 <section class="section">
     <h2>Monthly Loan Repayment Schedule</h2>
 
@@ -244,75 +241,80 @@ function calculateLoan() {
     document.getElementById("totalInterest").textContent = originalInterest.toFixed(2);
     document.getElementById("totalPayment").textContent = (P + originalInterest).toFixed(2);
 
-    /* ✅ BUILD CHART */
-    const labels = [];
-    const balances = [];
+    buildChart();
+}
 
-    let runningBalance = P;
 
-    for (let m = 1; m <= originalMonths; m++) {
+function buildChart(preBalances = null){
 
-        const interest = runningBalance * monthlyRate;
-        const principal = originalEMI - interest;
-        runningBalance -= principal;
+    const labels = loanData.map(d => "M" + d.month);
+    const balances = loanData.map(d => d.balance < 0 ? 0 : d.balance);
 
-        labels.push("M" + m);
-        balances.push(runningBalance < 0 ? 0 : runningBalance);
+    const datasets = [{
+        label: "Original Loan Balance",
+        data: balances,
+        tension: 0.3
+    }];
+
+    if(preBalances){
+        datasets.push({
+            label: "After Prepayment",
+            data: preBalances,
+            tension: 0.3
+        });
     }
 
-    if (loanChart) {
-        loanChart.destroy();
-    }
+    if (loanChart) loanChart.destroy();
 
-    const ctx = document.getElementById("loanChart");
-
-    loanChart = new Chart(ctx, {
+    loanChart = new Chart(document.getElementById("loanChart"), {
         type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Remaining Loan Balance",
-                data: balances,
-                tension: 0.3
-            }]
-        },
+        data: { labels, datasets },
         options: {
             responsive: true,
-            plugins: {
-                legend: {
-                    display: true
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
+            scales: { y: { beginAtZero: true } }
         }
     });
 }
 
 
+
 function calculatePrepayment() {
 
     const prepay = Number(document.getElementById("prepay").value);
+    const prepayYears = Number(document.getElementById("prepayYears").value);
 
-    if (!prepay || originalEMI === 0) {
-        alert("Calculate EMI first and enter prepayment.");
+    if (!prepay || !prepayYears || originalEMI === 0) {
+        alert("Calculate EMI first and enter prepayment details.");
         return;
     }
 
-    let balance = Number(document.getElementById("amount").value) - prepay;
+    const prepayMonth = prepayYears * 12;
+
+    if(prepayMonth >= originalMonths){
+        alert("Prepayment year exceeds loan tenure.");
+        return;
+    }
+
+    let balance = Number(document.getElementById("amount").value);
+
+    for(let i=1;i<=prepayMonth;i++){
+        const interest = balance * monthlyRate;
+        const principal = originalEMI - interest;
+        balance -= principal;
+    }
+
+    balance -= prepay;
 
     if(balance <= 0){
         alert("Your loan would be fully closed!");
         return;
     }
 
-    let months = 0;
+    let months = prepayMonth;
     let interestPaid = 0;
+    let newBalances = loanData.slice(0, prepayMonth).map(d=>d.balance);
 
-    while (balance > 0) {
+    while(balance > 0){
 
         const interest = balance * monthlyRate;
         const principal = originalEMI - interest;
@@ -320,6 +322,8 @@ function calculatePrepayment() {
         balance -= principal;
         interestPaid += interest;
         months++;
+
+        newBalances.push(balance < 0 ? 0 : balance);
 
         if(months > 1000) break;
     }
@@ -337,7 +341,9 @@ function calculatePrepayment() {
         monthsSaved + " Months Earlier";
 
     document.getElementById("smartTip").innerHTML =
-        "💡 <strong>Smart Tip:</strong> Prepaying early in the loan saves maximum interest because interest is highest in initial years.";
+        "💡 <strong>Pro Insight:</strong> Earlier prepayment creates dramatically higher interest savings.";
+
+    buildChart(newBalances);
 }
 
 
