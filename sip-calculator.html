@@ -5,6 +5,23 @@
     <title>SIP Calculator | Auto Finance Assist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ONLY chart sizing — no design change */
+        .chart-card{
+            background:white;
+            padding:16px;
+            border-radius:12px;
+            max-width:420px;
+            height:320px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,34 +36,46 @@
     </nav>
 </header>
 
+<!-- INPUT + CHART -->
 <section class="section light">
     <h2>Mutual Fund – SIP Calculator</h2>
     <p>Estimate your wealth growth through monthly SIP investments.</p>
 
-    <div class="grid" style="max-width:600px">
+    <div class="grid" style="max-width:1000px">
 
-        <div class="card">
-            <label>Monthly Investment (₹)</label><br>
-            <input type="number" id="sipAmount" placeholder="Example: 5000">
+        <!-- INPUT SIDE -->
+        <div>
+
+            <div class="card">
+                <label>Monthly Investment (₹)</label><br>
+                <input type="number" id="sipAmount" placeholder="Example: 5000">
+            </div>
+
+            <div class="card">
+                <label>Expected Annual Return (%)</label><br>
+                <input type="number" id="sipRate" placeholder="Example: 12">
+            </div>
+
+            <div class="card">
+                <label>Investment Period (Years)</label><br>
+                <input type="number" id="sipYears" placeholder="Example: 20">
+            </div>
+
+            <div class="card">
+                <button onclick="calculateSIP()">Calculate SIP</button>
+            </div>
+
         </div>
 
-        <div class="card">
-            <label>Expected Annual Return (%)</label><br>
-            <input type="number" id="sipRate" placeholder="Example: 12">
-        </div>
-
-        <div class="card">
-            <label>Investment Period (Years)</label><br>
-            <input type="number" id="sipYears" placeholder="Example: 20">
-        </div>
-
-        <div class="card">
-            <button onclick="calculateSIP()">Calculate SIP</button>
+        <!-- CHART -->
+        <div class="chart-card">
+            <canvas id="sipChart" height="260"></canvas>
         </div>
 
     </div>
 </section>
 
+<!-- RESULT -->
 <section class="section">
     <h2>Result</h2>
 
@@ -75,6 +104,7 @@
     </div>
 </section>
 
+<!-- TABLE -->
 <section class="section">
     <h2>Monthly SIP Growth Illustration</h2>
 
@@ -103,8 +133,10 @@
 
 <script>
 let sipData = [];
+let sipChart;
 
 function calculateSIP() {
+
     const P = Number(document.getElementById("sipAmount").value);
     const annualRate = Number(document.getElementById("sipRate").value) / 100;
     const years = Number(document.getElementById("sipYears").value);
@@ -122,7 +154,11 @@ function calculateSIP() {
     const tableBody = document.querySelector("#sipTable tbody");
     tableBody.innerHTML = "";
 
+    let labels = [];
+    let balances = [];
+
     for (let m = 1; m <= months; m++) {
+
         const opening = balance + P;
         const gain = opening * monthlyRate;
         balance = opening + gain;
@@ -134,6 +170,9 @@ function calculateSIP() {
             gain,
             closing: balance
         });
+
+        labels.push("M" + m);
+        balances.push(balance);
 
         const row = `
             <tr>
@@ -156,9 +195,44 @@ function calculateSIP() {
     document.getElementById("gain").textContent = "₹ " + totalGain.toFixed(2);
     document.getElementById("maturity").textContent = "₹ " + maturity.toFixed(2);
     document.getElementById("multiplier").textContent = multiplier + " X";
+
+    drawChart(labels, balances);
+}
+
+function drawChart(labels, balances){
+
+    const ctx = document.getElementById("sipChart");
+
+    if(sipChart){
+        sipChart.destroy();
+    }
+
+    sipChart = new Chart(ctx, {
+        type:'line',
+        data:{
+            labels:labels,
+            datasets:[{
+                label:'Wealth Growth',
+                data:balances,
+                tension:0.3,
+                fill:true
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:false,
+            plugins:{
+                legend:{display:false}
+            },
+            scales:{
+                x:{display:false}
+            }
+        }
+    });
 }
 
 function downloadSIPExcel() {
+
     if (sipData.length === 0) {
         alert("Please calculate SIP first");
         return;
