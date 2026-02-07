@@ -1,23 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Loan EMI Calculator | Auto Finance Assist</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Loan EMI Calculator | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<!-- Font Awesome (MATCH FD) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+
 </head>
 
 <body>
 
+<!-- ✅ FIXED TOP AREA -->
+<div class="top-container">
+
 <header>
     <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="index.html">Home</a>
     </nav>
 </header>
+
+<!-- ✅ HERO -->
+<section class="hero">
+    <h2>Loan EMI Calculator</h2>
+    <p>Calculate EMI and view full loan repayment schedule.</p>
+</section>
+
+</div>
+
+
+<!-- ✅ MAIN -->
+<main>
 
 <section class="section light">
     <h2>Loan EMI Calculator</h2>
@@ -56,6 +79,7 @@
     </div>
 </section>
 
+
 <section class="section">
     <h2>Loan Summary</h2>
 
@@ -79,6 +103,7 @@
     </div>
 </section>
 
+
 <section class="section">
     <h2>Monthly Loan Repayment Schedule</h2>
 
@@ -101,9 +126,20 @@
     <button onclick="downloadLoanExcel()">Download Excel (CSV)</button>
 </section>
 
+
+<div style="max-width:900px; margin:40px auto; font-size:14px; text-align:center; color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice. 
+Users should make financial decisions based on their personal judgment.
+</div>
+
+</main>
+
+
+<!-- ✅ MATCHING FOOTER -->
 <footer>
-    <p>© 2026 Auto Finance Assist | Loan EMI Calculator</p>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
+
 
 <script>
 let loanData = [];
