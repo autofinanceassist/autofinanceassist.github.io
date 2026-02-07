@@ -125,7 +125,6 @@ margin:auto;
 <input type="number" id="sipYears" placeholder="Example: 20">
 </div>
 
-<!-- NEW TOPUP -->
 <div class="card">
 <label>Yearly SIP Top-Up (%)</label><br>
 <input type="number" id="topup" placeholder="5 (Recommended)">
@@ -243,9 +242,11 @@ tbody.innerHTML="";
 
 let labels=[];
 let balances=[];
+let normalBalances=[];
 
 let currentSip=sip;
 let totalInvestment=0;
+let normalBalance=0;
 
 for(let y=1;y<=years;y++){
 
@@ -255,10 +256,14 @@ const opening=balance+currentSip;
 const gain=opening*monthlyRate;
 balance=opening+gain;
 
+/* WITHOUT TOPUP */
+normalBalance=(normalBalance+sip)*(1+monthlyRate);
+
 sipData.push({month:(y-1)*12+m,sip:currentSip,opening,gain,closing:balance});
 
 labels.push("M"+((y-1)*12+m));
 balances.push(balance);
+normalBalances.push(normalBalance);
 
 tbody.insertAdjacentHTML("beforeend",`
 <tr>
@@ -286,15 +291,6 @@ document.getElementById("maturity").textContent=formatMoney(maturity);
 document.getElementById("multiplier").textContent=multiplier+" X";
 
 
-/* ===== comparison WITHOUT topup ===== */
-
-let normalBalance=0;
-let normalSip=sip;
-
-for(let m=1;m<=years*12;m++){
-normalBalance=(normalBalance+normalSip)*(1+monthlyRate);
-}
-
 const extra=maturity-normalBalance;
 
 const card=document.getElementById("wealthCard");
@@ -316,12 +312,12 @@ Even a 5% rise can add lakhs over time.
 `;
 }
 
-drawChart(labels,balances);
+drawChart(labels,balances,normalBalances);
 
 }
 
 
-function drawChart(labels,balances){
+function drawChart(labels,balances,normalBalances){
 
 if(sipChart){
 sipChart.destroy();
@@ -331,17 +327,25 @@ sipChart=new Chart(document.getElementById("sipChart"),{
 type:'line',
 data:{
 labels,
-datasets:[{
-label:'Wealth Growth',
+datasets:[
+{
+label:'With Top-Up',
 data:balances,
 tension:.35,
 fill:true
-}]
+},
+{
+label:'Without Top-Up',
+data:normalBalances,
+tension:.35,
+fill:true
+}
+]
 },
 options:{
 responsive:true,
 maintainAspectRatio:false,
-plugins:{legend:{display:false}},
+plugins:{legend:{display:true}},
 scales:{x:{display:false}}
 }
 });
