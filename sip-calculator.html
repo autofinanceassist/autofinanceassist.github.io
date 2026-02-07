@@ -1,259 +1,322 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>SIP Calculator | Auto Finance Assist</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>SIP Calculator | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 
-    <!-- Chart JS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- ✅ ICON (same as PPF) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
-    <style>
-        /* ONLY chart sizing — no design change */
-        .chart-card{
-            background:white;
-            padding:16px;
-            border-radius:12px;
-            max-width:420px;
-            height:320px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-    </style>
+<!-- ✅ Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+/* ONLY chart sizing — matches PPF */
+.chart-card{
+    background:white;
+    padding:16px;
+    border-radius:12px;
+
+    max-width:420px;
+    height:300px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.big{
+    font-size:26px;
+    color:#0f3a5f;
+}
+
+table{
+    border-collapse:collapse;
+}
+
+th{
+    background:#0f3a5f;
+    color:white;
+}
+
+td, th{
+    text-align:center;
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- ✅ TOP CONTAINER (matches PPF) -->
+<div class="top-container">
+
 <header>
     <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="index.html">Home</a>
     </nav>
 </header>
 
-<!-- INPUT + CHART -->
+<section class="hero">
+    <h2>Mutual Fund SIP Calculator</h2>
+    <p>Build long-term wealth with disciplined monthly investing.</p>
+</section>
+
+</div>
+
+
+<!-- ✅ SCROLLABLE MAIN -->
+<main>
+
 <section class="section light">
-    <h2>Mutual Fund – SIP Calculator</h2>
-    <p>Estimate your wealth growth through monthly SIP investments.</p>
 
-    <div class="grid" style="max-width:1000px">
+<h2>SIP Calculator</h2>
 
-        <!-- INPUT SIDE -->
-        <div>
+<!-- FLEX like PPF -->
+<div style="
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+align-items:flex-start;
+justify-content:center;
+max-width:1000px;
+margin:auto;
+">
 
-            <div class="card">
-                <label>Monthly Investment (₹)</label><br>
-                <input type="number" id="sipAmount" placeholder="Example: 5000">
-            </div>
+<!-- INPUT SIDE -->
+<div style="flex:1; min-width:300px; max-width:520px;">
 
-            <div class="card">
-                <label>Expected Annual Return (%)</label><br>
-                <input type="number" id="sipRate" placeholder="Example: 12">
-            </div>
+<div class="card">
+<label>Monthly Investment (₹)</label><br>
+<input type="number" id="sipAmount" placeholder="Example: 5000">
+</div>
 
-            <div class="card">
-                <label>Investment Period (Years)</label><br>
-                <input type="number" id="sipYears" placeholder="Example: 20">
-            </div>
+<div class="card">
+<label>Expected Annual Return (%)</label><br>
+<input type="number" id="sipRate" placeholder="Example: 12">
+</div>
 
-            <div class="card">
-                <button onclick="calculateSIP()">Calculate SIP</button>
-            </div>
+<div class="card">
+<label>Investment Period (Years)</label><br>
+<input type="number" id="sipYears" placeholder="Example: 20">
+</div>
 
-        </div>
+<div class="card">
+<button onclick="calculateSIP()">Calculate SIP</button>
+</div>
 
-        <!-- CHART -->
-        <div class="chart-card">
-            <canvas id="sipChart" height="260"></canvas>
-        </div>
+</div>
 
-    </div>
+<!-- CHART -->
+<div class="chart-card">
+<canvas id="sipChart" height="240"></canvas>
+</div>
+
+</div>
 </section>
 
-<!-- RESULT -->
+
+<!-- RESULTS -->
 <section class="section">
-    <h2>Result</h2>
+<h2>Your Wealth Projection</h2>
 
-    <div class="grid" style="max-width:900px">
+<div class="grid" style="max-width:900px">
 
-        <div class="card">
-            <p><strong>Total Investment</strong></p>
-            <h3 id="investment">—</h3>
-        </div>
+<div class="card">
+<p><strong>Total Investment</strong></p>
+<h3 class="big" id="investment">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Total Gain</strong></p>
-            <h3 id="gain">—</h3>
-        </div>
+<div class="card">
+<p><strong>Total Gain</strong></p>
+<h3 class="big" id="gain">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Maturity Amount</strong></p>
-            <h3 id="maturity">—</h3>
-        </div>
+<div class="card">
+<p><strong>Maturity Amount</strong></p>
+<h3 class="big" id="maturity">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Wealth Multiplier</strong></p>
-            <h3 id="multiplier">—</h3>
-        </div>
+<div class="card">
+<p><strong>Wealth Multiplier</strong></p>
+<h3 class="big" id="multiplier">—</h3>
+</div>
 
-    </div>
+</div>
 </section>
+
 
 <!-- TABLE -->
 <section class="section">
-    <h2>Monthly SIP Growth Illustration</h2>
+<h2>Monthly SIP Growth Illustration</h2>
 
-    <div style="overflow-x:auto;">
-        <table id="sipTable" border="1" cellpadding="8" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Month</th>
-                    <th>Monthly SIP</th>
-                    <th>Opening Balance</th>
-                    <th>Return</th>
-                    <th>Closing Balance</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+<div style="overflow-x:auto;">
+<table id="sipTable" border="1" cellpadding="8" width="100%">
+<thead>
+<tr>
+<th>Month</th>
+<th>Monthly SIP</th>
+<th>Opening Balance</th>
+<th>Return</th>
+<th>Closing Balance</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
 
-    <br>
-    <button onclick="downloadSIPExcel()">Download Excel (CSV)</button>
+<br>
+<button onclick="downloadSIPExcel()">Download Excel</button>
+
 </section>
 
+
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
+Users should make financial decisions based on their personal judgment.
+</div>
+
+</main>
+
+
 <footer>
-    <p>© 2026 Auto Finance Assist | SIP Calculator</p>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
 
+
+
 <script>
-let sipData = [];
+
+let sipData=[];
 let sipChart;
 
-function calculateSIP() {
+function calculateSIP(){
 
-    const P = Number(document.getElementById("sipAmount").value);
-    const annualRate = Number(document.getElementById("sipRate").value) / 100;
-    const years = Number(document.getElementById("sipYears").value);
+const P=Number(document.getElementById("sipAmount").value);
+const annualRate=Number(document.getElementById("sipRate").value)/100;
+const years=Number(document.getElementById("sipYears").value);
 
-    if (!P || !annualRate || !years) {
-        alert("Please enter all values correctly");
-        return;
-    }
-
-    const months = years * 12;
-    const monthlyRate = annualRate / 12;
-    let balance = 0;
-
-    sipData = [];
-    const tableBody = document.querySelector("#sipTable tbody");
-    tableBody.innerHTML = "";
-
-    let labels = [];
-    let balances = [];
-
-    for (let m = 1; m <= months; m++) {
-
-        const opening = balance + P;
-        const gain = opening * monthlyRate;
-        balance = opening + gain;
-
-        sipData.push({
-            month: m,
-            sip: P,
-            opening,
-            gain,
-            closing: balance
-        });
-
-        labels.push("M" + m);
-        balances.push(balance);
-
-        const row = `
-            <tr>
-                <td>${m}</td>
-                <td>${P.toFixed(2)}</td>
-                <td>${opening.toFixed(2)}</td>
-                <td>${gain.toFixed(2)}</td>
-                <td>${balance.toFixed(2)}</td>
-            </tr>
-        `;
-        tableBody.insertAdjacentHTML("beforeend", row);
-    }
-
-    const totalInvestment = P * months;
-    const maturity = balance;
-    const totalGain = maturity - totalInvestment;
-    const multiplier = (maturity / totalInvestment).toFixed(2);
-
-    document.getElementById("investment").textContent = "₹ " + totalInvestment.toFixed(2);
-    document.getElementById("gain").textContent = "₹ " + totalGain.toFixed(2);
-    document.getElementById("maturity").textContent = "₹ " + maturity.toFixed(2);
-    document.getElementById("multiplier").textContent = multiplier + " X";
-
-    drawChart(labels, balances);
+if(!P || !annualRate || !years){
+alert("Please enter all values correctly");
+return;
 }
 
-function drawChart(labels, balances){
+const months=years*12;
+const monthlyRate=annualRate/12;
+let balance=0;
 
-    const ctx = document.getElementById("sipChart");
+sipData=[];
 
-    if(sipChart){
-        sipChart.destroy();
-    }
+const tbody=document.querySelector("#sipTable tbody");
+tbody.innerHTML="";
 
-    sipChart = new Chart(ctx, {
-        type:'line',
-        data:{
-            labels:labels,
-            datasets:[{
-                label:'Wealth Growth',
-                data:balances,
-                tension:0.3,
-                fill:true
-            }]
-        },
-        options:{
-            responsive:true,
-            maintainAspectRatio:false,
-            plugins:{
-                legend:{display:false}
-            },
-            scales:{
-                x:{display:false}
-            }
-        }
-    });
+let labels=[];
+let balances=[];
+
+for(let m=1;m<=months;m++){
+
+const opening=balance+P;
+const gain=opening*monthlyRate;
+balance=opening+gain;
+
+sipData.push({month:m,sip:P,opening,gain,closing:balance});
+
+labels.push("M"+m);
+balances.push(balance);
+
+tbody.insertAdjacentHTML("beforeend",`
+<tr>
+<td>${m}</td>
+<td>${P.toFixed(2)}</td>
+<td>${opening.toFixed(2)}</td>
+<td>${gain.toFixed(2)}</td>
+<td><b>${balance.toFixed(2)}</b></td>
+</tr>
+`);
 }
 
-function downloadSIPExcel() {
+const totalInvestment=P*months;
+const maturity=balance;
+const totalGain=maturity-totalInvestment;
+const multiplier=(maturity/totalInvestment).toFixed(2);
 
-    if (sipData.length === 0) {
-        alert("Please calculate SIP first");
-        return;
-    }
+document.getElementById("investment").textContent="₹ "+totalInvestment.toFixed(0);
+document.getElementById("gain").textContent="₹ "+totalGain.toFixed(0);
+document.getElementById("maturity").textContent="₹ "+maturity.toFixed(0);
+document.getElementById("multiplier").textContent=multiplier+" X";
 
-    let csv = "Month,Monthly SIP,Opening Balance,Return,Closing Balance\n";
+drawChart(labels,balances);
 
-    sipData.forEach(r => {
-        csv += `${r.month},${r.sip.toFixed(2)},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "SIP_Monthly_Projection.csv";
-    a.click();
-
-    URL.revokeObjectURL(url);
 }
+
+
+function drawChart(labels,balances){
+
+if(sipChart){
+sipChart.destroy();
+}
+
+sipChart=new Chart(document.getElementById("sipChart"),{
+type:'line',
+data:{
+labels,
+datasets:[{
+label:'Wealth Growth',
+data:balances,
+tension:.35,
+fill:true
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{display:false}
+},
+scales:{
+x:{display:false}
+}
+}
+});
+
+}
+
+
+function downloadSIPExcel(){
+
+if(sipData.length===0){
+alert("Please calculate SIP first");
+return;
+}
+
+let csv="Month,Monthly SIP,Opening Balance,Return,Closing Balance\n";
+
+sipData.forEach(r=>{
+csv+=`${r.month},${r.sip.toFixed(2)},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
+});
+
+const blob=new Blob([csv],{type:"text/csv"});
+const url=URL.createObjectURL(blob);
+
+const a=document.createElement("a");
+a.href=url;
+a.download="SIP_Monthly_Projection.csv";
+a.click();
+
+URL.revokeObjectURL(url);
+}
+
 </script>
 
 </body>
