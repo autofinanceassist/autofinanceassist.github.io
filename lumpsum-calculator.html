@@ -1,269 +1,377 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Lumpsum Calculator | Auto Finance Assist</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>ULTRA PRO Lumpsum Calculator | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 
-    <!-- Chart JS -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+.chart-card{
+    background:white;
+    padding:16px;
+    border-radius:12px;
+    max-width:420px;
+    height:300px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.big{
+    font-size:26px;
+    color:#0f3a5f;
+}
+
+.pro-tip{
+    background:#e8f2ff;
+    border-left:6px solid #0f3a5f;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:25px;
+    font-weight:500;
+}
+
+.wealth-card{
+    max-width:900px;
+    margin:30px auto;
+    background:#f4f8ff;
+    border-left:8px solid #0f3a5f;
+    padding:22px;
+    border-radius:12px;
+    font-size:18px;
+}
+
+table{
+border-collapse:collapse;
+}
+
+th{
+background:#0f3a5f;
+color:white;
+}
+
+td, th{
+text-align:center;
+}
+
+</style>
 </head>
 
 <body>
 
+<div class="top-container">
+
 <header>
     <div class="logo">
-        <h1>Auto Finance Assist</h1>
-        <p>For Common Man</p>
+        <span class="icon"><i class="fas fa-chart-line"></i></span>
+        <div>
+            <strong>Auto Finance Assist</strong><br>
+            <small>For Common Man</small>
+        </div>
     </div>
+
     <nav>
         <a href="index.html">Home</a>
     </nav>
 </header>
 
+<section class="hero">
+    <h2>Mutual Fund Lumpsum Calculator</h2>
+    <p>Invest once today — let compounding build your future wealth.</p>
+</section>
+
+</div>
+
+<main>
+
 <section class="section light">
-    <h2>Mutual Fund – Lumpsum Calculator</h2>
-    <p>Calculate future value of a one-time mutual fund investment.</p>
 
-    <!-- GRID EXPANDED TO USE FREE SPACE -->
-    <div class="grid" style="max-width:1100px">
+<div class="pro-tip">
+💡 <strong>Investor Tip:</strong> Adding yearly top-ups dramatically accelerates wealth creation.
+Even small additions can create <b>25–40% MORE corpus</b> over long horizons.
+</div>
 
-        <!-- INPUT SIDE -->
-        <div>
+<h2>Lumpsum Calculator</h2>
 
-            <div class="card">
-                <label>Investment Amount (₹)</label><br>
-                <input type="number" id="amount" placeholder="Example: 100000">
-            </div>
+<div style="
+display:flex;
+gap:40px;
+flex-wrap:wrap;
+align-items:flex-start;
+justify-content:center;
+max-width:1000px;
+margin:auto;
+">
 
-            <div class="card">
-                <label>Expected Annual Return (%)</label><br>
-                <input type="number" id="rate" placeholder="Example: 12">
-            </div>
+<div style="flex:1; min-width:300px; max-width:520px;">
 
-            <div class="card">
-                <label>Investment Period (Years)</label><br>
-                <input type="number" id="years" placeholder="Example: 15">
-            </div>
+<div class="card">
+<label>Investment Amount (₹)</label><br>
+<input type="number" id="amount" placeholder="Example: 100000">
+</div>
 
-            <!-- PRO OPTION -->
-            <div class="card">
-                <label>Yearly Top-up Investment (Optional ₹)</label><br>
-                <input type="number" id="topup" placeholder="Example: 10000">
-            </div>
+<div class="card">
+<label>Expected Annual Return (%)</label><br>
+<input type="number" id="rate" placeholder="Example: 12">
+</div>
 
-            <div class="card">
-                <label>Check Value After Year (Optional)</label><br>
-                <input type="number" id="goalYear" placeholder="Example: 10">
-            </div>
+<div class="card">
+<label>Investment Period (Years)</label><br>
+<input type="number" id="years" placeholder="Example: 15">
+</div>
 
-            <div class="card">
-                <button onclick="calculateLumpsum()">Calculate</button>
-            </div>
+<div class="card">
+<label>Yearly Top-up Investment (Optional ₹)</label><br>
+<input type="number" id="topup" placeholder="Example: 10000">
+</div>
 
-            <!-- PRO TIP -->
-            <div class="card">
-                <strong>💡 Pro Tip:</strong><br><br>
-                • Adding just <b>5–10% yearly top-up</b> can double long-term wealth.<br>
-                • Stay invested longer — compounding accelerates after year 8–10.<br>
-                • Avoid early withdrawal unless it is for a major life goal.
-            </div>
+<div class="card">
+<label>Check Value After Year (Optional)</label><br>
+<input type="number" id="goalYear" placeholder="Example: 10">
+</div>
 
-        </div>
+<div class="card">
+<button onclick="calculateLumpsum()">Calculate ULTRA Lumpsum</button>
+</div>
 
-        <!-- CHART SIDE -->
-        <div class="card">
-            <canvas id="growthChart"></canvas>
-        </div>
+</div>
 
-    </div>
+<div class="chart-card">
+<canvas id="growthChart"></canvas>
+</div>
+
+</div>
 </section>
+
 
 <section class="section">
-    <h2>Result</h2>
+<h2>Your Wealth Projection</h2>
 
-    <div class="grid" style="max-width:900px">
+<div class="grid" style="max-width:900px">
 
-        <div class="card">
-            <p><strong>Invested Amount</strong></p>
-            <h3 id="invested">—</h3>
-        </div>
+<div class="card">
+<p><strong>Invested Amount</strong></p>
+<h3 class="big" id="invested">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Total Gain</strong></p>
-            <h3 id="gain">—</h3>
-        </div>
+<div class="card">
+<p><strong>Total Gain</strong></p>
+<h3 class="big" id="gain">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Maturity Amount</strong></p>
-            <h3 id="maturity">—</h3>
-        </div>
+<div class="card">
+<p><strong>Maturity Amount</strong></p>
+<h3 class="big" id="maturity">—</h3>
+</div>
 
-        <div class="card">
-            <p><strong>Wealth Multiplier</strong></p>
-            <h3 id="multiplier">—</h3>
-        </div>
+<div class="card">
+<p><strong>Wealth Multiplier</strong></p>
+<h3 class="big" id="multiplier">—</h3>
+</div>
 
-        <!-- NEW CARD -->
-        <div class="card">
-            <p><strong>Extra Wealth from Top-ups</strong></p>
-            <h3 id="extraWealth">—</h3>
-        </div>
+</div>
 
-        <div class="card">
-            <p><strong>Value at Selected Year</strong></p>
-            <h3 id="goalValue">—</h3>
-        </div>
+<div id="wealthCard" class="wealth-card" style="display:none;"></div>
 
-    </div>
 </section>
+
 
 <section class="section">
-    <h2>Year-wise Growth Illustration</h2>
+<h2>Year-wise Growth Illustration</h2>
 
-    <div style="overflow-x:auto;">
-        <table id="lumpTable" border="1" cellpadding="8" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Year</th>
-                    <th>Opening Balance</th>
-                    <th>Top-up</th>
-                    <th>Return</th>
-                    <th>Closing Balance</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
+<div style="overflow-x:auto;">
+<table id="lumpTable" border="1" cellpadding="8" width="100%">
+<thead>
+<tr>
+<th>Year</th>
+<th>Opening</th>
+<th>Top-up</th>
+<th>Return</th>
+<th>Closing</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
 
-    <br>
-    <button onclick="downloadLumpsumExcel()">Download Excel (CSV)</button>
+<br>
+<button onclick="downloadLumpsumExcel()">Download Excel</button>
+
 </section>
+
+<div style="max-width:900px;margin:40px auto;font-size:14px;text-align:center;color:gray;">
+Disclaimer: Auto Finance Assist provides educational tools only and does not offer financial advice.
+Users should make financial decisions based on their personal judgment.
+</div>
+
+</main>
 
 <footer>
-    <p>© 2026 Auto Finance Assist | Lumpsum Calculator</p>
+© 2026 Auto Finance Assist — Empowering Smart Financial Decisions
 </footer>
+
 
 <script>
 
-let lumpData = [];
+let lumpData=[];
 let chart;
 
-function calculateLumpsum() {
-
-    const P = Number(amount.value);
-    const annualRate = Number(rate.value) / 100;
-    const years = Number(yearsInput = document.getElementById("years").value);
-    const topup = Number(document.getElementById("topup").value) || 0;
-    const goalYear = Number(document.getElementById("goalYear").value);
-
-    if (!P || !annualRate || !years) {
-        alert("Please enter all values correctly");
-        return;
-    }
-
-    let balanceWithTopup = P;
-    let balanceWithoutTopup = P;
-
-    lumpData = [];
-
-    const labels = [];
-    const data = [];
-
-    const tableBody = document.querySelector("#lumpTable tbody");
-    tableBody.innerHTML = "";
-
-    let goalValue = 0;
-
-    for (let y = 1; y <= years; y++) {
-
-        const opening = balanceWithTopup;
-
-        balanceWithTopup += topup;
-
-        const gain = balanceWithTopup * annualRate;
-        balanceWithTopup += gain;
-
-        // Without topup calc for difference
-        balanceWithoutTopup += balanceWithoutTopup * annualRate;
-
-        if (goalYear === y) goalValue = balanceWithTopup;
-
-        lumpData.push({year:y, opening, topup, gain, closing:balanceWithTopup});
-
-        labels.push("Year " + y);
-        data.push(balanceWithTopup);
-
-        const row = `
-        <tr>
-            <td>${y}</td>
-            <td>${opening.toFixed(2)}</td>
-            <td>${topup.toFixed(2)}</td>
-            <td>${gain.toFixed(2)}</td>
-            <td>${balanceWithTopup.toFixed(2)}</td>
-        </tr>`;
-
-        tableBody.insertAdjacentHTML("beforeend", row);
-    }
-
-    const maturity = balanceWithTopup;
-    const totalGain = maturity - (P + (topup*years));
-    const multiplier = (maturity / P).toFixed(2);
-    const extraWealth = maturity - balanceWithoutTopup;
-
-    invested.textContent = "₹ " + (P + topup*years).toFixed(2);
-    gain.textContent = "₹ " + totalGain.toFixed(2);
-    maturity.textContent = "₹ " + maturity.toFixed(2);
-    multiplier.textContent = multiplier + " X";
-    extraWealth.textContent = "₹ " + extraWealth.toFixed(2);
-    goalValue.textContent = goalYear ? "₹ " + goalValue.toFixed(2) : "—";
-
-    // CHART
-    if(chart) chart.destroy();
-
-    chart = new Chart(document.getElementById("growthChart"), {
-        type:'line',
-        data:{
-            labels:labels,
-            datasets:[{
-                label:'Investment Growth',
-                data:data,
-                tension:0.3
-            }]
-        },
-        options:{
-            responsive:true,
-            plugins:{
-                legend:{display:true}
-            }
-        }
-    });
+function formatMoney(num){
+return "₹ "+Math.round(num).toLocaleString('en-IN');
 }
+
+function calculateLumpsum(){
+
+const P=Number(amount.value);
+const rate=Number(document.getElementById("rate").value)/100;
+const years=Number(document.getElementById("years").value);
+const topup=Number(document.getElementById("topup").value)||0;
+const goalYear=Number(document.getElementById("goalYear").value);
+
+if(!P || !rate || !years){
+alert("Please enter all values correctly");
+return;
+}
+
+let balance=P;
+let normalBalance=P;
+
+lumpData=[];
+
+const labels=[];
+const withTopup=[];
+const withoutTopup=[];
+
+const tbody=document.querySelector("#lumpTable tbody");
+tbody.innerHTML="";
+
+let goalValue=0;
+let totalInvested=P;
+
+for(let y=1;y<=years;y++){
+
+const opening=balance;
+
+balance+=topup;
+totalInvested+=topup;
+
+const gain=balance*rate;
+balance+=gain;
+
+/* without topup */
+normalBalance+=normalBalance*rate;
+
+if(goalYear===y) goalValue=balance;
+
+labels.push("Year "+y);
+withTopup.push(balance);
+withoutTopup.push(normalBalance);
+
+lumpData.push({year:y,opening,topup,gain,closing:balance});
+
+tbody.insertAdjacentHTML("beforeend",`
+<tr>
+<td>${y}</td>
+<td>${formatMoney(opening)}</td>
+<td>${formatMoney(topup)}</td>
+<td>${formatMoney(gain)}</td>
+<td><b>${formatMoney(balance)}</b></td>
+</tr>
+`);
+}
+
+const maturity=balance;
+const totalGain=maturity-totalInvested;
+const multiplier=(maturity/P).toFixed(2);
+const extra=maturity-normalBalance;
+
+invested.textContent=formatMoney(totalInvested);
+gain.textContent=formatMoney(totalGain);
+maturity.textContent=formatMoney(maturity);
+multiplier.textContent=multiplier+" X";
+
+
+const card=document.getElementById("wealthCard");
+card.style.display="block";
+
+if(topup>0){
+card.innerHTML=`
+🚀 <b>Top-Up Strategy Insight</b><br><br>
+
+Without top-ups: <b>${formatMoney(normalBalance)}</b><br>
+With yearly top-ups: <b>${formatMoney(maturity)}</b><br><br>
+
+💰 <b>You generate ${formatMoney(extra)} EXTRA wealth!</b>
+`;
+}else{
+card.innerHTML=`
+💡 Adding yearly investments can significantly accelerate compounding and long-term wealth.
+`;
+}
+
+
+/* CHART */
+
+if(chart) chart.destroy();
+
+chart=new Chart(document.getElementById("growthChart"),{
+type:'line',
+data:{
+labels,
+datasets:[
+{
+label:'With Top-up',
+data:withTopup,
+tension:.35,
+fill:true
+},
+{
+label:'Without Top-up',
+data:withoutTopup,
+tension:.35,
+fill:true
+}
+]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{legend:{display:true}}
+}
+});
+
+}
+
 
 
 function downloadLumpsumExcel(){
 
-    if(lumpData.length===0){
-        alert("Please calculate first");
-        return;
-    }
+if(lumpData.length===0){
+alert("Please calculate first");
+return;
+}
 
-    let csv="Year,Opening,Topup,Return,Closing\n";
+let csv="Year,Opening,Topup,Return,Closing\n";
 
-    lumpData.forEach(r=>{
-        csv+=`${r.year},${r.opening.toFixed(2)},${r.topup.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
-    });
+lumpData.forEach(r=>{
+csv+=`${r.year},${r.opening},${r.topup},${r.gain},${r.closing}\n`;
+});
 
-    const blob=new Blob([csv],{type:"text/csv"});
-    const url=URL.createObjectURL(blob);
+const blob=new Blob([csv],{type:"text/csv"});
+const url=URL.createObjectURL(blob);
 
-    const a=document.createElement("a");
-    a.href=url;
-    a.download="Lumpsum_Projection.csv";
-    a.click();
+const a=document.createElement("a");
+a.href=url;
+a.download="ULTRA_Lumpsum_Projection.csv";
+a.click();
 
-    URL.revokeObjectURL(url);
+URL.revokeObjectURL(url);
+
 }
 
 </script>
