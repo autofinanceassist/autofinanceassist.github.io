@@ -1,16 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>NPS Calculator | Auto Finance Assist</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>NPS Calculator | Auto Finance Assist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* ===== BODY ===== */
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f4f7fb;
+}
+
+/* ===== FIXED HEADER ===== */
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:#0b3d91;
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    z-index:1000;
+}
+
+header h1{
+    margin:0;
+    font-size:22px;
+}
+
+header p{
+    margin:0;
+    font-size:13px;
+    opacity:.9;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+    background:#1456c3;
+    padding:8px 18px;
+    border-radius:6px;
+}
+
+/* ===== FIXED FOOTER ===== */
+footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#0b3d91;
+    color:white;
+    text-align:center;
+    padding:10px;
+}
+
+/* ===== SCROLLABLE MAIN ===== */
+main{
+    position:fixed;
+    top:80px;
+    bottom:50px;
+    overflow-y:auto;
+    width:100%;
+    padding:30px 20px;
+    box-sizing:border-box;
+}
+
+/* ===== SECTIONS ===== */
+.section{
+    max-width:1100px;
+    margin:auto;
+    margin-bottom:40px;
+}
+
+.section h2{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+/* ===== GRID ===== */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+/* ===== CARD ===== */
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+    text-align:left;
+}
+
+.card h3{
+    margin-top:5px;
+    color:#0b3d91; /* restored result color */
+}
+
+/* ===== INPUT ===== */
+input{
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+/* ===== BUTTON ===== */
+button{
+    background:#1456c3;
+    color:white;
+    border:none;
+    padding:12px;
+    width:100%;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0b3d91;
+}
+
+/* ===== TABLE ===== */
+table{
+    border-collapse:collapse;
+    background:white;
+}
+
+th{
+    background:#0b3d91;   /* FIXED — no sky blue */
+    color:white;
+}
+
+th, td{
+    padding:10px;
+    text-align:center;
+}
+
+</style>
 </head>
 
 <body>
 
 <header>
-    <div class="logo">
+    <div>
         <h1>Auto Finance Assist</h1>
         <p>For Common Man</p>
     </div>
@@ -19,24 +160,27 @@
     </nav>
 </header>
 
-<section class="section light">
-    <h2>National Pension System (NPS) Calculator</h2>
-    <p>Estimate your retirement corpus and expected monthly pension.</p>
+<main>
 
-    <div class="grid" style="max-width:600px">
+<!-- INPUT -->
+<section class="section">
+    <h2>National Pension System (NPS) Calculator</h2>
+    <p style="text-align:center;">Estimate your retirement corpus and expected monthly pension.</p>
+
+    <div class="grid" style="max-width:600px;margin:auto;">
 
         <div class="card">
-            <label>Monthly Contribution</label><br>
+            <label>Monthly Contribution</label>
             <input type="number" id="monthly" placeholder="Example: 5000">
         </div>
 
         <div class="card">
-            <label>Expected Annual Return (%)</label><br>
+            <label>Expected Annual Return (%)</label>
             <input type="number" id="rate" placeholder="Example: 10">
         </div>
 
         <div class="card">
-            <label>Investment Period (Years)</label><br>
+            <label>Investment Period (Years)</label>
             <input type="number" id="years" placeholder="Example: 25">
         </div>
 
@@ -47,44 +191,50 @@
     </div>
 </section>
 
+
+<!-- RESULT -->
 <section class="section">
+
     <h2>Result</h2>
 
-    <div class="grid" style="max-width:900px">
+    <div class="grid">
 
         <div class="card">
-            <p><strong>Total Investment</strong></p>
+            <strong>Total Investment</strong>
             <h3 id="investment">—</h3>
         </div>
 
         <div class="card">
-            <p><strong>Total Gain</strong></p>
+            <strong>Total Gain</strong>
             <h3 id="gain">—</h3>
         </div>
 
         <div class="card">
-            <p><strong>Maturity Amount</strong></p>
+            <strong>Maturity Amount</strong>
             <h3 id="maturity">—</h3>
         </div>
 
         <div class="card">
-            <p><strong>Expected Monthly Pension</strong></p>
+            <strong>Expected Monthly Pension</strong>
             <h3 id="pension">—</h3>
         </div>
 
     </div>
 
-    <p style="font-size:14px; margin-top:15px;">
-        <strong>Note:</strong> Pension is indicative, assuming 40% of corpus is
-        used to buy annuity at 6% annual return. Actual pension may vary.
+    <p style="font-size:14px;margin-top:15px;text-align:center;">
+        <strong>Note:</strong> Pension assumes 40% corpus used for annuity at 6% return.
     </p>
+
 </section>
 
+
+<!-- TABLE -->
 <section class="section">
+
     <h2>Monthly NPS Growth Illustration</h2>
 
     <div style="overflow-x:auto;">
-        <table id="npsTable" border="1" cellpadding="8" cellspacing="0" width="100%">
+        <table id="npsTable" width="100%" border="1">
             <thead>
                 <tr>
                     <th>Month</th>
@@ -99,96 +249,99 @@
     </div>
 
     <br>
-    <button onclick="downloadNPSExcel()">Download Excel (CSV)</button>
+
+    <div style="max-width:300px;margin:auto;">
+        <button onclick="downloadNPSExcel()">Download Excel (CSV)</button>
+    </div>
+
 </section>
 
+</main>
+
 <footer>
-    <p>© 2026 Auto Finance Assist | NPS Calculator</p>
+© 2026 Auto Finance Assist | NPS Calculator
 </footer>
 
+
 <script>
+
 let npsData = [];
 
-function calculateNPS() {
+function calculateNPS(){
+
     const P = Number(document.getElementById("monthly").value);
-    const annualRate = Number(document.getElementById("rate").value) / 100;
+    const annualRate = Number(document.getElementById("rate").value)/100;
     const years = Number(document.getElementById("years").value);
 
-    if (!P || !annualRate || !years) {
+    if(!P || !annualRate || !years){
         alert("Please enter all values correctly");
         return;
     }
 
-    const months = years * 12;
-    const monthlyRate = annualRate / 12;
+    const months = years*12;
+    const monthlyRate = annualRate/12;
     let balance = 0;
 
     npsData = [];
     const tableBody = document.querySelector("#npsTable tbody");
-    tableBody.innerHTML = "";
+    tableBody.innerHTML="";
 
-    for (let m = 1; m <= months; m++) {
+    for(let m=1;m<=months;m++){
+
         const opening = balance + P;
         const gain = opening * monthlyRate;
         balance = opening + gain;
 
-        npsData.push({
-            month: m,
-            contribution: P,
-            opening,
-            gain,
-            closing: balance
-        });
+        npsData.push({month:m,contribution:P,opening,gain,closing:balance});
 
-        const row = `
-            <tr>
-                <td>${m}</td>
-                <td>${P.toFixed(2)}</td>
-                <td>${opening.toFixed(2)}</td>
-                <td>${gain.toFixed(2)}</td>
-                <td>${balance.toFixed(2)}</td>
-            </tr>
-        `;
-        tableBody.insertAdjacentHTML("beforeend", row);
+        tableBody.insertAdjacentHTML("beforeend",`
+        <tr>
+            <td>${m}</td>
+            <td>${P.toFixed(2)}</td>
+            <td>${opening.toFixed(2)}</td>
+            <td>${gain.toFixed(2)}</td>
+            <td>${balance.toFixed(2)}</td>
+        </tr>`);
     }
 
-    const investment = P * months;
+    const investment = P*months;
     const maturity = balance;
-    const totalGain = maturity - investment;
+    const gain = maturity - investment;
 
-    // Pension calculation
-    const annuityCorpus = maturity * 0.40;
-    const annualPension = annuityCorpus * 0.06;
-    const monthlyPension = annualPension / 12;
+    const annuityCorpus = maturity*0.40;
+    const monthlyPension = (annuityCorpus*0.06)/12;
 
     document.getElementById("investment").textContent = investment.toFixed(2);
-    document.getElementById("gain").textContent = totalGain.toFixed(2);
+    document.getElementById("gain").textContent = gain.toFixed(2);
     document.getElementById("maturity").textContent = maturity.toFixed(2);
     document.getElementById("pension").textContent = monthlyPension.toFixed(2);
 }
 
-function downloadNPSExcel() {
-    if (npsData.length === 0) {
+
+function downloadNPSExcel(){
+
+    if(npsData.length===0){
         alert("Please calculate NPS first");
         return;
     }
 
-    let csv = "Month,Contribution,Opening Balance,Return,Closing Balance\n";
+    let csv="Month,Contribution,Opening Balance,Return,Closing Balance\n";
 
-    npsData.forEach(r => {
-        csv += `${r.month},${r.contribution.toFixed(2)},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
+    npsData.forEach(r=>{
+        csv+=`${r.month},${r.contribution.toFixed(2)},${r.opening.toFixed(2)},${r.gain.toFixed(2)},${r.closing.toFixed(2)}\n`;
     });
 
-    const blob = new Blob([csv], { type: "text/csv" });
+    const blob = new Blob([csv],{type:"text/csv"});
     const url = URL.createObjectURL(blob);
 
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "NPS_Monthly_Projection.csv";
+    const a=document.createElement("a");
+    a.href=url;
+    a.download="NPS_Monthly_Projection.csv";
     a.click();
 
     URL.revokeObjectURL(url);
 }
+
 </script>
 
 </body>
